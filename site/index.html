@@ -39,6 +39,19 @@
                 <tbody></tbody>
             </table>
         </div>
+        <div class="season" id="TOC2022P">
+            <h2>2021 Professors Tournament <a href="toc_period.html?toc_period=TOC2022P">(summary)</a></h2>
+            <table class="game-list">
+                <thead>
+                    <tr>
+                        <th>Game</th>
+                        <th>Date</th>
+                        <th>Contestants</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
         <div class="season" id="TOC2021R">
             <h2>TOC2021 Qualification Regular Play <a href="toc_period.html?toc_period=TOC2021R">(summary)</a></h2>
             <table class="game-list">
@@ -122,7 +135,7 @@
                     });
             }
 
-            for (const tocPeriodId of ['TOC2022R','NCC2022','TOC2021R','TOC2019R']) {
+            for (const tocPeriodId of ['TOC2022R','NCC2022','TOC2022P','TOC2021R','TOC2019R']) {
                 d3.csv(csvUrlForTocPeriod(tocPeriodId)).then(function(data) {
                     renderTocPeriodAndTypeSection(tocPeriodId, data);
                 });
