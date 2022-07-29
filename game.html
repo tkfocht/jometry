@@ -92,7 +92,8 @@
             <div id="hist-buz$" style="width:1000px;height:500px;margin-bottom:1em;"></div>
         </div>
         <div id="footer">
-            <p>This site is not affiliated with Jeopardy!. Data is taken from their published <a href="https://www.jeopardy.com/jbuzz/news-events/jeopardy-daily-box-scores">box scores.</a></p>
+            <p>This site is not affiliated with Jeopardy!. Data is taken from their published <a href="https://www.jeopardy.com/jbuzz/news-events/jeopardy-daily-box-scores">box scores</a>.
+                Further data for this game taken from its <a id="jarchive-link" href="https://j-archive.com">J! Archive page</a>.</p>
         </div>
         <script type="text/javascript">
             var tocPeriodId = new URLSearchParams(window.location.search).get('toc_period_id');
@@ -121,6 +122,7 @@
                 d3.select("#season").data([highlightGameData[0]]).text(d => d['Season']);
                 d3.select("#game-number").data([highlightGameData[0]]).text(d => d['Game In Season']);
                 d3.select("#game-date").data([highlightGameData[0]]).text(d => dateFormat(d['Date']));
+                document.getElementById("jarchive-link").href = 'https://j-archive.com/showgame.php?game_id=' + highlightGameData[0]['Jarchive Game Id'];
                 var highlightGameContestantIds = d3.map(highlightGameData, d => d['Jometry Contestant Id']);
                 data.forEach(function(d) {
                     d['highlightContestant'] = highlightGameContestantIds.includes(d['Jometry Contestant Id']);
