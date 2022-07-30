@@ -2,6 +2,48 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
+#header {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: flex-end;
+
+    border-bottom: 2px solid black;
+}
+
+#header #site-mast {
+    font-size: 24px;
+    margin-right: 1em;
+}
+
+#header .navigation-item {
+    margin-left: 0.5em;
+}
+
+.toc-period {
+    margin: 2em 0;
+}
+
+.toc-period .toc-period-header {
+    font-size: 36px;
+}
+
+.toc-period-play-class {
+    margin: 1em 1em;
+}
+
+.toc-period-play-class .toc-period-play-class-header span.toc-period-play-class-label {
+    font-size: 24px;
+}
+
+.toc-period-play-class .toc-period-play-class-header span.toc-period-play-class-item {
+    margin-left: 1em;
+}
+
+.toc-period-play-class .toc-period-play-game-list {
+    margin: 0.5em 2em;
+}
+
 #footer {
     font-size: smaller;
     margin-top: 3em;
