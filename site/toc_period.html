@@ -263,28 +263,33 @@
                     d['FJ$'] = d['FJCor'] === "" ? 0 : (2 * +d['FJCor'] - 1) * +d['FJWager'];
                 });
 
+                var highlightContestantIds = new URLSearchParams(window.location.search).get('contestants');
                 var highlightContestantCounts = d3.rollup(data, v => d3.sum(d3.map(v, cd => (+cd['Wins']))), d => d['Jometry Contestant Id']);
                 var contestantWinnings = d3.rollup(data, v => d3.sum(d3.map(v, cd => (+cd['Wins'] * +cd['FJFinal$']))), d => d['Jometry Contestant Id']);
-                var gameThreshold = 4;
-                highlightContestantIds = d3.filter(highlightContestantCounts.keys(), k => highlightContestantCounts.get(k) >= gameThreshold);
-                while (highlightContestantIds.length < 5) {
-                    gameThreshold--;
+                if (highlightContestantIds === null) {
+                    var gameThreshold = 4;
                     highlightContestantIds = d3.filter(highlightContestantCounts.keys(), k => highlightContestantCounts.get(k) >= gameThreshold);
+                    while (highlightContestantIds.length < 5) {
+                        gameThreshold--;
+                        highlightContestantIds = d3.filter(highlightContestantCounts.keys(), k => highlightContestantCounts.get(k) >= gameThreshold);
+                    }
+                    highlightContestantIds.sort(function(a,b) {
+                        var winsDiff = highlightContestantCounts.get(b) - highlightContestantCounts.get(a);
+                        if (winsDiff !== 0) {
+                            return winsDiff;
+                        }
+                        return contestantWinnings.get(b) - contestantWinnings.get(a);
+                    });
+                } else {
+                    highlightContestantIds = highlightContestantIds.split(',');
                 }
 
-                var latestDate = d3.max(d3.map(data, d => d['Date']));
+                /*var latestDate = d3.max(d3.map(data, d => d['Date']));
                 var currentChampionToHighlight = d3.map(d3.filter(data, d => d['Date'] >= latestDate && +d['Wins'] > 0), d => d['Jometry Contestant Id']);
                 if ((new Date().getTime() - latestDate.getTime()) / (1000 * 3600 * 24) <= 5) {
                     highlightContestantIds = highlightContestantIds.concat(Array.from(d3.difference(currentChampionToHighlight, highlightContestantIds)));
-                }
+                }*/
 
-                highlightContestantIds.sort(function(a,b) {
-                    var winsDiff = highlightContestantCounts.get(b) - highlightContestantCounts.get(a);
-                    if (winsDiff !== 0) {
-                        return winsDiff;
-                    }
-                    return contestantWinnings.get(b) - contestantWinnings.get(a);
-                });
                 data.forEach(function(d) {
                     d['highlightContestant'] = highlightContestantIds.includes(d['Jometry Contestant Id']);
                 });
