@@ -44,6 +44,10 @@ body {
     margin: 0.5em 2em;
 }
 
+span.toc-period-play-class-control {
+    cursor: pointer;
+}
+
 #footer {
     font-size: smaller;
     margin-top: 3em;

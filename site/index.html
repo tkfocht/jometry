@@ -23,7 +23,11 @@
                     <span class="toc-period-play-class-label">Regular Play</span>
                     <span class="toc-period-play-class-item"><a class="toc-period-play-class-navigation-item" href="/toc_period.html?toc_period=TOC2022R">Leaders</a></span>
                 </div>
-                <div class="toc-period-play-game-list">
+                <div class="toc-period-play-class-controls">
+                    <span class="toc-period-play-class-control show-games">Show Games</span>
+                    <span class="toc-period-play-class-control hide-games" style="display: none">Hide Games</span>
+                </div>
+                <div class="toc-period-play-game-list" style="display: none">
                     <table class="game-list">
                         <tbody></tbody>
                     </table>
@@ -34,7 +38,11 @@
                     <span class="toc-period-play-class-label">2022 National College Championship</span>
                     <span class="toc-period-play-class-item"><a class="toc-period-play-class-navigation-item" href="/toc_period.html?toc_period=NCC2022&contestants=4066,4070,4064,4045,4059,4076,4050,4060,4074,4052,4056,4080">Semifinalists</a></span>
                 </div>
-                <div class="toc-period-play-game-list">
+                <div class="toc-period-play-class-controls">
+                    <span class="toc-period-play-class-control show-games">Show Games</span>
+                    <span class="toc-period-play-class-control hide-games" style="display: none">Hide Games</span>
+                </div>
+                <div class="toc-period-play-game-list" style="display: none">
                     <table class="game-list">
                         <tbody></tbody>
                     </table>
@@ -45,7 +53,11 @@
                     <span class="toc-period-play-class-label">2021 Professors Tournament</span>
                     <span class="toc-period-play-class-item"><a class="toc-period-play-class-navigation-item" href="/toc_period.html?toc_period=TOC2022P&contestants=877,881,884,883,876,874,871,873,885">Semifinalists</a></span>
                 </div>
-                <div class="toc-period-play-game-list">
+                <div class="toc-period-play-class-controls">
+                    <span class="toc-period-play-class-control show-games">Show Games</span>
+                    <span class="toc-period-play-class-control hide-games" style="display: none">Hide Games</span>
+                </div>
+                <div class="toc-period-play-game-list" style="display: none">
                     <table class="game-list">
                         <tbody></tbody>
                     </table>
@@ -60,7 +72,11 @@
                     <span class="toc-period-play-class-label">Regular Play</span>
                     <span class="toc-period-play-class-item"><a class="toc-period-play-class-navigation-item" href="/toc_period.html?toc_period=TOC2021R">Leaders</a></span>
                 </div>
-                <div class="toc-period-play-game-list">
+                <div class="toc-period-play-class-controls">
+                    <span class="toc-period-play-class-control show-games">Show Games</span>
+                    <span class="toc-period-play-class-control hide-games" style="display: none">Hide Games</span>
+                </div>
+                <div class="toc-period-play-game-list" style="display: none">
                     <table class="game-list">
                         <tbody></tbody>
                     </table>
@@ -75,7 +91,11 @@
                     <span class="toc-period-play-class-label">Regular Play</span>
                     <span class="toc-period-play-class-item"><a class="toc-period-play-class-navigation-item" href="/toc_period.html?toc_period=TOC2019R">Leaders</a></span>
                 </div>
-                <div class="toc-period-play-game-list">
+                <div class="toc-period-play-class-controls">
+                    <span class="toc-period-play-class-control show-games">Show Games</span>
+                    <span class="toc-period-play-class-control hide-games" style="display: none">Hide Games</span>
+                </div>
+                <div class="toc-period-play-game-list" style="display: none">
                     <table class="game-list">
                         <tbody></tbody>
                     </table>
@@ -113,6 +133,19 @@
                             '<td>' + dateFormat(d[1]) + '</td>' +
                             '<td>' + d.slice(2,5).join(' vs ') + '</td>';
                     });
+                
+                    d3.select('#' + tocPeriodId + ' span.show-games')
+                        .on('click', function() {
+                            d3.select(this).style('display', 'none');
+                            d3.select('#' + tocPeriodId + ' .toc-period-play-game-list').style('display','block');
+                            d3.select('#' + tocPeriodId + ' span.hide-games').style('display', 'inline');
+                        });
+                    d3.select('#' + tocPeriodId + ' span.hide-games')
+                        .on('click', function(ev) {
+                            d3.select(this).style('display', 'none');
+                            d3.select('#' + tocPeriodId + ' .toc-period-play-game-list').style('display', 'none');
+                            d3.select('#' + tocPeriodId + ' span.show-games').style('display', 'inline');
+                        });
             }
 
             for (const tocPeriodId of ['TOC2022R','NCC2022','TOC2022P','TOC2021R','TOC2019R']) {
