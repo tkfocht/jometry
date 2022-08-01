@@ -23,7 +23,7 @@
         </div>
 
         <div class="section">
-            <h1><span id="toc-period-id"></span> Qualification Period Summary</h1>
+            <h1><span id="toc-period-id"></span></h1>
             <div class="graph-description">
                 "Average" is the average of all contestant performances, not just those shown individually. Each game performace
                 is a separate data point, so champions are included separately in the average for each of their games.
@@ -288,7 +288,7 @@
             var tocPeriodId = new URLSearchParams(window.location.search).get('toc_period');
             var tocPeriodAverageLabel = tocPeriodId + " Average";
             d3.select("#toc-period-id")
-                .data([tocPeriodId])
+                .data([getNameForTocPeriod(tocPeriodId)])
                 .text(d => d);
             d3.csv(csvUrlForTocPeriod(tocPeriodId)).then(function(data) {
                 //Data transformations

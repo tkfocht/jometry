@@ -23,7 +23,7 @@
         </div>
 
         <div class="section">
-            <h1><span id="contestant-name"></span> <span id="toc-period-id"></span> Summary</h1>
+            <h1><span id="contestant-name"></span>, <span id="toc-period-id"></span></h1>
             <div id="season-contestant-summary" class="season-contestant-summary">
                 <table>
                     <thead>
@@ -93,7 +93,7 @@
             var tocPeriodAverageLabel = "All " + tocPeriodId + " Average";
             var contestantId = new URLSearchParams(window.location.search).get('contestant');
             d3.select("#toc-period-id")
-                .data([tocPeriodId])
+                .data([getNameForTocPeriod(tocPeriodId)])
                 .text(d => d);
             d3.csv(csvUrlForTocPeriod(tocPeriodId)).then(function(data) {
                 d3.select("#contestant-name")

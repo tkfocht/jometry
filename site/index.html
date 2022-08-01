@@ -20,7 +20,7 @@
             <div class="toc-period-header">TOC 2022 Qualification</div>
             <div class="toc-period-play-class" id="TOC2022R">
                 <div class="toc-period-play-class-header">
-                    <span class="toc-period-play-class-label">Regular Play</span>
+                    <span class="toc-period-play-class-label"></span>
                     <span class="toc-period-play-class-item"><a class="toc-period-play-class-navigation-item" href="/toc_period.html?toc_period=TOC2022R">Leaders</a></span>
                 </div>
                 <div class="toc-period-play-class-controls">
@@ -35,7 +35,7 @@
             </div>
             <div class="toc-period-play-class" id="NCC2022">
                 <div class="toc-period-play-class-header">
-                    <span class="toc-period-play-class-label">2022 National College Championship</span>
+                    <span class="toc-period-play-class-label"></span>
                     <span class="toc-period-play-class-item"><a class="toc-period-play-class-navigation-item" href="/toc_period.html?toc_period=NCC2022&contestants=4066,4070,4064,4045,4059,4076,4050,4060,4074,4052,4056,4080">Semifinalists</a></span>
                 </div>
                 <div class="toc-period-play-class-controls">
@@ -50,7 +50,7 @@
             </div>
             <div class="toc-period-play-class" id="TOC2022P">
                 <div class="toc-period-play-class-header">
-                    <span class="toc-period-play-class-label">2021 Professors Tournament</span>
+                    <span class="toc-period-play-class-label"></span>
                     <span class="toc-period-play-class-item"><a class="toc-period-play-class-navigation-item" href="/toc_period.html?toc_period=TOC2022P&contestants=877,881,884,883,876,874,871,873,885">Semifinalists</a></span>
                 </div>
                 <div class="toc-period-play-class-controls">
@@ -69,7 +69,7 @@
             <div class="toc-period-header">TOC 2021 Qualification</div>
             <div class="toc-period-play-class" id="TOC2021R">
                 <div class="toc-period-play-class-header">
-                    <span class="toc-period-play-class-label">Regular Play</span>
+                    <span class="toc-period-play-class-label"></span>
                     <span class="toc-period-play-class-item"><a class="toc-period-play-class-navigation-item" href="/toc_period.html?toc_period=TOC2021R&contestants=1084,1272,1431,1320,2027,201,56,1466,2016,158,138,1578,1356,1191">Qualifiers</a></span>
                 </div>
                 <div class="toc-period-play-class-controls">
@@ -84,7 +84,7 @@
             </div>
             <div class="toc-period-play-class" id="TOC2021T">
                 <div class="toc-period-play-class-header">
-                    <span class="toc-period-play-class-label">2020 Teachers Tournament</span>
+                    <span class="toc-period-play-class-label"></span>
                     <span class="toc-period-play-class-item"><a class="toc-period-play-class-navigation-item" href="/toc_period.html?toc_period=TOC2021T">Leaders</a></span>
                 </div>
                 <div class="toc-period-play-class-controls">
@@ -99,7 +99,7 @@
             </div>
             <div class="toc-period-play-class" id="TOC2021C">
                 <div class="toc-period-play-class-header">
-                    <span class="toc-period-play-class-label">2020 College Tournament</span>
+                    <span class="toc-period-play-class-label"></span>
                     <span class="toc-period-play-class-item"><a class="toc-period-play-class-navigation-item" href="/toc_period.html?toc_period=TOC2021C">Leaders</a></span>
                 </div>
                 <div class="toc-period-play-class-controls">
@@ -118,7 +118,7 @@
             <div class="toc-period-header">TOC 2019 Qualification</div>
             <div class="toc-period-play-class" id="TOC2019R">
                 <div class="toc-period-play-class-header">
-                    <span class="toc-period-play-class-label">Regular Play</span>
+                    <span class="toc-period-play-class-label"></span>
                     <span class="toc-period-play-class-item"><a class="toc-period-play-class-navigation-item" href="/toc_period.html?toc_period=TOC2019R&contestants=2487,3824,3623,1661,3659,1728,2469,3584,3605,1986,1920,2441,2613">Qualifiers</a></span>
                 </div>
                 <div class="toc-period-play-class-controls">
@@ -133,7 +133,7 @@
             </div>
             <div class="toc-period-play-class" id="TOC2019T">
                 <div class="toc-period-play-class-header">
-                    <span class="toc-period-play-class-label">2018 and 2019 Teachers Tournaments</span>
+                    <span class="toc-period-play-class-label"></span>
                     <span class="toc-period-play-class-item"><a class="toc-period-play-class-navigation-item" href="/toc_period.html?toc_period=TOC2019T">Leaders</a></span>
                 </div>
                 <div class="toc-period-play-class-controls">
@@ -148,7 +148,7 @@
             </div>
             <div class="toc-period-play-class" id="TOC2019C">
                 <div class="toc-period-play-class-header">
-                    <span class="toc-period-play-class-label">2018 College Tournament</span>
+                    <span class="toc-period-play-class-label"></span>
                     <span class="toc-period-play-class-item"><a class="toc-period-play-class-navigation-item" href="/toc_period.html?toc_period=TOC2019C">Leaders</a></span>
                 </div>
                 <div class="toc-period-play-class-controls">
@@ -209,6 +209,7 @@
             }
 
             for (const tocPeriodId of ['TOC2022R','NCC2022','TOC2022P','TOC2021R','TOC2021T','TOC2021C','TOC2019R','TOC2019T','TOC2019C']) {
+                d3.select('#' + tocPeriodId + ' span.toc-period-play-class-label').text(getNameForTocPeriod(tocPeriodId));
                 d3.csv(csvUrlForTocPeriod(tocPeriodId)).then(function(data) {
                     renderTocPeriodAndTypeSection(tocPeriodId, data);
                 });

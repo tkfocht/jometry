@@ -10,6 +10,20 @@ var csvUrlForTocPeriod = function(id) {
     return "https://j-ometry.com/csvs/" + id + "_full.csv";
 };
 
+var getNameForTocPeriod = function(id) {
+    switch(id) {
+        case 'TOC2022R':    return '2022 TOC Regular Play';
+        case 'TOC2021R':    return '2021 TOC Regular Play';
+        case 'TOC2019R':    return '2019 TOC Regular Play';
+        case 'TOC2022P':    return '2022 Professors Tournament';
+        case 'TOC2021T':    return '2020 Teachers Tournament';
+        case 'TOC2019T':    return '2018 and 2019 Teachers Tournament';
+        case 'NCC2022':     return '2022 National College Championship';
+        case 'TOC2021C':    return '2020 College Tournament';
+        case 'TOC2019C':    return '2018 College Tournament';
+    }
+}
+
 var getContestantNameFromData = function(data, contestantId) {
     if (d3.map(data, cd => cd['Jometry Contestant Id']).includes(contestantId)) {
         return d3.filter(data, cd => cd['Jometry Contestant Id'] === contestantId)[0]['Contestant'];

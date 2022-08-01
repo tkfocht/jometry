@@ -23,7 +23,7 @@
         </div>
 
         <div class="section">
-            <h1><span id="toc-period-id"></span> Season <span id="season"></span> Game <span id="game-number"></span> Summary <span id="game-date"></span></h1>
+            <h1><span id="toc-period-id"></span> Season <span id="season"></span> Game <span id="game-number"></span> <span id="game-date"></span></h1>
             <div id="game-summary">
                 <table>
                     <thead>
@@ -103,7 +103,7 @@
             var tocPeriodId = new URLSearchParams(window.location.search).get('toc_period_id');
             var highlightGame = new URLSearchParams(window.location.search).get('game_id');
             d3.select("#toc-period-id")
-                .data([tocPeriodId])
+                .data([getNameForTocPeriod(tocPeriodId)])
                 .text(d => d);
             d3.csv(csvUrlForTocPeriod(tocPeriodId)).then(function(data) {
                 var margin = {top: 20, right: 20, bottom: 50, left: 70},
