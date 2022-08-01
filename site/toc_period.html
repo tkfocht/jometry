@@ -25,8 +25,8 @@
         <div class="section">
             <h1><span id="toc-period-id"></span></h1>
             <div class="graph-description">
-                "Average" is the average of all contestant performances, not just those shown individually. Each game performace
-                is a separate data point, so champions are included separately in the average for each of their games.
+                Each game performace
+                is a separate data point, so champions are included separately in the all contestants average for each of their games.
             </div>
             <div id="season-contestant-summary" class="season-contestant-summary">
                 <table class="controlled-table" id="contestant-summary-table">
@@ -286,7 +286,7 @@
         </div>
         <script type="text/javascript">
             var tocPeriodId = new URLSearchParams(window.location.search).get('toc_period');
-            var tocPeriodAverageLabel = tocPeriodId + " Average";
+            var tocPeriodAverageLabel = "Average";
             d3.select("#toc-period-id")
                 .data([getNameForTocPeriod(tocPeriodId)])
                 .text(d => d);
