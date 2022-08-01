@@ -29,11 +29,11 @@
                 is a separate data point, so champions are included separately in the average for each of their games.
             </div>
             <div id="season-contestant-summary" class="season-contestant-summary">
-                <table class="controlled-table">
+                <table class="controlled-table" id="contestant-summary-table">
                     <thead>
                         <tr>
                             <th colspan="1" class="empty"></th>
-                            <th colspan="14" class="cumulative controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">Totals</div><div class="table-control table-control-right">&#9654;</div></div></th>
+                            <th colspan="15" class="cumulative controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">Totals</div><div class="table-control table-control-right">&#9654;</div></div></th>
                             <th colspan="16" class="game-average controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">Game Averages</div><div class="table-control table-control-right">&#9654;</div></div></th>
                             <th colspan="12" class="j-average controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">J! Averages</div><div class="table-control table-control-right">&#9654;</div></div></th>
                             <th colspan="12" class="dj-average controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">DJ! Averages</div><div class="table-control table-control-right">&#9654;</div></div></th>
@@ -43,11 +43,11 @@
                         </tr>
                         <tr>
                             <th>Contestant</th>
-                            <th class="controlled cumulative">Wins</th>
-                            <th class="controlled cumulative">Leads</th>
-                            <th class="controlled cumulative">Crushes</th>
-                            <th class="controlled cumulative">Locks</th>
-                            <th class="controlled cumulative">TotalWin$</th>
+                            <th class="controlled cumulative">W</th>
+                            <th class="controlled cumulative">Ld</th>
+                            <th class="controlled cumulative">Cr</th>
+                            <th class="controlled cumulative">Lk</th>
+                            <th class="controlled cumulative">Win$</th>
                             <th class="controlled cumulative">Att</th>
                             <th class="controlled cumulative">Buz</th>
                             <th class="controlled cumulative">Buz%</th>
@@ -55,6 +55,7 @@
                             <th class="controlled cumulative">DDF</th>
                             <th class="controlled cumulative">DD+</th>
                             <th class="controlled cumulative">DD$</th>
+                            <th class="controlled cumulative">FJ</th>
                             <th class="controlled cumulative">FJ$</th>
                             <th class="controlled cumulative">FJFinal$</th>
                             <th class="controlled game-average">Att</th>
@@ -64,8 +65,8 @@
                             <th class="controlled game-average">Buz%</th>
                             <th class="controlled game-average">BuzC</th>
                             <th class="controlled game-average">BuzC$</th>
-                            <th class="controlled game-average">BuzI</th>
-                            <th class="controlled game-average">BuzI$</th>
+                            <th class="controlled game-average">Spd</th>
+                            <th class="controlled game-average">Sol</th>
                             <th class="controlled game-average">DDF</th>
                             <th class="controlled game-average">DD+</th>
                             <th class="controlled game-average">DD$</th>
@@ -80,8 +81,8 @@
                             <th class="controlled j-average">Buz%</th>
                             <th class="controlled j-average">BuzC</th>
                             <th class="controlled j-average">BuzC$</th>
-                            <th class="controlled j-average">BuzI</th>
-                            <th class="controlled j-average">BuzI$</th>
+                            <th class="controlled j-average">Spd</th>
+                            <th class="controlled j-average">Sol</th>
                             <th class="controlled j-average">DDF</th>
                             <th class="controlled j-average">DD+</th>
                             <th class="controlled j-average">DD$</th>
@@ -92,8 +93,8 @@
                             <th class="controlled dj-average">Buz%</th>
                             <th class="controlled dj-average">BuzC</th>
                             <th class="controlled dj-average">BuzC$</th>
-                            <th class="controlled dj-average">BuzI</th>
-                            <th class="controlled dj-average">BuzI$</th>
+                            <th class="controlled dj-average">Spd</th>
+                            <th class="controlled dj-average">Sol</th>
                             <th class="controlled dj-average">DDF</th>
                             <th class="controlled dj-average">DD+</th>
                             <th class="controlled dj-average">DD$</th>
@@ -104,8 +105,8 @@
                             <th class="controlled game-maximum">Buz%</th>
                             <th class="controlled game-maximum">BuzC</th>
                             <th class="controlled game-maximum">BuzC$</th>
-                            <th class="controlled game-maximum">BuzI</th>
-                            <th class="controlled game-maximum">BuzI$</th>
+                            <th class="controlled game-maximum">Spd</th>
+                            <th class="controlled game-maximum">Sol</th>
                             <th class="controlled game-maximum">DDF</th>
                             <th class="controlled game-maximum">DD+</th>
                             <th class="controlled game-maximum">DD$</th>
@@ -120,8 +121,8 @@
                             <th class="controlled j-maximum">Buz%</th>
                             <th class="controlled j-maximum">BuzC</th>
                             <th class="controlled j-maximum">BuzC$</th>
-                            <th class="controlled j-maximum">BuzI</th>
-                            <th class="controlled j-maximum">BuzI$</th>
+                            <th class="controlled j-maximum">Spd</th>
+                            <th class="controlled j-maximum">Sol</th>
                             <th class="controlled j-maximum">DDF</th>
                             <th class="controlled j-maximum">DD+</th>
                             <th class="controlled j-maximum">DD$</th>
@@ -132,8 +133,8 @@
                             <th class="controlled dj-maximum">Buz%</th>
                             <th class="controlled dj-maximum">BuzC</th>
                             <th class="controlled dj-maximum">BuzC$</th>
-                            <th class="controlled dj-maximum">BuzI</th>
-                            <th class="controlled dj-maximum">BuzI$</th>
+                            <th class="controlled dj-maximum">Spd</th>
+                            <th class="controlled dj-maximum">Sol</th>
                             <th class="controlled dj-maximum">DDF</th>
                             <th class="controlled dj-maximum">DD+</th>
                             <th class="controlled dj-maximum">DD$</th>
@@ -143,9 +144,11 @@
                 </table>
             </div>
             <div class="graph-description">
-                Att = Attempts, ExpBuz = Expected buzzes, BuzC = Correct on buzz,
-                Speed = Est. buzzes created through speed, Solo = Estimated buzzes uncontested,
-                Buz$ = Score on buzz, DDF = Daily Doubles found, DD+ = Daily Doubles found above expectation
+                W = Wins, Ld = Leads (at end of DJ), Cr = Crushes, Lk = Locks, Win$ = Winnings, Att = Attempts,
+                Buz = Buzzes, BuzC = Correct on buzz, BuzI = Incorrect on buzz,
+                Spd = Speed = Est. buzzes created through speed, Sol = Solo = Estimated buzzes uncontested,
+                Buz$ = Score on buzz, DDF = Daily Doubles found, DD+ = Daily Doubles found above expectation,
+                FJ$ = Net score in FJ
             </div>
         </div>
         <div class="section">
@@ -306,7 +309,7 @@
                 var contestantWinnings = d3.rollup(data, v => d3.sum(d3.map(v, cd => (+cd['Wins'] * +cd['FJFinal$']))), d => d['Jometry Contestant Id']);
                 var contestantScores = d3.rollup(data, v => d3.sum(d3.map(v, cd => +cd['FJFinal$'])), d => d['Jometry Contestant Id']);
                 if (highlightContestantIds === null) {
-                    var gameThreshold = 0;
+                    var gameThreshold = 4;
                     highlightContestantIds = d3.filter(highlightContestantCounts.keys(), k => highlightContestantCounts.get(k) >= gameThreshold);
                     while (highlightContestantIds.length < 5) {
                         gameThreshold--;
@@ -373,7 +376,6 @@
                             contestantData = groupedData.get(cid);
                         }
                         var contestantDataWithBoxScore = d3.filter(contestantData, d => d['Att'] !== '');
-                        console.log(contestantData);
                         return [
                             cid >= 0 ? '<span style="color: ' + colorFunction(contestantData[0]) + '">&#9632;</span>&nbsp;<a href="contestant.html?toc_period_id=' + tocPeriodId + '&contestant=' + cid + '">' + getContestantNameFromData(contestantData, cid) + "</a>" : 'All Contestants',
                             d3.sum(contestantData, d => +d['Wins']),
@@ -388,6 +390,7 @@
                             d3.sum(contestantData, d => +d['JDDF'] + +d['DJDDF']).toFixed(0),
                             d3.sum(contestantData, d => +d['JDD+'] + +d['DJDD+']).toFixed(2),
                             d3.sum(contestantData, d => +d['JDD'] + +d['DJDD1'] + +d['DJDD2']).toFixed(0),
+                            d3.sum(contestantData, d => +d['FJCor']) + '/' + d3.sum(contestantData, d => +d['DJFinal$'] > 0 ? 1 : 0),
                             d3.sum(contestantData, d => +d['FJ$']).toFixed(0),
                             d3.sum(contestantData, d => +d['FJFinal$']).toFixed(0),
                             contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => +d['Att']).toFixed(1) : '',
@@ -397,8 +400,8 @@
                             contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => +d['Att'] === 0 ? 0 : 100.0 * +d['Buz'] / +d['Att']).toFixed(1) : '',
                             d3.mean(contestantData, d => +d['BuzC']).toFixed(1),
                             d3.mean(contestantData, d => +d['BuzC$']).toFixed(0),
-                            d3.mean(contestantData, d => +d['BuzI']).toFixed(1),
-                            d3.mean(contestantData, d => +d['BuzI$']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => +d['Speed']).toFixed(1) : '',
+                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => +d['Solo']).toFixed(1) : '',
                             d3.mean(contestantData, d => +d['JDDF'] + +d['DJDDF']).toFixed(1),
                             d3.mean(contestantData, d => +d['JDD+'] + +d['DJDD+']).toFixed(2),
                             d3.mean(contestantData, d => +d['JDD'] + +d['DJDD1'] + +d['DJDD2']).toFixed(0),
@@ -413,8 +416,8 @@
                             contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => +d['JAtt'] === 0 ? 0 : 100.0 * +d['JBuz'] / +d['JAtt']).toFixed(1) : '',
                             d3.mean(contestantData, d => +d['JBuzC']).toFixed(1),
                             d3.mean(contestantData, d => +d['JBuzC$']).toFixed(0),
-                            d3.mean(contestantData, d => +d['JBuzInc']).toFixed(1),
-                            d3.mean(contestantData, d => +d['JBuzI$']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => +d['JSpeed']).toFixed(1) : '',
+                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => +d['JSolo']).toFixed(1) : '',
                             d3.mean(contestantData, d => +d['JDDF']).toFixed(1),
                             d3.mean(contestantData, d => +d['JDD+']).toFixed(2),
                             d3.mean(contestantData, d => +d['JDD']).toFixed(0),
@@ -425,8 +428,8 @@
                             contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => +d['DJAtt'] === 0 ? 0 : 100.0 * +d['DJBuz'] / +d['DJAtt']).toFixed(1) : '',
                             d3.mean(contestantData, d => +d['DJBuzC']).toFixed(1),
                             d3.mean(contestantData, d => +d['DJBuzC$']).toFixed(0),
-                            d3.mean(contestantData, d => +d['DJBuzInc']).toFixed(1),
-                            d3.mean(contestantData, d => +d['DJBuzI$']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => +d['DJSpeed']).toFixed(1) : '',
+                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => +d['DJSolo']).toFixed(1) : '',
                             d3.mean(contestantData, d => +d['DJDDF']).toFixed(1),
                             d3.mean(contestantData, d => +d['DJDD+']).toFixed(2),
                             d3.mean(contestantData, d => +d['DJDD1'] + +d['DJDD2']).toFixed(0),
@@ -437,11 +440,11 @@
                             contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => +d['Att'] === 0 ? 0 : 100.0 * +d['Buz'] / +d['Att']).toFixed(1) : '',
                             d3.max(contestantData, d => +d['BuzC']).toFixed(0),
                             d3.max(contestantData, d => +d['BuzC$']).toFixed(0),
-                            d3.max(contestantData, d => +d['BuzI']).toFixed(0),
-                            d3.max(contestantData, d => +d['BuzI$']).toFixed(0),
-                            d3.max(contestantData, d => +d['JDDF'] + +d['DJDDF']).toFixed(2),
-                            d3.max(contestantData, d => +d['JDD+'] + +d['DJDD+']).toFixed(0),
-                            d3.max(contestantData, d => +d['JDD'] + +d['DJDD1'] + +d['DJDD2']).toFixed(1),
+                            contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => +d['Speed']).toFixed(1) : '',
+                            contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => +d['Solo']).toFixed(1) : '',
+                            d3.max(contestantData, d => +d['JDDF'] + +d['DJDDF']).toFixed(0),
+                            d3.max(contestantData, d => +d['JDD+'] + +d['DJDD+']).toFixed(2),
+                            d3.max(contestantData, d => +d['JDD'] + +d['DJDD1'] + +d['DJDD2']).toFixed(0),
                             d3.max(contestantData, d => +d['JFinal$']).toFixed(0),
                             d3.max(contestantData, d => +d['DJFinal$']).toFixed(0),
                             d3.max(contestantData, d => +d['FJ$']).toFixed(0),
@@ -453,10 +456,10 @@
                             contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => +d['JAtt'] === 0 ? 0 : 100.0 * +d['JBuz'] / +d['JAtt']).toFixed(1) : '',
                             d3.max(contestantData, d => +d['JBuzC']).toFixed(0),
                             d3.max(contestantData, d => +d['JBuzC$']).toFixed(0),
-                            d3.max(contestantData, d => +d['JBuzInc']).toFixed(0),
-                            d3.max(contestantData, d => +d['JBuzI$']).toFixed(0),
-                            d3.max(contestantData, d => +d['JDDF']).toFixed(2),
-                            d3.max(contestantData, d => +d['JDD+']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => +d['JSpeed']).toFixed(1) : '',
+                            contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => +d['JSolo']).toFixed(1) : '',
+                            d3.max(contestantData, d => +d['JDDF']).toFixed(0),
+                            d3.max(contestantData, d => +d['JDD+']).toFixed(2),
                             d3.max(contestantData, d => +d['JDD']).toFixed(0),
                             contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => +d['DJAtt']).toFixed(0) : '',
                             d3.max(contestantData, d => +d['DJBuz']).toFixed(0),
@@ -465,17 +468,40 @@
                             contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => +d['DJAtt'] === 0 ? 0 : 100.0 * +d['DJBuz'] / +d['DJAtt']).toFixed(1) : '',
                             d3.max(contestantData, d => +d['DJBuzC']).toFixed(0),
                             d3.max(contestantData, d => +d['DJBuzC$']).toFixed(0),
-                            d3.max(contestantData, d => +d['DJBuzInc']).toFixed(0),
-                            d3.max(contestantData, d => +d['DJBuzI$']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => +d['DJSpeed']).toFixed(1) : '',
+                            contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => +d['DJSolo']).toFixed(1) : '',
                             d3.max(contestantData, d => +d['DJDDF']).toFixed(0),
                             d3.max(contestantData, d => +d['DJDD+']).toFixed(2),
-                            d3.max(contestantData, d => +d['DJDD1'] + +d['DJDD2']).toFixed(0),                        ];
+                            d3.max(contestantData, d => +d['DJDD1'] + +d['DJDD2']).toFixed(0),
+                        ];
                     })
                     .enter()
                     .append("td")
-                    .html(d => d);
+                    .html(d => d)
+                    .attr('class', function(d,i) {
+                        if (i < 1) {
+                            return '';
+                        } else if (i < 16) {
+                            return 'controlled cumulative';
+                        } else if (i < 32) {
+                            return 'controlled game-average';
+                        } else if (i < 44) {
+                            return 'controlled j-average';
+                        } else if (i < 56) {
+                            return 'controlled dj-average';
+                        } else if (i < 72) {
+                            return 'controlled game-maximum';
+                        } else if (i < 84) {
+                            return 'controlled j-maximum';
+                        } else if (i < 96) {
+                            return 'controlled dj-maximum';
+                        } else {
+                            return '';
+                        }
+                    });
+                controlTable('table#contestant-summary-table', ['cumulative','game-average','j-average','dj-average','game-maximum','j-maximum','dj-maximum']);
                 
-/*
+
                 //Buzzes
                 var attemptsTraceBuzC = {
                     x: d3.map(highlightContestantIds, c => d3.filter(data, cd => cd['Jometry Contestant Id'] === c)[0]['Contestant']),
@@ -880,7 +906,7 @@
                 };
 
                 Plotly.newPlot('scatter-avg-buz$-buz-vs-buz', plotData, layout);
-*/
+
             });
         </script>
     </body>

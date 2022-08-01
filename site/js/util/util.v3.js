@@ -19,5 +19,29 @@ var getContestantNameFromData = function(data, contestantId) {
 };
 
 var controlTable = function(tableId, controlClasses) {
+    var currentClassIndex = 0;
+    d3.selectAll(tableId + ' th.controlled').style('display','none');
+    d3.selectAll(tableId + ' td.controlled').style('display','none');
+    d3.selectAll(tableId + ' th.' + controlClasses[currentClassIndex]).style('display','table-cell');
+    d3.selectAll(tableId + ' td.' + controlClasses[currentClassIndex]).style('display','table-cell');
 
+    var updateTable = function(step) {
+        currentClassIndex += step;
+        if (currentClassIndex < 0) {
+            currentClassIndex = controlClasses.length - 1;
+        } else if (currentClassIndex >= controlClasses.length) {
+            currentClassIndex = 0;
+        }
+        d3.selectAll(tableId + ' th.controlled').style('display','none');
+        d3.selectAll(tableId + ' td.controlled').style('display','none');
+        d3.selectAll(tableId + ' th.' + controlClasses[currentClassIndex]).style('display','table-cell');
+        d3.selectAll(tableId + ' td.' + controlClasses[currentClassIndex]).style('display','table-cell');            
+    };
+
+    d3.selectAll(tableId + ' .table-control-left').on('click', function() {
+        updateTable(-1);
+    });
+    d3.selectAll(tableId + ' .table-control-right').on('click', function() {
+        updateTable(1);
+    });
 };
