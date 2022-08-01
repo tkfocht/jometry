@@ -17,3 +17,7 @@ var getContestantNameFromData = function(data, contestantId) {
         return undefined;
     }
 };
+
+var controlTable = function(tableId, controlClasses) {
+
+};

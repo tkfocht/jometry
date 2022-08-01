@@ -56,3 +56,14 @@ span.toc-period-play-class-control {
 .j-dj-container {
     display: flex;
 }
+
+table.controlled-table th.controlled .control-container {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+table.controlled-table .table-control {
+    cursor: pointer;
+}
