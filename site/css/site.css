@@ -67,3 +67,11 @@ table.controlled-table th.controlled .control-container {
 table.controlled-table .table-control {
     cursor: pointer;
 }
+
+table.controlled-table th.controlled {
+    display: none;
+}
+
+table.controlled-table td.controlled {
+    display: none;
+}
