@@ -78,8 +78,7 @@
                 responses are shown in the middle. Attempts that were blocked are shown on top (if known).
             </div>
             <div style="display:flex">
-                <div id="bar-attempts-j" style="width:400px;height:500px;margin-bottom:1em;"></div>
-                <div id="bar-attempts-dj" style="width:400px;height:500px;margin-bottom:1em;"></div>
+                <div id="bar-attempts" style="width:1000px;height:500px;margin-bottom:1em;"></div>
             </div>
         </div>
         <div class="section">
@@ -361,7 +360,9 @@
                             color: 'black',
                             width: 1
                         }
-                    }
+                    },
+                    xaxis: 'x',
+                    yaxis: 'y'
                 };
                 var attemptsTraceJBuzI = {
                     x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
@@ -375,7 +376,9 @@
                             width: 1
                         },
                         opacity: 0.6
-                    }
+                    },
+                    xaxis: 'x',
+                    yaxis: 'y'
                 };
                 var attemptsTraceJAttBlocked = {
                     x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
@@ -389,22 +392,10 @@
                             width: 1
                         },
                         opacity: 0.2
-                    }
+                    },
+                    xaxis: 'x',
+                    yaxis: 'y'
                 };
-                var attemptsJData = [attemptsTraceJBuzC, attemptsTraceJBuzI, attemptsTraceJAttBlocked];
-                var attemptsJLayout = {
-                    barmode: 'stack',
-                    showlegend: false,
-                    yaxis: {
-                        title: {
-                            text: "J! Attempts",
-                            standoff: 20
-                        },
-                        range: [0, 29]
-                    }
-                };
-                Plotly.newPlot('bar-attempts-j', attemptsJData, attemptsJLayout);
-
                 var attemptsTraceDJBuzC = {
                     x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
                     y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => +cd1['DJBuzC']))),
@@ -416,7 +407,9 @@
                             color: 'black',
                             width: 1
                         }
-                    }
+                    },
+                    xaxis: 'x2',
+                    yaxis: 'y'
                 };
                 var attemptsTraceDJBuzI = {
                     x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
@@ -430,7 +423,9 @@
                             width: 1
                         },
                         opacity: 0.6
-                    }
+                    },
+                    xaxis: 'x2',
+                    yaxis: 'y'
                 };
                 var attemptsTraceDJAttBlocked = {
                     x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
@@ -444,21 +439,42 @@
                             width: 1
                         },
                         opacity: 0.2
-                    }
+                    },
+                    xaxis: 'x2',
+                    yaxis: 'y'
                 };
-                var attemptsDJData = [attemptsTraceDJBuzC, attemptsTraceDJBuzI, attemptsTraceDJAttBlocked];
-                var attemptsDJLayout = {
+
+                var attemptsLayout = {
                     barmode: 'stack',
                     showlegend: false,
+                    grid: {
+                        rows: 1,
+                        columns: 2,
+                        subplots: ['xy,x2y']
+                    },
+                    xaxis: {
+                        title: {
+                            text: "J",
+                            standoff: 10
+                        },
+                    },
+                    xaxis2: {
+                        title: {
+                            text: "DJ",
+                            standoff: 10
+                        },
+                    },
                     yaxis: {
                         title: {
-                            text: "DJ! Attempts",
+                            text: "Buzzes -> Attempts",
                             standoff: 20
                         },
-                        range: [0, 29]
                     }
                 };
-                Plotly.newPlot('bar-attempts-dj', attemptsDJData, attemptsDJLayout);
+                Plotly.newPlot('bar-attempts', [attemptsTraceJBuzC, attemptsTraceJBuzI, attemptsTraceJAttBlocked,
+                    attemptsTraceDJBuzC, attemptsTraceDJBuzI, attemptsTraceDJAttBlocked], attemptsLayout);
+
+
             });
         </script>
     </body>
