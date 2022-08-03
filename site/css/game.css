@@ -32,3 +32,21 @@
     text-align: left;
     width: 20%;
 }
+
+.scatterhist-trio-container {
+    width: 650px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.scatterhist-trio-container .scatterhist-trio-full {
+    width: 100%;
+    height: 400px;
+}
+
+.scatterhist-trio-container .scatterhist-trio-j, .scatterhist-trio-container .scatterhist-trio-dj {
+    width: 50%;
+    display: none;
+}

@@ -86,13 +86,25 @@
             <div class="graph-description">
                 A collection of player statistics for this game, with the distribution of player performance for the play period shown in gray.
             </div>
-            <div id="scatterhist-att-buz%" style="width:1000px;height:500px;margin-bottom:1em;"></div>
-            <div id="scatterhist-buz-buz$-per-buz" style="width:1000px;height:500px;margin-bottom:1em;"></div>
-            <div id="scatterhist-speed-solo" style="width:1000px;height:500px;margin-bottom:1em;"></div>
-            <div id="hist-att" style="width:1000px;height:500px;margin-bottom:1em;"></div>
-            <div id="hist-buz" style="width:1000px;height:500px;margin-bottom:1em;"></div>
-            <div id="hist-buzc" style="width:1000px;height:500px;margin-bottom:1em;"></div>
-            <div id="hist-buz$" style="width:1000px;height:500px;margin-bottom:1em;"></div>
+            <div class="scatterhist-trio-container">
+                <div id="scatterhist-att-buz%" class="scatterhist-trio-full"></div>
+                <div id="scatterhist-j-att-buz%" class="scatterhist-trio-j"></div>
+                <div id="scatterhist-dj-att-buz%" class="scatterhist-trio-dj"></div>
+            </div>
+            <div class="scatterhist-trio-container">
+                <div id="scatterhist-buz-buz$-per-buz" class="scatterhist-trio-full"></div>
+                <div id="scatterhist-j-buz-buz$-per-buz" class="scatterhist-trio-j"></div>
+                <div id="scatterhist-dj-buz-buz$-per-buz" class="scatterhist-trio-dj"></div>
+            </div>
+            <div class="scatterhist-trio-container">
+                <div id="scatterhist-speed-solo" class="scatterhist-trio-full"></div>
+                <div id="scatterhist-j-speed-solo" class="scatterhist-trio-j"></div>
+                <div id="scatterhist-dj-speed-solo" class="scatterhist-trio-dj"></div>
+            </div>
+            <div id="hist-att" style="width:650px;height:400px;margin-bottom:1em;"></div>
+            <div id="hist-buz" style="width:650px;height:400px;margin-bottom:1em;"></div>
+            <div id="hist-buzc" style="width:650px;height:400px;margin-bottom:1em;"></div>
+            <div id="hist-buz$" style="width:650px;height:400px;margin-bottom:1em;"></div>
         </div>
         <div id="footer">
             <p>This site is not affiliated with Jeopardy!. Data is taken from their published <a href="https://www.jeopardy.com/jbuzz/news-events/jeopardy-daily-box-scores">box scores</a>.
@@ -247,10 +259,40 @@
                         d => d['highlightGame'],
                         'Speed',
                         d => d['Speed'],
-                        { start: -20.5, end: 20.5, size: 1 },
+                        { start: -20, end: 20, size: 1 },
                         'Solo',
                         d => d['Solo'],
                         { start: 0, end: 25, size: 1 },
+                        highlightGameColorFunction,
+                        highlightGameLabelFunction
+                    );
+                    renderHighlightScatterHistogram(
+                        data,
+                        'scatterhist-j-speed-solo',
+                        '',
+                        d => d['JSpeed'] !== '' && d['JSolo'] !== '',
+                        d => d['highlightGame'],
+                        'J! Speed',
+                        d => d['JSpeed'],
+                        { start: -10, end: 10, size: 1 },
+                        'J! Solo',
+                        d => d['JSolo'],
+                        { start: 0, end: 20, size: 1 },
+                        highlightGameColorFunction,
+                        highlightGameLabelFunction
+                    );
+                    renderHighlightScatterHistogram(
+                        data,
+                        'scatterhist-dj-speed-solo',
+                        '',
+                        d => d['DJSpeed'] !== '' && d['DJSolo'] !== '',
+                        d => d['highlightGame'],
+                        'DJ! Speed',
+                        d => d['DJSpeed'],
+                        { start: -10, end: 10, size: 1 },
+                        'DJ! Solo',
+                        d => d['DJSolo'],
+                        { start: 0, end: 20, size: 1 },
                         highlightGameColorFunction,
                         highlightGameLabelFunction
                     );
@@ -268,6 +310,36 @@
                         'Buz%',
                         d => d['Buz%'],
                         { start: 0, end: 100, size: 5 },
+                        highlightGameColorFunction,
+                        highlightGameLabelFunction
+                    );
+                    renderHighlightScatterHistogram(
+                        data,
+                        'scatterhist-j-att-buz%',
+                        'J! Att and Buz%',
+                        d => d['JAtt'] !== '' && d['JBuz%'] !== '',
+                        d => d['highlightGame'],
+                        'J! Att',
+                        d => d['JAtt'],
+                        { start: -0.5, end: 29.5, size: 1 },
+                        'J! Buz%',
+                        d => d['JBuz%'],
+                        { start: 0, end: 100, size: 10 },
+                        highlightGameColorFunction,
+                        highlightGameLabelFunction
+                    );
+                    renderHighlightScatterHistogram(
+                        data,
+                        'scatterhist-dj-att-buz%',
+                        'DJ! Att and Buz%',
+                        d => d['DJAtt'] !== '' && d['DJBuz%'] !== '',
+                        d => d['highlightGame'],
+                        'DJ! Att',
+                        d => d['DJAtt'],
+                        { start: -0.5, end: 29.5, size: 1 },
+                        'DJ! Buz%',
+                        d => d['DJBuz%'],
+                        { start: 0, end: 100, size: 10 },
                         highlightGameColorFunction,
                         highlightGameLabelFunction
                     );
@@ -305,6 +377,36 @@
                     'Buz$/Buz',
                     d => d['Buz$/Buz'],
                     { start: -650, end: 1150, size: 100 },
+                    highlightGameColorFunction,
+                    highlightGameLabelFunction
+                );
+                renderHighlightScatterHistogram(
+                    data,
+                    'scatterhist-j-buz-buz$-per-buz',
+                    'J! Buz vs Buz$/Buz',
+                    d => true,
+                    d => d['highlightGame'],
+                    'J! Buz',
+                    d => d['JBuz'],
+                    { start: -0.5, end: 29.5, size: 1 },
+                    'J! Buz$/Buz',
+                    d => d['JBuz$/Buz'],
+                    { start: -650, end: 1050, size: 100 },
+                    highlightGameColorFunction,
+                    highlightGameLabelFunction
+                );
+                renderHighlightScatterHistogram(
+                    data,
+                    'scatterhist-dj-buz-buz$-per-buz',
+                    'DJ! Buz vs Buz$/Buz',
+                    d => true,
+                    d => d['highlightGame'],
+                    'DJ! Buz',
+                    d => d['DJBuz'],
+                    { start: -0.5, end: 29.5, size: 1 },
+                    'DJ! Buz$/Buz',
+                    d => d['DJBuz$/Buz'],
+                    { start: -1050, end: 2050, size: 100 },
                     highlightGameColorFunction,
                     highlightGameLabelFunction
                 );
