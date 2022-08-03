@@ -366,7 +366,7 @@
 
                 var summaryTr = d3.select("#season-contestant-summary table tbody")
                     .selectAll("tr")
-                    .data(highlightContestantIds.concat([-1]))
+                    .data(highlightContestantIds.concat([-1,-2]))
                     .enter()
                     .append("tr");
                 summaryTr.selectAll("td")
@@ -374,10 +374,12 @@
                         var contestantData = data;
                         if (cid > 0) {
                             contestantData = groupedData.get(cid);
+                        } else if (cid > -2) {
+                            contestantData = d3.filter(data, d => +d['Wins'] === 1);
                         }
                         var contestantDataWithBoxScore = d3.filter(contestantData, d => d['Att'] !== '');
                         return [
-                            cid >= 0 ? '<span style="color: ' + colorFunction(contestantData[0]) + '">&#9632;</span>&nbsp;<a href="contestant.html?toc_period_id=' + tocPeriodId + '&contestant=' + cid + '">' + getContestantNameFromData(contestantData, cid) + "</a>" : 'All Contestants',
+                            cid >= 0 ? '<span style="color: ' + colorFunction(contestantData[0]) + '">&#9632;</span>&nbsp;<a href="contestant.html?toc_period_id=' + tocPeriodId + '&contestant=' + cid + '">' + getContestantNameFromData(contestantData, cid) + "</a>" : (cid === -1 ? 'All Winners' : 'All Contestants'),
                             d3.sum(contestantData, d => +d['Wins']),
                             d3.sum(contestantData, d => +d['Leads']),
                             d3.sum(contestantData, d => +d['Crushes']),
