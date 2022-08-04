@@ -11,7 +11,8 @@ var renderHighlightScatterHistogram = function(
     yFunction,
     yBins,
     highlightColorFunction,
-    highlightLabelFunction
+    highlightLabelFunction,
+    margin = {}
 ) {
     data = d3.filter(data, filterFunction);
     var histTrace = {
@@ -52,7 +53,8 @@ var renderHighlightScatterHistogram = function(
         },
         yaxis: {
             title: yLabel
-        }
+        },
+        margin: margin
     };
     Plotly.newPlot(container, [scatterTrace, histTrace], layout);
 }
