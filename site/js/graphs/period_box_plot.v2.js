@@ -4,11 +4,16 @@ var renderHighlightContestantBoxPlot = function(
     mappingFunction,
     divId,
     title,
-    filterFunction
+    filterFunction,
+    colorFunction
 ) {
-    var colorList = d3.schemeCategory10.concat(d3.schemeDark2);
+    //var colorList = d3.schemeCategory10.concat(d3.schemeDark2);
     data = d3.filter(data, filterFunction);
     var availableHighlightContestantIds = d3.filter(highlightContestantIds.slice(), cid => d3.map(data, cd => cd['Jometry Contestant Id']).includes(cid));
+    availableHighlightContestantIds.sort(function(a,b) {
+        return d3.mean(d3.filter(data, cd => cd['Jometry Contestant Id'] === b), mappingFunction) - d3.mean(d3.filter(data, cd => cd['Jometry Contestant Id'] === a), mappingFunction);
+    });
+
     var xData = d3.map(availableHighlightContestantIds, cid => getContestantNameFromData(data, cid));
     var yData = d3.map(availableHighlightContestantIds, cid => d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === cid), mappingFunction));
     var dateData = d3.map(availableHighlightContestantIds, cid => d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === cid), cd1 => dateFormat(cd1['Date'])));
@@ -18,6 +23,7 @@ var renderHighlightContestantBoxPlot = function(
 
     var plotData = [];
     for ( var i = 0; i < xData.length; i ++ ) {
+        var color = colorFunction(availableHighlightContestantIds[i]);
         var result = {
             type: 'box',
             y: yData[i],
@@ -28,9 +34,9 @@ var renderHighlightContestantBoxPlot = function(
             whiskerwidth: 0.2,
             marker: {
                 size: 4,
-                color: colorList[i]
+                color: color,
             },
-            fillcolor: colorList[i],
+            fillcolor: color,
             line: {
                 width: 1.5,
                 color: 'black'
@@ -136,11 +142,15 @@ var renderHighlightContestantRoundLinePlot = function(
     divId,
     title,
     filterFunction,
+    colorFunction,
     yAxisLabel
 ) {
-    var colorList = d3.schemeCategory10.concat(d3.schemeDark2);
     data = d3.filter(data, filterFunction);
     highlightContestantIds = d3.filter(highlightContestantIds, cid => d3.map(data, cd => cd['Jometry Contestant Id']).includes(cid));
+    highlightContestantIds.sort(function(a,b) {
+        return d3.mean(d3.map(d3.filter(d3.filter(data, filterFunction), cd => cd['Jometry Contestant Id'] === b), mappingFunctionRight)) -
+            d3.mean(d3.map(d3.filter(d3.filter(data, filterFunction), cd => cd['Jometry Contestant Id'] === a), mappingFunctionRight));
+    });
     var traces = [];
     for ( var i = 0; i < highlightContestantIds.length; i ++ ) {
         var trace = {
@@ -152,7 +162,7 @@ var renderHighlightContestantRoundLinePlot = function(
             type: 'scatter',
             name: getContestantNameFromData(data, highlightContestantIds[i]),
             marker: {
-                color: colorList[i]
+                color: colorFunction(highlightContestantIds[i])
             }
         };
         traces.push(trace);

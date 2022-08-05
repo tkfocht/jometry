@@ -370,6 +370,9 @@
                         return "black";
                     }
                 };
+                var rawColorFunction = function(cid) {
+                    return color(cid);
+                }
                 var opacityFunction = function(d) {
                     if (d['highlightContestant']) {
                         return 1;
@@ -523,13 +526,19 @@
                 
 
                 //Buzzes
+                var attemptsOrderedIds = highlightContestantIds.slice();
+                attemptsOrderedIds.sort(function(a,b) {
+                    return d3.mean(d3.filter(data, cd => cd['Jometry Contestant Id'] === b), cd1 => +cd1['BuzC']) -
+                        d3.mean(d3.filter(data, cd => cd['Jometry Contestant Id'] === a), cd1 => +cd1['BuzC']);
+                });
+
                 var attemptsTraceBuzC = {
-                    x: d3.map(highlightContestantIds, c => d3.filter(data, cd => cd['Jometry Contestant Id'] === c)[0]['Contestant']),
-                    y: d3.map(highlightContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['BuzC']))),
-                    text: d3.map(highlightContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['BuzC'])).toFixed(1)),
+                    x: d3.map(attemptsOrderedIds, c => d3.filter(data, cd => cd['Jometry Contestant Id'] === c)[0]['Contestant']),
+                    y: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['BuzC']))),
+                    text: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['BuzC'])).toFixed(1)),
                     type: 'bar',
                     marker: {
-                        color: d3.map(highlightContestantIds, color),
+                        color: d3.map(attemptsOrderedIds, color),
                         line: {
                             color: 'black',
                             width: 1
@@ -537,12 +546,12 @@
                     }
                 };
                 var attemptsTraceBuzI = {
-                    x: d3.map(highlightContestantIds, c => d3.filter(data, cd => cd['Jometry Contestant Id'] === c)[0]['Contestant']),
-                    y: d3.map(highlightContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['BuzI']))),
-                    text: d3.map(highlightContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['BuzI'])).toFixed(1)),
+                    x: d3.map(attemptsOrderedIds, c => d3.filter(data, cd => cd['Jometry Contestant Id'] === c)[0]['Contestant']),
+                    y: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['BuzI']))),
+                    text: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['BuzI'])).toFixed(1)),
                     type: 'bar',
                     marker: {
-                        color: d3.map(highlightContestantIds, color),
+                        color: d3.map(attemptsOrderedIds, color),
                         line: {
                             color: 'black',
                             width: 1
@@ -563,13 +572,18 @@
                 };
                 Plotly.newPlot('bar-buzzes', attemptsData, attemptsLayout);
 
+                var buzScoreOrderedIds = highlightContestantIds.slice();
+                buzScoreOrderedIds.sort(function(a,b) {
+                    return d3.mean(d3.filter(data, cd => cd['Jometry Contestant Id'] === b), cd1 => +cd1['Buz$']) -
+                        d3.mean(d3.filter(data, cd => cd['Jometry Contestant Id'] === a), cd1 => +cd1['Buz$']);
+                });
                 var traceBuzScore = {
-                    x: d3.map(highlightContestantIds, c => d3.filter(data, cd => cd['Jometry Contestant Id'] === c)[0]['Contestant']),
-                    y: d3.map(highlightContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['Buz$']))),
-                    text: d3.map(highlightContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['Buz$'])).toFixed(0)),
+                    x: d3.map(buzScoreOrderedIds, c => d3.filter(data, cd => cd['Jometry Contestant Id'] === c)[0]['Contestant']),
+                    y: d3.map(buzScoreOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['Buz$']))),
+                    text: d3.map(buzScoreOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['Buz$'])).toFixed(0)),
                     type: 'bar',
                     marker: {
-                        color: d3.map(highlightContestantIds, color),
+                        color: d3.map(buzScoreOrderedIds, color),
                         line: {
                             color: 'black',
                             width: 1
@@ -577,12 +591,12 @@
                     }
                 };
                 var traceBuzIScore = {
-                    x: d3.map(highlightContestantIds, c => d3.filter(data, cd => cd['Jometry Contestant Id'] === c)[0]['Contestant']),
-                    y: d3.map(highlightContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['JBuzI$'] + +cd1['DJBuzI$']))),
-                    text: d3.map(highlightContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['JBuzI$'] + +cd1['DJBuzI$'])).toFixed(0)),
+                    x: d3.map(buzScoreOrderedIds, c => d3.filter(data, cd => cd['Jometry Contestant Id'] === c)[0]['Contestant']),
+                    y: d3.map(buzScoreOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['JBuzI$'] + +cd1['DJBuzI$']))),
+                    text: d3.map(buzScoreOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['JBuzI$'] + +cd1['DJBuzI$'])).toFixed(0)),
                     type: 'bar',
                     marker: {
-                        color: d3.map(highlightContestantIds, color),
+                        color: d3.map(buzScoreOrderedIds, color),
                         line: {
                             color: 'black',
                             width: 1
@@ -611,7 +625,8 @@
                     cd1 => +cd1['Buz'],
                     'box-buz',
                     'Buz',
-                    cd1 => true
+                    cd1 => true,
+                    rawColorFunction
                 );
                 renderHighlightContestantRoundLinePlot(
                     data,
@@ -621,6 +636,7 @@
                     'line-buz-j-dj',
                     'Buz difference',
                     cd => true,
+                    rawColorFunction,
                     'Buz'
                 );
 
@@ -630,7 +646,8 @@
                     cd1 => +cd1['Att'],
                     'box-att',
                     'Att',
-                    cd1 => cd1['Att'] !== ""
+                    cd1 => cd1['Att'] !== "",
+                    rawColorFunction
                 );
                 renderHighlightContestantRoundLinePlot(
                     data,
@@ -640,6 +657,7 @@
                     'line-att-j-dj',
                     'Att difference',
                     cd1 => cd1['Att'] !== "",
+                    rawColorFunction,
                     'Att'
                 );
 
@@ -649,7 +667,8 @@
                     cd1 => +cd1['Buz%'],
                     'box-buz%',
                     'Buz%',
-                    cd1 => cd1['Att'] !== ""
+                    cd1 => cd1['Att'] !== "",
+                    rawColorFunction
                 );
                 renderHighlightContestantRoundLinePlot(
                     data,
@@ -659,6 +678,7 @@
                     'line-buz%-j-dj',
                     'Buz% difference',
                     cd1 => cd1['Att'] !== "",
+                    rawColorFunction,
                     'Buz%'
                 );
 
@@ -668,7 +688,8 @@
                     cd1 => +cd1['Buz$'],
                     'box-buz$',
                     'Buz$',
-                    cd1 => true
+                    cd1 => true,
+                    rawColorFunction
                 );
                 renderHighlightContestantRoundLinePlot(
                     data,
@@ -678,6 +699,7 @@
                     'line-buz$-j-dj',
                     'Buz$ difference',
                     cd => true,
+                    rawColorFunction,
                     'Buz$ (J dollars)'
                 );
 
@@ -687,7 +709,8 @@
                     cd1 => 1.0 * +cd1['Buz$'] / +cd1['Buz'],
                     'box-buz$-per-buz',
                     'Buz$/Buz',
-                    cd1 => true
+                    cd1 => true,
+                    rawColorFunction
                 );
                 renderHighlightContestantRoundLinePlot(
                     data,
@@ -697,6 +720,7 @@
                     'line-buz$-per-buz-j-dj',
                     'Buz$/Buz difference',
                     cd => true,
+                    rawColorFunction,
                     'Buz$ (J dollars)'
                 );
 
@@ -706,7 +730,8 @@
                     cd1 => +cd1['Speed'],
                     'box-speed',
                     'Speed',
-                    cd1 => cd1['Speed'] !== ""
+                    cd1 => cd1['Speed'] !== "",
+                    rawColorFunction
                 );
                 renderHighlightContestantRoundLinePlot(
                     data,
@@ -716,6 +741,7 @@
                     'line-speed-j-dj',
                     'Speed difference',
                     cd1 => cd1['Speed'] !== "",
+                    rawColorFunction,
                     'Speed'
                 );
 
@@ -725,7 +751,8 @@
                     cd1 => +cd1['Solo'],
                     'box-solo',
                     'Solo',
-                    cd1 => cd1['Solo'] !== ""
+                    cd1 => cd1['Solo'] !== "",
+                    rawColorFunction
                 );
                 renderHighlightContestantRoundLinePlot(
                     data,
@@ -735,6 +762,7 @@
                     'line-solo-j-dj',
                     'Solo difference',
                     cd1 => cd1['Solo'] !== "",
+                    rawColorFunction,
                     'Solo'
                 );
 
@@ -744,7 +772,8 @@
                     cd1 => +cd1['Speed'] + +cd1['Solo'],
                     'box-speed-plus-solo',
                     'Speed + Solo',
-                    cd1 => cd1['Solo'] !== ""
+                    cd1 => cd1['Solo'] !== "",
+                    rawColorFunction
                 );
                 renderHighlightContestantRoundLinePlot(
                     data,
@@ -754,6 +783,7 @@
                     'line-speed-plus-solo-j-dj',
                     'Speed+Solo difference',
                     cd1 => cd1['Solo'] !== "",
+                    rawColorFunction,
                     'Speed + Solo'
                 );
 
@@ -763,7 +793,8 @@
                     cd1 => +cd1['DD+'],
                     'box-dd+',
                     'DD+',
-                    cd1 => cd1['DD+'] !== ""
+                    cd1 => cd1['DD+'] !== "",
+                    rawColorFunction
                 );
                 renderHighlightContestantRoundLinePlot(
                     data,
@@ -773,6 +804,7 @@
                     'line-dd+-j-dj',
                     'DD+ difference',
                     cd => true,
+                    rawColorFunction,
                     'DD+'
                 );
 
@@ -782,7 +814,8 @@
                     cd1 => +cd1['JDD'] + +cd1['DJDD1'] + +cd1['DJDD2'],
                     'box-dd$',
                     'DD$',
-                    cd1 => true
+                    cd1 => true,
+                    rawColorFunction
                 );
                 renderHighlightContestantRoundLinePlot(
                     data,
@@ -792,6 +825,7 @@
                     'line-dd$-j-dj',
                     'DD$ difference',
                     cd => true,
+                    rawColorFunction,
                     'DD$ (J dollars)'
                 );
 
@@ -801,7 +835,8 @@
                     cd1 => +cd1['DJFinal$'],
                     'box-djfinal$',
                     'DJFinal$',
-                    cd1 => cd1['DJFinal$'] !== ""
+                    cd1 => cd1['DJFinal$'] !== "",
+                    rawColorFunction
                 );
 
                 renderHighlightContestantBoxPlot(
@@ -810,7 +845,8 @@
                     cd1 => +cd1['FJ$'],
                     'box-fj$',
                     'FJ$',
-                    cd1 => cd1['FJ$'] !== ""
+                    cd1 => cd1['FJ$'] !== "",
+                    rawColorFunction
                 );
                 
                 renderHighlightContestantBoxPlot(
@@ -819,7 +855,8 @@
                     cd1 => +cd1['FJFinal$'],
                     'box-fjfinal$',
                     'FJFinal$',
-                    cd1 => cd1['FJFinal$'] !== ""
+                    cd1 => cd1['FJFinal$'] !== "",
+                    rawColorFunction
                 );
                 
 
