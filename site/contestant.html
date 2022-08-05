@@ -48,6 +48,8 @@
                             <th>Buz$</th>
                             <th>DDF</th>
                             <th>Buz%</th>
+                            <th>DJFinal$</th>
+                            <th>FJFinal$</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -65,32 +67,32 @@
                 Buzz attempts, by game. Correct responses are at the bottom, incorrect responses are lighter and
                 in the middle, and attempts where the contestant was locked out are lightest and at the top (if known).
             </div>
-            <div id="bar-attempts" style="width:1000px;height:500px;margin-bottom:1em;"></div>
+            <div id="bar-attempts" class="graph-display-container"></div>
             <div class="graph-description">
                 Average score on buzzes, by game. Score is shown full color. Score lost on incorrect buzz responses is shown lighter on top.
                 Score on correct buzz responses is the sum of the two.
             </div>
-            <div id="bar-buz$" style="width:1000px;height:500px;margin-bottom:1em;"></div>
+            <div id="bar-buz$" class="graph-display-container"></div>
         </div>
         <div class="section">
             <h1>Player Statistics</h1>
             <div class="graph-description">
                 A collection of player statistics for this game, with the distribution of player performance for the play period shown in gray.
             </div>
-            <div id="scatterhist-att-buz%" style="width:1000px;height:500px;margin-bottom:1em;"></div>
-            <div id="scatterhist-buz-buz$-per-buz" style="width:1000px;height:500px;margin-bottom:1em;"></div>
-            <div id="scatterhist-speed-solo" style="width:1000px;height:500px;margin-bottom:1em;"></div>
-            <div id="hist-att" style="width:1000px;height:500px;margin-bottom:1em;"></div>
-            <div id="hist-buz" style="width:1000px;height:500px;margin-bottom:1em;"></div>
-            <div id="hist-buzc" style="width:1000px;height:500px;margin-bottom:1em;"></div>
-            <div id="hist-buz$" style="width:1000px;height:500px;margin-bottom:1em;"></div>
+            <div id="scatterhist-att-buz%" class="graph-display-container"></div>
+            <div id="scatterhist-buz-buz$-per-buz" class="graph-display-container"></div>
+            <div id="scatterhist-speed-solo" class="graph-display-container"></div>
+            <div id="hist-att" class="graph-display-container"></div>
+            <div id="hist-buz" class="graph-display-container"></div>
+            <div id="hist-buzc" class="graph-display-container"></div>
+            <div id="hist-buz$" class="graph-display-container"></div>
         </div>
         <div id="footer">
             <p>This site is not affiliated with Jeopardy!. Data is taken from their published <a href="https://www.jeopardy.com/jbuzz/news-events/jeopardy-daily-box-scores">box scores.</a></p>
         </div>
         <script type="text/javascript">
             var tocPeriodId = new URLSearchParams(window.location.search).get('toc_period_id');
-            var tocPeriodAverageLabel = "All " + tocPeriodId + " Average";
+            var tocPeriodAverageLabel = "All Contestants Average";
             var contestantId = new URLSearchParams(window.location.search).get('contestant');
             d3.select("#toc-period-id")
                 .data([getNameForTocPeriod(tocPeriodId)])
@@ -160,6 +162,8 @@
                         'DJBuzI$': +gameData[0]['DJBuzI$'],
                         'DJDDF': +gameData[0]['DJDDF'],
                         'DJBuz%': gameData[0]['Att'] === '' ? '' : +gameData[0]['DJBuz%'],
+                        'DJFinal$': gameData[0]['DJFinal$'],
+                        'FJFinal$': gameData[0]['FJFinal$'],
                         'Data': gameData
                     }));
 
@@ -187,7 +191,9 @@
                     'DJBuz$': (d3.map(summaryData, cd => (+cd['DJBuz$'])).reduce((a, b) => a + b) / summaryData.length).toFixed(0),
                     'DJBuzI$': (d3.map(summaryData, cd => (+cd['DJBuzI$'])).reduce((a, b) => a + b) / summaryData.length).toFixed(0),
                     'DJDDF': (d3.map(summaryData, cd => (+cd['DJDDF'])).reduce((a, b) => a + b) / summaryData.length).toFixed(1),
-                    'DJBuz%': summaryDataWithBox.length <= 0 ? '' : 100.0 * d3.map(summaryDataWithBox, cd => (+cd['DJBuz'])).reduce((a, b) => a + b) / d3.map(summaryDataWithBox, cd => (+cd['DJAtt'])).reduce((a, b) => a + b)
+                    'DJBuz%': summaryDataWithBox.length <= 0 ? '' : 100.0 * d3.map(summaryDataWithBox, cd => (+cd['DJBuz'])).reduce((a, b) => a + b) / d3.map(summaryDataWithBox, cd => (+cd['DJAtt'])).reduce((a, b) => a + b),
+                    'DJFinal$': d3.mean(summaryData, d => +d['DJFinal$']).toFixed(0),
+                    'FJFinal$': d3.mean(summaryData, d => +d['FJFinal$']).toFixed(0)
                 };
                 var tocPeriodAverageSummary = {
                     'Jometry Game Id': -1,
@@ -211,7 +217,9 @@
                     'DJBuz$': (d3.map(data, cd => (+cd['DJBuz$'])).reduce((a, b) => a + b) / data.length).toFixed(0),
                     'DJBuzI$': (d3.map(data, cd => (+cd['DJBuzI$'])).reduce((a, b) => a + b) / data.length).toFixed(0),
                     'DJDDF': (d3.map(data, cd => (+cd['DJDDF'])).reduce((a, b) => a + b) / data.length).toFixed(1),
-                    'DJBuz%': summaryDataWithBox.length <= 0 ? '' : 100.0 * d3.map(boxScoreIncludedData, cd => (+cd['DJBuz'])).reduce((a, b) => a + b) / d3.map(boxScoreIncludedData, cd => (+cd['DJAtt'])).reduce((a, b) => a + b)
+                    'DJBuz%': summaryDataWithBox.length <= 0 ? '' : 100.0 * d3.map(boxScoreIncludedData, cd => (+cd['DJBuz'])).reduce((a, b) => a + b) / d3.map(boxScoreIncludedData, cd => (+cd['DJAtt'])).reduce((a, b) => a + b),
+                    'DJFinal$': d3.mean(data, d => +d['DJFinal$']).toFixed(0),
+                    'FJFinal$': d3.mean(data, d => +d['FJFinal$']).toFixed(0)
                 };
 
                 var summaryDataWithAverage = summaryData.concat([contestantAverageSummary, tocPeriodAverageSummary]);
@@ -238,7 +246,9 @@
                             d['DJAtt'] === '' ? '' : (+d['DJSolo']).toFixed(1),
                             d['DJBuz$'],
                             d['DJDDF'],
-                            d['DJAtt'] === '' ? '' : d['DJBuz%'].toFixed(1)
+                            d['DJAtt'] === '' ? '' : d['DJBuz%'].toFixed(1),
+                            d['DJFinal$'],
+                            d['FJFinal$']
                         ];
                     })
                     .enter()

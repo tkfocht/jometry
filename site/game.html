@@ -69,7 +69,7 @@
             <div class="graph-description">
                 The estimated percentage of clues where a response is blocked by someone else responding correctly.
             </div>
-            <div id="scatterhist-gcon" style="width:400px;height:400px;margin-bottom:1em;"></div>
+            <div id="scatterhist-gcon" class="graph-display-container" style="width:400px; height: 400px;"></div>
         </div>
         <div class="section">
             <h1>Attempts</h1>
@@ -77,8 +77,8 @@
                 Attempts by contestants. Successful, correct buzzes are shown full color at the bottom. Buzzes with incorrect
                 responses are shown in the middle. Attempts that were blocked are shown on top (if known).
             </div>
-            <div style="display:flex">
-                <div id="bar-attempts" style="width:1000px;height:500px;margin-bottom:1em;"></div>
+            <div class="graph-display-container">
+                <div id="bar-attempts"></div>
             </div>
         </div>
         <div class="section">
@@ -86,25 +86,25 @@
             <div class="graph-description">
                 A collection of player statistics for this game, with the distribution of player performance for the play period shown in gray.
             </div>
-            <div class="scatterhist-trio-container">
-                <div id="scatterhist-att-buz%" class="scatterhist-trio-full"></div>
-                <div id="scatterhist-j-att-buz%" class="scatterhist-trio-j"></div>
-                <div id="scatterhist-dj-att-buz%" class="scatterhist-trio-dj"></div>
+            <div class="graph-display-container full-round-trio-container" id="att-buz%-container">
+                <div id="scatterhist-att-buz%" class="full-round-trio-full"></div>
+                <div id="scatterhist-j-att-buz%" class="full-round-trio-j"></div>
+                <div id="scatterhist-dj-att-buz%" class="full-round-trio-dj"></div>
             </div>
-            <div class="scatterhist-trio-container">
-                <div id="scatterhist-buz-buz$-per-buz" class="scatterhist-trio-full"></div>
-                <div id="scatterhist-j-buz-buz$-per-buz" class="scatterhist-trio-j"></div>
-                <div id="scatterhist-dj-buz-buz$-per-buz" class="scatterhist-trio-dj"></div>
+            <div class="graph-display-container full-round-trio-container" id="buz-buz$-container">
+                <div id="scatterhist-buz-buz$-per-buz" class="full-round-trio-full"></div>
+                <div id="scatterhist-j-buz-buz$-per-buz" class="full-round-trio-j"></div>
+                <div id="scatterhist-dj-buz-buz$-per-buz" class="full-round-trio-dj"></div>
             </div>
-            <div class="scatterhist-trio-container">
-                <div id="scatterhist-speed-solo" class="scatterhist-trio-full"></div>
-                <div id="scatterhist-j-speed-solo" class="scatterhist-trio-j"></div>
-                <div id="scatterhist-dj-speed-solo" class="scatterhist-trio-dj"></div>
+            <div class="graph-display-container full-round-trio-container" id="speed-solo-container">
+                <div id="scatterhist-speed-solo" class="full-round-trio-full"></div>
+                <div id="scatterhist-j-speed-solo" class="full-round-trio-j"></div>
+                <div id="scatterhist-dj-speed-solo" class="full-round-trio-dj"></div>
             </div>
-            <div id="hist-att" class="histogram"></div>
-            <div id="hist-buz" class="histogram"></div>
-            <div id="hist-buzc" class="histogram"></div>
-            <div id="hist-buz$" class="histogram"></div>
+            <div id="hist-att" class="graph-display-container"></div>
+            <div id="hist-buz" class="graph-display-container"></div>
+            <div id="hist-buzc" class="graph-display-container"></div>
+            <div id="hist-buz$" class="graph-display-container"></div>
         </div>
         <div id="footer">
             <p>This site is not affiliated with Jeopardy!. Data is taken from their published <a href="https://www.jeopardy.com/jbuzz/news-events/jeopardy-daily-box-scores">box scores</a>.
@@ -363,7 +363,7 @@
                     );
 
                 } else {
-                    ids = ['contention', 'scatterhist-att-buz%', 'scatterhist-speed-solo', 'hist-att'];
+                    ids = ['contention', 'att-buz%-container', 'speed-solo-container', 'hist-att'];
                     ids.forEach(id => {
                         document.getElementById(id).style.display = 'none';
                     });

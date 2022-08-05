@@ -32,31 +32,3 @@
     text-align: left;
     width: 20%;
 }
-
-.scatterhist-trio-container {
-    width: 1000px;
-    height: 500px;
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: space-around;
-    align-items: flex-end;
-    margin: 1em;
-    border-bottom: 1px solid black;
-}
-
-.scatterhist-trio-container .scatterhist-trio-full {
-    width: 60%;
-    height: 500px;
-}
-
-.scatterhist-trio-container .scatterhist-trio-j, .scatterhist-trio-container .scatterhist-trio-dj {
-    width: 40%;
-    height: 200px;
-}
-
-.histogram {
-    width: 1000px;
-    height: 500px;
-    margin: 1em;
-    border-bottom: 1px solid black;
-}

@@ -75,3 +75,44 @@ table.controlled-table th.controlled {
 table.controlled-table td.controlled {
     display: none;
 }
+
+.graph-display-container {
+    width: 1000px;
+    height: 500px;
+    margin: 1em;
+    border-bottom: 1px solid black;
+}
+
+.full-round-trio-container {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+
+.full-round-trio-container .full-round-trio-full {
+    width: 60%;
+    height: 500px;
+}
+
+.full-round-trio-container .full-round-trio-j, .full-round-trio-container .full-round-trio-dj {
+    width: 40%;
+    height: 200px;
+}
+
+.full-splitround-container {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+
+.full-splitround-container .full-splitround-full {
+    width: 70%;
+    height: 500px;
+}
+
+.full-splitround-container .full-splitround-split {
+    width: 30%;
+    height: 500px;
+}

@@ -157,129 +157,147 @@
                 Average buzzes, by contestant. Correct responses are at the bottom, incorrect responses are lighter and
                 on top.
             </div>
-            <div id="bar-buzzes" style="width:1000px;height:500px;margin-bottom:1em;"></div>
+            <div id="bar-buzzes" class="graph-display-container"></div>
             <div class="graph-description">
                 Average score on buzzes, by contestant. Score is shown full color. Score lost on incorrect buzz responses is shown lighter on top.
                 Score on correct buzz responses is the sum of the two.
             </div>
-            <div id="bar-buz$" style="width:1000px;height:500px;margin-bottom:1em;"></div>
-            <div id="line-buzc-j-dj" style="width:600px;height:500px;margin-bottom:1em;"></div>
-            <div id="line-buzi-j-dj" style="width:600px;height:500px;margin-bottom:1em;"></div>
+            <div id="bar-buz$" class="graph-display-container"></div>
         </div>
         <div class="section">
             <h1>Buzzes</h1>
             <div class="graph-description">
                 Buzzes, by contestant, in each game.
             </div>
-            <div id="box-buz" style="width:1000px;height:500px;margin-bottom:1em;"></div>
-            <div id="line-buz-j-dj" style="width:600px;height:500px;margin-bottom:1em;"></div>
+            <div class="graph-display-container full-splitround-container" id="buz-container">
+                <div id="box-buz" class="full-splitround-full"></div>
+                <div id="line-buz-j-dj" class="full-splitround-split"></div>
+            </div>
         </div>
         <div class="section">
             <h1>Attempts</h1>
             <div class="graph-description">
                 Attempts, by contestant, in each game.
             </div>
-            <div id="box-att" style="width:1000px;height:500px;margin-bottom:1em;"></div>
-            <div id="line-att-j-dj" style="width:600px;height:500px;margin-bottom:1em;"></div>
+            <div class="graph-display-container full-splitround-container" id="att-container">
+                <div id="box-att" class="full-splitround-full"></div>
+                <div id="line-att-j-dj" class="full-splitround-split"></div>
+            </div>
         </div>
         <div class="section">
             <h1>Buz%</h1>
             <div class="graph-description">
                 Buzzes/Attempts, by contestant, in each game.
             </div>
-            <div id="box-buz%" style="width:1000px;height:500px;margin-bottom:1em;"></div>
-            <div id="line-buz%-j-dj" style="width:600px;height:500px;margin-bottom:1em;"></div>
+            <div class="graph-display-container full-splitround-container" id="buz%-container">
+                <div id="box-buz%" class="full-splitround-full"></div>
+                <div id="line-buz%-j-dj" class="full-splitround-split"></div>
+            </div>
         </div>
         <div class="section">
             <h1>Buz$</h1>
             <div class="graph-description">
                 Money earned/lost on buzzes, by contestant, in each game.
             </div>
-            <div id="box-buz$" style="width:1000px;height:500px;margin-bottom:1em;"></div>
-            <div id="line-buz$-j-dj" style="width:600px;height:500px;margin-bottom:1em;"></div>
+            <div class="graph-display-container full-splitround-container" id="buz$-container">
+                <div id="box-buz$" class="full-splitround-full"></div>
+                <div id="line-buz$-j-dj" class="full-splitround-split"></div>
+            </div>
         </div>
         <div class="section">
             <h1>Buz$/Buz</h1>
             <div class="graph-description">
                 Money earned/lost on buzzes on the average buzz, by contestant, in each game.
             </div>
-            <div id="box-buz$-per-buz" style="width:1000px;height:500px;margin-bottom:1em;"></div>
-            <div id="line-buz$-per-buz-j-dj" style="width:600px;height:500px;margin-bottom:1em;"></div>
+            <div class="graph-display-container full-splitround-container" id="buz$-per-buz-container">
+                <div id="box-buz$-per-buz" class="full-splitround-full"></div>
+                <div id="line-buz$-per-buz-j-dj" class="full-splitround-split"></div>
+            </div>
         </div>
         <div class="section">
             <h1>Speed</h1>
             <div class="graph-description">
                 Estimated buzzes earned by speed, by contestant, in each game.
             </div>
-            <div id="box-speed" style="width:1000px;height:500px;margin-bottom:1em;"></div>
-            <div id="line-speed-j-dj" style="width:600px;height:500px;margin-bottom:1em;"></div>
+            <div class="graph-display-container full-splitround-container" id="speed-container">
+                <div id="box-speed" class="full-splitround-full"></div>
+                <div id="line-speed-j-dj" class="full-splitround-split"></div>
+            </div>
         </div>
         <div class="section">
             <h1>Solo</h1>
             <div class="graph-description">
                 Estimated buzzes where only contestant attempting, by contestant, in each game.
             </div>
-            <div id="box-solo" style="width:1000px;height:500px;margin-bottom:1em;"></div>
-            <div id="line-solo-j-dj" style="width:600px;height:500px;margin-bottom:1em;"></div>
+            <div class="graph-display-container full-splitround-container" id="solo-container">
+                <div id="box-solo" class="full-splitround-full"></div>
+                <div id="line-solo-j-dj" class="full-splitround-split"></div>
+            </div>
         </div>
         <div class="section">
             <h1>Speed plus Solo</h1>
             <div class="graph-description">
                 Speed plus Solo, by contestant, in each game. Each value varies widely based on the competition, but the sum is meaningful.
             </div>
-            <div id="box-speed-plus-solo" style="width:1000px;height:500px;margin-bottom:1em;"></div>
-            <div id="line-speed-plus-solo-j-dj" style="width:600px;height:500px;margin-bottom:1em;"></div>
+            <div class="graph-display-container full-splitround-container" id="speed-plus-solo-container">
+                <div id="box-speed-plus-solo" class="full-splitround-full"></div>
+                <div id="line-speed-plus-solo-j-dj" class="full-splitround-split"></div>
+            </div>
         </div>
         <div class="section">
             <h1>DD+</h1>
             <div class="graph-description">
                 Daily Doubles found above expected number, by contestant, in each game.
             </div>
-            <div id="box-dd+" style="width:1000px;height:500px;margin-bottom:1em;"></div>
-            <div id="line-dd+-j-dj" style="width:600px;height:500px;margin-bottom:1em;"></div>
+            <div class="graph-display-container full-splitround-container" id="dd+-container">
+                <div id="box-dd+" class="full-splitround-full"></div>
+                <div id="line-dd+-j-dj" class="full-splitround-split"></div>
+            </div>
         </div>
         <div class="section">
             <h1>DD$</h1>
             <div class="graph-description">
                 Money earned/lost on Daily Doubles, by contestant, in each game.
             </div>
-            <div id="box-dd$" style="width:1000px;height:500px;margin-bottom:1em;"></div>
-            <div id="line-dd$-j-dj" style="width:600px;height:500px;margin-bottom:1em;"></div>
+            <div class="graph-display-container full-splitround-container" id="dd$-container">
+                <div id="box-dd$" class="full-splitround-full"></div>
+                <div id="line-dd$-j-dj" class="full-splitround-split"></div>
+            </div>
         </div>
         <div class="section">
             <h1>DJFinal$</h1>
             <div class="graph-description">
                 Score after Double Jeopardy, by contestant, in each game.
             </div>
-            <div id="box-djfinal$" style="width:1000px;height:500px;margin-bottom:1em;"></div>
+            <div id="box-djfinal$" class="graph-display-container"></div>
         </div>
         <div class="section">
             <h1>FJ$</h1>
             <div class="graph-description">
                 Money earned/lost on Final Jeopardy, by contestant, in each game.
             </div>
-            <div id="box-fj$" style="width:1000px;height:500px;margin-bottom:1em;"></div>
+            <div id="box-fj$" class="graph-display-container"></div>
         </div>
         <div class="section">
             <h1>FJFinal$</h1>
             <div class="graph-description">
                 Final score after Final Jeopardy, by contestant, in each game.
             </div>
-            <div id="box-fjfinal$" style="width:1000px;height:500px;margin-bottom:1em;"></div>
+            <div id="box-fjfinal$" class="graph-display-container"></div>
         </div>
         <div class="section">
             <h1>Buz$/Buz vs Buz plot</h1>
             <div class="graph-description">
                 Buz$/Buz vs Buz, per game. 4+ game champions are marked larger.
             </div>
-            <div id="scatter-buz$-buz-vs-buz" style="width:1000px;height:500px;"></div>
+            <div id="scatter-buz$-buz-vs-buz" class="graph-display-container"></div>
         </div>
         <div class="section">
             <h1>Avg Buz$/Buz vs Buz plot</h1>
             <div class="graph-description">
                 Average Buz$/Buz vs Buz, per contestant.
             </div>
-            <div id="scatter-avg-buz$-buz-vs-buz" style="width:1000px;height:500px;"></div>
+            <div id="scatter-avg-buz$-buz-vs-buz" class="graph-display-container"></div>
         </div>
         <div id="footer">
             <p>This site is not affiliated with Jeopardy!. Data is taken from their published <a href="https://www.jeopardy.com/jbuzz/news-events/jeopardy-daily-box-scores">box scores.</a></p>
@@ -584,28 +602,6 @@
                     }
                 };
                 Plotly.newPlot('bar-buz$', buzScoreData, buzScoreLayout);
-
-
-                renderHighlightContestantRoundLinePlot(
-                    data,
-                    highlightContestantIds,
-                    cd1 => +cd1['JBuzC'],
-                    cd1 => +cd1['DJBuzC'],
-                    'line-buzc-j-dj',
-                    'BuzC difference',
-                    cd => true,
-                    'BuzC'
-                );
-                renderHighlightContestantRoundLinePlot(
-                    data,
-                    highlightContestantIds,
-                    cd1 => +cd1['JBuzInc'],
-                    cd1 => +cd1['DJBuzInc'],
-                    'line-buzi-j-dj',
-                    'BuzI difference',
-                    cd => true,
-                    'BuzI'
-                );
 
 
                 //Histogram set
