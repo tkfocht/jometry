@@ -344,6 +344,19 @@
                         }
                         return contestantScores.get(b) - contestantScores.get(a);
                     });
+                } else if (highlightContestantIds === 'all') {
+                    highlightContestantIds = [...new Set(d3.map(data, d => d['Jometry Contestant Id']))];
+                    highlightContestantIds.sort(function(a,b) {
+                        var winsDiff = highlightContestantCounts.get(b) - highlightContestantCounts.get(a);
+                        if (winsDiff !== 0) {
+                            return winsDiff;
+                        }
+                        var winningsDiff = contestantWinnings.get(b) - contestantWinnings.get(a);
+                        if (winningsDiff !== 0) {
+                            return winningsDiff;
+                        }
+                        return contestantScores.get(b) - contestantScores.get(a);
+                    });
                 } else {
                     highlightContestantIds = highlightContestantIds.split(',');
                 }
