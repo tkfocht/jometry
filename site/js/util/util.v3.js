@@ -12,15 +12,16 @@ var csvUrlForTocPeriod = function(id) {
 
 var getNameForTocPeriod = function(id) {
     switch(id) {
-        case 'TOC2022R':    return '2022 TOC Regular Play';
-        case 'TOC2021R':    return '2021 TOC Regular Play';
-        case 'TOC2019R':    return '2019 TOC Regular Play';
-        case 'TOC2022P':    return '2022 Professors Tournament';
-        case 'TOC2021T':    return '2020 Teachers Tournament';
-        case 'TOC2019T':    return '2018 and 2019 Teachers Tournament';
+        case 'TOC2022R':    return '2022 TOC Regular Play (S37-S38)';
+        case 'TOC2021R':    return '2021 TOC Regular Play (S35-S37)';
+        case 'TOC2019R':    return '2019 TOC Regular Play (S34-35)';
+        case 'TOC2022P':    return '2022 Professors Tournament (S38)';
+        case 'TOC2021T':    return '2020 Teachers Tournament (S36)';
+        case 'TOC2019T2':   return '2019 Teachers Tournament (S35)';
+        case 'TOC2019T1':   return '2018 Teachers Tournament (S34)';
         case 'NCC2022':     return '2022 National College Championship';
-        case 'TOC2021C':    return '2020 College Tournament';
-        case 'TOC2019C':    return '2018 College Tournament';
+        case 'TOC2021C':    return '2020 College Championship (S36)';
+        case 'TOC2019C':    return '2018 College Championship (S34)';
     }
 }
 
