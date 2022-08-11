@@ -32,3 +32,34 @@
     text-align: left;
     width: 20%;
 }
+
+table.view-board td {
+    width: 50px;
+    height: 40px;
+    border: 1px solid black;
+}
+
+div#view-boards {
+    width: 960px;
+    display: flex;
+    flex-flow: row-wrap;
+    justify-content: space-around;
+}
+
+table.view-board div {
+    height: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+table.view-board div.daily-double {
+    padding: 5px 5px;
+    background-color: yellow;
+}
+
+table.view-board div div {
+    height: 100%;
+    width: auto;
+    flex-grow: 1;
+}

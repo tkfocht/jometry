@@ -64,6 +64,27 @@
                 Buz$ = Score on buzz, DDF = Daily Doubles found, DD+ = Daily Doubles found above expectation
             </div>
         </div>
+        <div class="section">
+            <h1>Correct Responses</h1>
+            <div id="view-boards">
+                <table class="view-board" id="j-board">
+                    <thead>
+                        <tr>
+                            <th colspan="6">Jeopardy! Round</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <table class="view-board" id="dj-board">
+                    <thead>
+                        <tr>
+                            <th colspan="6">Double Jeopardy! Round</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                </div>
+        </div>
         <div class="section" id="contention">
             <h1>Contention</h1>
             <div class="graph-description">
@@ -111,11 +132,78 @@
                 Further data for this game taken from its <a id="jarchive-link" href="https://j-archive.com">J! Archive page</a>.</p>
         </div>
         <script type="text/javascript">
+            var threeColorSet = ['#0072B2','#E69F00','#009E73'];
             var tocPeriodId = new URLSearchParams(window.location.search).get('toc_period_id');
             var highlightGame = new URLSearchParams(window.location.search).get('game_id');
             d3.select("#toc-period-id")
                 .data([getNameForTocPeriod(tocPeriodId)])
                 .text(d => d);
+            d3.csv(csvUrlForGameClue(highlightGame)).then(function(data) {
+                console.log(data);
+                var populateViewBoard = function(tableId, round) {
+                    var tableRows = d3.select('table#' + tableId + ' tbody')
+                        .selectAll('tr')
+                        .data([200*round, 400*round, 600*round, 800*round, 1000*round])
+                        .enter()
+                        .append('tr');
+                    var tableCells = tableRows.selectAll('td')
+                        .data(function (d, i) {
+                            r = [];
+                            for (var j=0; j < 6; ++j) {
+                                r.push({
+                                    'Base Value': d,
+                                    'Column': j + 1
+                                })
+                            }
+                            return r;
+                        })
+                        .enter()
+                        .append('td');
+                    var tableCellDivs1 = tableCells.selectAll('div')
+                        .data(d => [d])
+                        .enter()
+                        .append('div');
+                    tableCellDivs1.attr('class', function(d) {
+                        var filteredData = d3.filter(data, f => +f['Round of Game'] === round && +f['Column'] == d['Column'] && +f['Base Value'] == d['Base Value']);
+                        if (filteredData.length > 0 && filteredData[0]['DD'] === '1') {
+                            return 'daily-double';
+                        }
+                        return '';
+                    });
+                    var tableCellDivs2 = tableCellDivs1.selectAll('div')
+                        .data(function(d,i) {
+                            var filteredData = d3.filter(data, f => +f['Round of Game'] === round && +f['Column'] == d['Column'] && +f['Base Value'] == d['Base Value']);
+                            if (filteredData.length == 0) {
+                                return [-1];
+                            }
+                            var corrects = [];
+                            filteredData = filteredData[0];
+                            if (filteredData['Correct1'] === '1') corrects.push(1);
+                            if (filteredData['Correct2'] === '1') corrects.push(2);
+                            if (filteredData['Correct3'] === '1') corrects.push(3);
+                            if (corrects.length == 0) {
+                                return [0];
+                            }
+                            return corrects;
+                        })
+                        .enter()
+                        .append('div');
+                    tableCellDivs2
+                        .attr('style', function(d) {
+                            var string = 'background-color: ';
+                            switch(d) {
+                                case -1:    string += 'black';
+                                            break;
+                                case 0:     string += 'gray';
+                                            break;
+                                default:    string += threeColorSet[d-1];
+                            }
+                            return string;
+                        });
+                };
+                populateViewBoard('j-board', 1);
+                populateViewBoard('dj-board', 2);
+            });
             d3.csv(csvUrlForTocPeriod(tocPeriodId)).then(function(data) {
                 var margin = {top: 20, right: 20, bottom: 50, left: 70},
                     width = 960 - margin.left - margin.right,
@@ -146,7 +234,7 @@
                 //Graphics functions
                 var color = d3.scaleOrdinal()
                     .domain(highlightGameContestantIds)
-                    .range(['#0072B2','#E69F00','#009E73'])
+                    .range(threeColorSet)
                 var highlightGameColorFunction = function(d) {
                     if (d['highlightGame'] || d['highlightContestant']) {
                         return color(d['Jometry Contestant Id']);

@@ -10,6 +10,10 @@ var csvUrlForTocPeriod = function(id) {
     return "https://j-ometry.com/csvs/" + id + "_full.csv";
 };
 
+var csvUrlForGameClue = function(id) {
+    return "https://j-ometry.com/csvs/game_clue/" + id + ".csv";
+};
+
 var getNameForTocPeriod = function(id) {
     switch(id) {
         case 'TOC2022R':    return '2022 TOC Regular Play (S37-S38)';
