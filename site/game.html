@@ -85,6 +85,13 @@
                 </table>
                 </div>
         </div>
+        <div class="section" id="score">
+            <h1>Score</h1>
+            <div class="graph-description">
+                Score over the course of the game.
+            </div>
+            <div id="line-score" class="graph-display-container"></div>
+        </div>
         <div class="section" id="contention">
             <h1>Contention</h1>
             <div class="graph-description">
@@ -138,8 +145,55 @@
             d3.select("#toc-period-id")
                 .data([getNameForTocPeriod(tocPeriodId)])
                 .text(d => d);
+
+            var gameClueData = undefined;
+            var tocPeriodData = undefined;
+            var runForCombinedData = function() {
+                if (gameClueData === undefined) return;
+                if (tocPeriodData === undefined) return;
+                var highlightGameData = d3.filter(tocPeriodData, d => d['highlightGame']);
+                var contestantIds = d3.map([1,2,3], i => d3.filter(highlightGameData, d => +d['Podium'] === i)[0]['Jometry Contestant Id']);
+                var contestantNames = d3.map(contestantIds, cid => getContestantNameFromData(highlightGameData, cid));
+
+                var x = ['0'].concat(d3.map(gameClueData, d => d['Round of Game'] + "-" + d['Clue of Round']));
+                var podium1ScoreTrace = {
+                    x: x,
+                    y: [0].concat(d3.map(gameClueData, d => +d['PostScore1'])),
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: contestantNames[0],
+                    line: {
+                        color: threeColorSet[0]
+                    }
+                };
+                var podium2ScoreTrace = {
+                    x: x,
+                    y: [0].concat(d3.map(gameClueData, d => +d['PostScore2'])),
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: contestantNames[1],
+                    line: {
+                        color: threeColorSet[1]
+                    }
+                };
+                var podium3ScoreTrace = {
+                    x: x,
+                    y: [0].concat(d3.map(gameClueData, d => +d['PostScore3'])),
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: contestantNames[2],
+                    line: {
+                        color: threeColorSet[2]
+                    }
+                };
+                var scoreLayout = {};
+                var scoreData = [podium1ScoreTrace, podium2ScoreTrace, podium3ScoreTrace];
+                Plotly.newPlot('line-score', scoreData, scoreLayout);
+            };
+
             d3.csv(csvUrlForGameClue(highlightGame)).then(function(data) {
-                console.log(data);
+                gameClueData = data;
+                runForCombinedData();
                 var populateViewBoard = function(tableId, round) {
                     var tableRows = d3.select('table#' + tableId + ' tbody')
                         .selectAll('tr')
@@ -204,6 +258,7 @@
                 populateViewBoard('j-board', 1);
                 populateViewBoard('dj-board', 2);
             });
+
             d3.csv(csvUrlForTocPeriod(tocPeriodId)).then(function(data) {
                 var margin = {top: 20, right: 20, bottom: 50, left: 70},
                     width = 960 - margin.left - margin.right,
@@ -220,6 +275,9 @@
                     d['highlightGame'] = d['Jometry Game Id'] == highlightGame;
                     d['FJ$'] = d['FJCor'] === "" ? 0 : (2 * +d['FJCor'] - 1) * +d['FJWager'];
                 });
+                tocPeriodData = data;
+                runForCombinedData();
+
                 var highlightGameData = d3.filter(data, d => d['highlightGame']);
 
                 d3.select("#season").data([highlightGameData[0]]).text(d => d['Season']);
