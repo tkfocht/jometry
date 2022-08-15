@@ -8,10 +8,7 @@
         <script src="https://cdn.plot.ly/plotly-2.12.1.min.js"></script>
         <script src="/js/d3/d3.v7.min.js"></script>
         <script src="/js/util/util.v3.js"></script>
-        <script src="/js/graphs/full_game_scatter.v3.js"></script>
-        <script src="/js/graphs/by_round_scatter.v1.js"></script>
         <script src="/js/graphs/scatterhist.v1.js"></script>
-        <script src="/js/util/shared_graph_production.v4.js"></script>
     </head>
     <body>
         <div id="header">
@@ -188,7 +185,7 @@
                 };
                 var scoreLayout = {};
                 var scoreData = [podium1ScoreTrace, podium2ScoreTrace, podium3ScoreTrace];
-                Plotly.newPlot('line-score', scoreData, scoreLayout);
+                Plotly.newPlot('line-score', scoreData, scoreLayout, {staticPlot: true});
             };
 
             d3.csv(csvUrlForGameClue(highlightGame)).then(function(data) {
@@ -395,7 +392,7 @@
                             title: 'DJ! Contention'
                         }
                     };
-                    Plotly.newPlot('scatterhist-gcon', [gconScatterTrace, gconHistTrace], gconScatterLayout);
+                    Plotly.newPlot('scatterhist-gcon', [gconScatterTrace, gconHistTrace], gconScatterLayout, {staticPlot: true});
 
                     //Speed/Solo
                     renderHighlightScatterHistogram(
@@ -727,7 +724,7 @@
                     }
                 };
                 Plotly.newPlot('bar-attempts', [attemptsTraceJBuzC, attemptsTraceJBuzI, attemptsTraceJAttBlocked,
-                    attemptsTraceDJBuzC, attemptsTraceDJBuzI, attemptsTraceDJAttBlocked], attemptsLayout);
+                    attemptsTraceDJBuzC, attemptsTraceDJBuzI, attemptsTraceDJAttBlocked], attemptsLayout, {staticPlot: true});
 
 
             });

@@ -8,10 +8,7 @@
         <script src="https://cdn.plot.ly/plotly-2.12.1.min.js"></script>
         <script src="/js/d3/d3.v7.min.js"></script>
         <script src="/js/util/util.v3.js"></script>
-        <script src="/js/graphs/full_game_scatter.v3.js"></script>
-        <script src="/js/graphs/by_round_scatter.v1.js"></script>
         <script src="/js/graphs/scatterhist.v1.js"></script>
-        <script src="/js/util/shared_graph_production.v4.js"></script>
     </head>
     <body>
         <div id="header">
@@ -337,7 +334,7 @@
                         }
                     }
                 };
-                Plotly.newPlot('bar-attempts', attemptsData, attemptsLayout);
+                Plotly.newPlot('bar-attempts', attemptsData, attemptsLayout, {staticPlot: true});
 
                 var buzScoreTrace = {
                     x: d3.map(contestantData, d => d['Season'] + '-' + d['Game In Season']).concat(['Contestant Avg','Period Avg']),
@@ -389,7 +386,7 @@
                         }
                     }
                 };
-                Plotly.newPlot('bar-buz$', buzScoreData, buzScoreLayout);
+                Plotly.newPlot('bar-buz$', buzScoreData, buzScoreLayout, {staticPlot: true});
 
                 var hasBoxScoreData = d3.filter(data, d => d['highlightContestant'] && d['Att'] !== '').length > 0;
 

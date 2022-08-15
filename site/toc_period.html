@@ -9,9 +9,6 @@
         <script src="/js/d3/d3.v7.min.js"></script>
         <script src="/js/util/util.v3.js"></script>
         <script src="/js/graphs/period_box_plot.v2.js"></script>
-        <script src="/js/graphs/full_game_scatter.v3.js"></script>
-        <script src="/js/graphs/by_round_scatter.v1.js"></script>
-        <script src="/js/util/shared_graph_production.v4.js"></script>
     </head>
     <body>
         <div id="header">
@@ -583,7 +580,7 @@
                         }
                     }
                 };
-                Plotly.newPlot('bar-buzzes', attemptsData, attemptsLayout);
+                Plotly.newPlot('bar-buzzes', attemptsData, attemptsLayout, {staticPlot: true});
 
                 var buzScoreOrderedIds = highlightContestantIds.slice();
                 buzScoreOrderedIds.sort(function(a,b) {
@@ -628,7 +625,7 @@
                         }
                     }
                 };
-                Plotly.newPlot('bar-buz$', buzScoreData, buzScoreLayout);
+                Plotly.newPlot('bar-buz$', buzScoreData, buzScoreLayout, {staticPlot: true});
 
 
                 //Histogram set
@@ -953,7 +950,7 @@
                     title:'Average Buz$/Buz vs Buz'
                 };
 
-                Plotly.newPlot('scatter-avg-buz$-buz-vs-buz', plotData, layout);
+                Plotly.newPlot('scatter-avg-buz$-buz-vs-buz', plotData, layout, {staticPlot: true});
 
             });
         </script>

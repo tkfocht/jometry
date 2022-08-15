@@ -56,7 +56,7 @@ var renderHighlightScatterHistogram = function(
         },
         margin: margin
     };
-    Plotly.newPlot(container, [scatterTrace, histTrace], layout);
+    Plotly.newPlot(container, [scatterTrace, histTrace], layout, {staticPlot: true});
 }
 
 var renderHighlightHistogram = function(
@@ -118,5 +118,5 @@ var renderHighlightHistogram = function(
             title: xLabel
         }
     }
-    Plotly.newPlot(container, [histTrace, scatterTrace], layout);
+    Plotly.newPlot(container, [histTrace, scatterTrace], layout, {staticPlot: true});
 }
