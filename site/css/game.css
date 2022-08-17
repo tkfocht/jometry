@@ -39,11 +39,17 @@ table.view-board td {
     border: 1px solid black;
 }
 
-div#view-boards {
+div#view-boards, div#fj-matrix-container {
     width: 960px;
     display: flex;
     flex-flow: row-wrap;
     justify-content: space-around;
+}
+
+table#fj-matrix td, table#fj-matrix th {
+    width: 70px;
+    height: 40px;
+    border: 1px solid black;
 }
 
 table.view-board div {

@@ -82,6 +82,39 @@
                 </table>
                 </div>
         </div>
+        <div class="section">
+            <h1>Final Jeopardy! Matrix</h1>
+            <div id="fj-matrix-container">
+                <table class="view-board" id="fj-matrix">
+                    <tr>
+                        <th style="border: 0;"></th>
+                        <th colspan="2" style="background-color: #E69F00;">Correct</th>
+                        <th colspan="2" style="background-color: #E69F00;">Incorrect</th>
+                    </tr>
+                    <tr>
+                        <th style="border: 0;"></th>
+                        <th style="background-color: #009E73;">Correct</th>
+                        <th style="background-color: #009E73;">Incorrect</th>
+                        <th style="background-color: #009E73;">Correct</th>
+                        <th style="background-color: #009E73;">Incorrect</th>
+                    </tr>
+                    <tr>
+                        <th style="background-color: #0072B2;">Correct</th>
+                        <td id="fj-matrix-111"></td>
+                        <td id="fj-matrix-110"></td>
+                        <td id="fj-matrix-101"></td>
+                        <td id="fj-matrix-100"></td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: #0072B2;">Incorrect</th>
+                        <td id="fj-matrix-011"></td>
+                        <td id="fj-matrix-010"></td>
+                        <td id="fj-matrix-001"></td>
+                        <td id="fj-matrix-000"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
         <div class="section" id="score">
             <h1>Score</h1>
             <div class="graph-description">
@@ -254,6 +287,40 @@
                 };
                 populateViewBoard('j-board', 1);
                 populateViewBoard('dj-board', 2);
+
+
+                var fjRecord = d3.filter(data, d => +d['Round of Game'] === 3 && +d['Clue of Round'] === 1)[0];
+                var fjInitialScores = d3.map([1,2,3], p => +fjRecord['PreScore' + p]);
+                var fjWagers = d3.map([1,2,3], p => +fjRecord['Wager' + p]);
+                console.log(fjInitialScores);
+                console.log(fjWagers);
+                var fjMatrixTds = d3.selectAll('table#fj-matrix td')
+                    .data([
+                        [true, true, true],
+                        [true, true, false],
+                        [true, false, true],
+                        [true, false, false],
+                        [false, true, true],
+                        [false, true, false],
+                        [false, false, true],
+                        [false, false, false]
+                    ])
+                    .html(d => {
+                        var fjFinalScores = d3.map([0,1,2], p => fjInitialScores[p] + (fjWagers[p] * (d[p] ? 1 : -1)));
+                        var winningScore = d3.max(fjFinalScores);
+                        var s = '<div>';
+                        for (var p = 0; p < 3; ++p) {
+                            if (fjFinalScores[p] >= winningScore && winningScore > 0) {
+                                s += '<div style="background-color: ' + threeColorSet[p] + ';"></div>'
+                            }
+                        }
+                        if (winningScore <= 0) {
+                            s += '<div style="background-color: black;"></div>'
+                        }
+                        s +=    '</div>';
+                        return s;
+                    });
+                console.log(fjMatrixTds);
             });
 
             d3.csv(csvUrlForTocPeriod(tocPeriodId)).then(function(data) {
