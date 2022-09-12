@@ -16,6 +16,7 @@ var csvUrlForGameClue = function(id) {
 
 var getNameForTocPeriod = function(id) {
     switch(id) {
+        case 'TOC2023R':    return '2023 TOC Regular Play (S39)';
         case 'TOC2022R':    return '2022 TOC Regular Play (S37-S38)';
         case 'TOC2021R':    return '2021 TOC Regular Play (S35-S37)';
         case 'TOC2019R':    return '2019 TOC Regular Play (S34-35)';

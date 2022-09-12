@@ -323,10 +323,11 @@
                 var highlightContestantCounts = d3.rollup(data, v => d3.sum(d3.map(v, cd => (+cd['Wins']))), d => d['Jometry Contestant Id']);
                 var contestantWinnings = d3.rollup(data, v => d3.sum(d3.map(v, cd => (+cd['Wins'] * +cd['FJFinal$']))), d => d['Jometry Contestant Id']);
                 var contestantScores = d3.rollup(data, v => d3.sum(d3.map(v, cd => +cd['FJFinal$'])), d => d['Jometry Contestant Id']);
+                console.log('l326');
                 if (highlightContestantIds === null) {
                     var gameThreshold = 4;
                     highlightContestantIds = d3.filter(highlightContestantCounts.keys(), k => highlightContestantCounts.get(k) >= gameThreshold);
-                    while (highlightContestantIds.length < 5) {
+                    while (highlightContestantIds.length < 5 && gameThreshold > 0) {
                         gameThreshold--;
                         highlightContestantIds = d3.filter(highlightContestantCounts.keys(), k => highlightContestantCounts.get(k) >= gameThreshold);
                     }
@@ -357,6 +358,7 @@
                 } else {
                     highlightContestantIds = highlightContestantIds.split(',');
                 }
+                console.log('l361');
 
                 /*var latestDate = d3.max(d3.map(data, d => d['Date']));
                 var currentChampionToHighlight = d3.map(d3.filter(data, d => d['Date'] >= latestDate && +d['Wins'] > 0), d => d['Jometry Contestant Id']);
