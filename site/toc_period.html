@@ -326,7 +326,7 @@
                 if (highlightContestantIds === null) {
                     var gameThreshold = 4;
                     highlightContestantIds = d3.filter(highlightContestantCounts.keys(), k => highlightContestantCounts.get(k) >= gameThreshold);
-                    while (highlightContestantIds.length < 5 && gameThreshold > 0) {
+                    while (highlightContestantIds.length < 5 && gameThreshold > 1) {
                         gameThreshold--;
                         highlightContestantIds = d3.filter(highlightContestantCounts.keys(), k => highlightContestantCounts.get(k) >= gameThreshold);
                     }
@@ -358,11 +358,11 @@
                     highlightContestantIds = highlightContestantIds.split(',');
                 }
 
-                /*var latestDate = d3.max(d3.map(data, d => d['Date']));
+                var latestDate = d3.max(d3.map(data, d => d['Date']));
                 var currentChampionToHighlight = d3.map(d3.filter(data, d => d['Date'] >= latestDate && +d['Wins'] > 0), d => d['Jometry Contestant Id']);
                 if ((new Date().getTime() - latestDate.getTime()) / (1000 * 3600 * 24) <= 5) {
                     highlightContestantIds = highlightContestantIds.concat(Array.from(d3.difference(currentChampionToHighlight, highlightContestantIds)));
-                }*/
+                }
 
                 data.forEach(function(d) {
                     d['highlightContestant'] = highlightContestantIds.includes(d['Jometry Contestant Id']);
