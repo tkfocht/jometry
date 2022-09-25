@@ -22,34 +22,55 @@
         <div class="section">
             <h1><span id="toc-period-id"></span> Season <span id="season"></span> Game <span id="game-number"></span> <span id="game-date"></span></h1>
             <div id="game-summary">
-                <table>
+                <table class="controlled-table" id="game-summary-table">
                     <thead>
                         <tr>
                             <th colspan="1" class="empty"></th>
-                            <th colspan="7">Jeopardy! Round, GCon <span id="j-gcon"></span></th>
-                            <th colspan="7">Double Jeopardy! Round, GCon <span id="dj-gcon"></span></th>
-                            <th colspan="3" class="empty"></th>
+                            <th colspan="15" class="game controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">Game Totals<span id="gcon"></span></div><div class="table-control table-control-right">&#9654;</div></div></th>
+                            <th colspan="12" class="j controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">Jeopardy! Round<span id="j-gcon"></span></div><div class="table-control table-control-right">&#9654;</div></div></th>
+                            <th colspan="12" class="dj controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">Double Jeopardy! Round<span id="dj-gcon"></span></div><div class="table-control table-control-right">&#9654;</div></div></th>
                         </tr>
                         <tr>
                             <th>Contestant</th>
-                            <th>Att</th>
-                            <th>BuzC</th>
-                            <th>Speed</th>
-                            <th>Buz$</th>
-                            <th>DD$</th>
-                            <th>DDF</th>
-                            <th>DD+</th>
-                            <th>Att</th>
-                            <th>BuzC</th>
-                            <th>Speed</th>
-                            <th>Buz$</th>
-                            <th>DD$</th>
-                            <th>DDF</th>
-                            <th>DD+</th>
-                            <th>Total Buz$</th>
-                            <th>Total DD$</th>
-                            <th>DJ! Final Score</th>
-                            <th>FJ! Final Score</th>
+                            <th class="controlled game">Att</th>
+                            <th class="controlled game">Buz</th>
+                            <th class="controlled game">Buz%</th>
+                            <th class="controlled game">BuzC</th>
+                            <th class="controlled game">BuzI</th>
+                            <th class="controlled game">Buz$</th>
+                            <th class="controlled game">Buz$/</th>
+                            <th class="controlled game">Speed</th>
+                            <th class="controlled game">Solo</th>
+                            <th class="controlled game">DDF</th>
+                            <th class="controlled game">DD+</th>
+                            <th class="controlled game">DD$</th>
+                            <th class="controlled game">DJFinal$</th>
+                            <th class="controlled game">FJ$</th>
+                            <th class="controlled game">FJFinal$</th>
+                            <th class="controlled j">Att</th>
+                            <th class="controlled j">Buz</th>
+                            <th class="controlled j">Buz%</th>
+                            <th class="controlled j">BuzC</th>
+                            <th class="controlled j">BuzI</th>
+                            <th class="controlled j">Buz$</th>
+                            <th class="controlled j">Buz$/</th>
+                            <th class="controlled j">Speed</th>
+                            <th class="controlled j">Solo</th>
+                            <th class="controlled j">DDF</th>
+                            <th class="controlled j">DD+</th>
+                            <th class="controlled j">DD$</th>
+                            <th class="controlled dj">Att</th>
+                            <th class="controlled dj">Buz</th>
+                            <th class="controlled dj">Buz%</th>
+                            <th class="controlled dj">BuzC</th>
+                            <th class="controlled dj">BuzI</th>
+                            <th class="controlled dj">Buz$</th>
+                            <th class="controlled dj">Buz$/</th>
+                            <th class="controlled dj">Speed</th>
+                            <th class="controlled dj">Solo</th>
+                            <th class="controlled dj">DDF</th>
+                            <th class="controlled dj">DD+</th>
+                            <th class="controlled dj">DD$</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -148,6 +169,11 @@
                 <div id="scatterhist-att-buz%" class="full-round-trio-full"></div>
                 <div id="scatterhist-j-att-buz%" class="full-round-trio-j"></div>
                 <div id="scatterhist-dj-att-buz%" class="full-round-trio-dj"></div>
+            </div>
+            <div class="graph-display-container full-round-trio-container" id="att-buz$-per-att-container">
+                <div id="scatterhist-att-buz$-per-att" class="full-round-trio-full"></div>
+                <div id="scatterhist-j-att-buz$-per-att" class="full-round-trio-j"></div>
+                <div id="scatterhist-dj-att-buz$-per-att" class="full-round-trio-dj"></div>
             </div>
             <div class="graph-display-container full-round-trio-container" id="buz-buz$-container">
                 <div id="scatterhist-buz-buz$-per-buz" class="full-round-trio-full"></div>
@@ -292,8 +318,6 @@
                 var fjRecord = d3.filter(data, d => +d['Round of Game'] === 3 && +d['Clue of Round'] === 1)[0];
                 var fjInitialScores = d3.map([1,2,3], p => +fjRecord['PreScore' + p]);
                 var fjWagers = d3.map([1,2,3], p => +fjRecord['Wager' + p]);
-                console.log(fjInitialScores);
-                console.log(fjWagers);
                 var fjMatrixTds = d3.selectAll('table#fj-matrix td')
                     .data([
                         [true, true, true],
@@ -320,24 +344,16 @@
                         s +=    '</div>';
                         return s;
                     });
-                console.log(fjMatrixTds);
             });
 
-            d3.csv(csvUrlForTocPeriod(tocPeriodId)).then(function(data) {
+            d3.csv(csvUrlForTocPeriod(tocPeriodId), csvDataAccessor).then(function(data) {
                 var margin = {top: 20, right: 20, bottom: 50, left: 70},
                     width = 960 - margin.left - margin.right,
                     height = 500 - margin.top - margin.bottom;
 
                 //Data transformations
                 data.forEach(function(d) {
-                    d['Date'] = csvDateParse(d['Date']);
-                    d['JBuz%'] = 100.0 * d['JBuz'] / d['JAtt'];
-                    d['JGCon%'] = 100.0 * d['JGCon'];
-                    d['DJBuz%'] = 100.0 * d['DJBuz'] / d['DJAtt'];
-                    d['DJGCon%'] = 100.0 * d['DJGCon'];
-                    d['Buz%'] = 100.0 * d['Buz'] / d['Att'];
                     d['highlightGame'] = d['Jometry Game Id'] == highlightGame;
-                    d['FJ$'] = d['FJCor'] === "" ? 0 : (2 * +d['FJCor'] - 1) * +d['FJWager'];
                 });
                 tocPeriodData = data;
                 runForCombinedData();
@@ -376,55 +392,95 @@
                     .data(highlightGameData)
                     .enter()
                     .append("tr");
-                d3.select("#game-summary span#j-gcon")
-                    .text((100 * highlightGameData[0]['JGCon']).toFixed(0) + "%");
-                d3.select("#game-summary span#dj-gcon")
-                    .text((100 * highlightGameData[0]['DJGCon']).toFixed(0) + "%");
+                if (highlightGameData[0]['JGCon'] !== undefined) {
+                    d3.select("#game-summary span#j-gcon")
+                        .text(", Contention: " + (100 * highlightGameData[0]['JGCon']).toFixed(0) + "%");
+                    d3.select("#game-summary span#dj-gcon")
+                        .text(", Contention: " + (100 * highlightGameData[0]['DJGCon']).toFixed(0) + "%");
+                }
                 summaryTr.selectAll("td")
                     .data(function(d,i) {
                         return [
                             [d['Jometry Contestant Id'], d['Contestant']],
-                            d['JAtt'],
-                            d['JBuzC'],
-                            d['JAtt'] === '' ? '' : (+d['JSpeed'] > 0 ? "+" : "" ) + (+d['JSpeed']).toFixed(1),
-                            d['JBuz$'],
-                            d['JDD'] === '' ? '' : +d['JDD'],
-                            d['JDDF'],
-                            (+d['JDD+'] > 0 ? "+" : "" ) + (+d['JDD+']).toFixed(2),
-                            d['DJAtt'],
-                            d['DJBuzC'],
-                            d['DJAtt'] === '' ? '' : (+d['DJSpeed'] > 0 ? "+" : "" ) + (+d['DJSpeed']).toFixed(1),
-                            d['DJBuz$'],
-                            (d['DJDD1'] === '' && d['DJDD2'] === '') ? '' : (d['DJDD1'] === '' ? 0 : +d['DJDD1']) + (d['DJDD2'] === '' ? 0 : +d['DJDD2']),
-                            d['DJDDF'],
-                            (+d['DJDD+'] > 0 ? "+" : "" ) + (+d['DJDD+']).toFixed(2),
+                            d['Att'],
+                            d['Buz'],
+                            formatNumber(d['Buz%'], 1, false),
+                            d['BuzC'],
+                            d['BuzInc'],
                             d['Buz$'],
-                            (d['JDD'] === '' && d['DJDD1'] === '' && d['DJDD2'] === '') ? '' : (d['JDD'] === '' ? 0 : +d['JDD']) + (d['DJDD1'] === '' ? 0 : +d['DJDD1']) + (d['DJDD2'] === '' ? 0 : +d['DJDD2']),
+                            formatNumber(d['Buz$/Buz'], 0),
+                            formatNumber(d['Speed'], 1, false, true),
+                            formatNumber(d['Solo'], 1, false),
+                            d['DDF'],
+                            formatNumber(d['DD+'], 1, false),
+                            d['DD$'],
                             d['DJFinal$'],
-                            d['FJFinal$']
+                            d['FJ$'],
+                            d['FJFinal$'],
+                            d['JAtt'],
+                            d['JBuz'],
+                            formatNumber(d['JBuz%'], 1, false),
+                            d['JBuzC'],
+                            d['JBuzInc'],
+                            d['JBuz$'],
+                            formatNumber(d['JBuz$/Buz'], 0),
+                            formatNumber(d['JSpeed'], 1, false, true),
+                            formatNumber(d['JSolo'], 1, false),
+                            d['JDDF'],
+                            formatNumber(d['JDD+'], 1, false),
+                            d['JDD$'],
+                            d['DJAtt'],
+                            d['DJBuz'],
+                            formatNumber(d['DJBuz%'], 1, false),
+                            d['DJBuzC'],
+                            d['DJBuzInc'],
+                            d['DJBuz$'],
+                            formatNumber(d['DJBuz$/Buz'], 0),
+                            formatNumber(d['DJSpeed'], 1, false, true),
+                            formatNumber(d['DJSolo'], 1, false),
+                            d['DJDDF'],
+                            formatNumber(d['DJDD+'], 1, false),
+                            d['DJDD$']
                         ];
                     })
                     .enter()
                     .append("td")
+                    .attr('class', function(d,i) {
+                        if (i < 1) {
+                            return '';
+                        } else if (i < 16) {
+                            return 'controlled game';
+                        } else if (i < 28) {
+                            return 'controlled j';
+                        } else if (i < 40) {
+                            return 'controlled dj';
+                        } else {
+                            return '';
+                        }
+                    })
                     .html(function(d,i) {
                         if (i>0) return d;
                         return '<span style="color: ' + color(d) + '">&#9632;</span>&nbsp;<a href="contestant.html?toc_period_id=' + tocPeriodId + '&contestant=' + d[0] + '">' + d[1] + "</a>";
                     });
+                controlTable('table#game-summary-table', ['game','j','dj']);
 
-                var hasBoxScoreData = d3.filter(data, d => d['highlightGame'] && d['Att'] !== '').length > 0;
+                var hasBoxScoreData = d3.filter(data, d => d['highlightGame'] && d['Att'] !== undefined).length > 0;
                 var roundGraphMargin = { t: 10, b: 50, l: 70, r: 50, pad: 4 };
 
                 if (hasBoxScoreData) {
-                    var gConData = d3.filter(data, d => +d['Podium'] === 1 && d['JGCon'] !== '' && d['DJGCon'] !== '');
-                    var gConMin = d3.min(d3.map(gConData, d => d3.min([d['JGCon%'], d['DJGCon%']])));
+                    var gConData = d3.filter(data, d => +d['Podium'] === 1 && d['JGCon'] !== undefined && d['DJGCon'] !== undefined);
+                    console.log(gConData);
+                    var gConMin = d3.min(d3.map(gConData, d => 100.0 * d3.min([d['JGCon'], d['DJGCon']])));
                     gConMin = 10 * Math.floor(gConMin / 10.0);
-                    var gConMax = d3.max(d3.map(gConData, d => d3.max([d['JGCon%'], d['DJGCon%']])));
+                    var gConMax = d3.max(d3.map(gConData, d => 100.0 * d3.max([d['JGCon'], d['DJGCon']])));
                     gConMax = 10 * Math.ceil(gConMax / 10.0);
+                    console.log(gConMin);
+                    console.log(gConMax);
 
                     //Scatter GCON
                     var gconHistTrace = {
-                        x: d3.map(gConData, d => d['JGCon%']),
-                        y: d3.map(gConData, d => d['DJGCon%']),
+                        x: d3.map(gConData, d => 100.0 * d['JGCon']),
+                        y: d3.map(gConData, d => 100.0 * d['DJGCon']),
                         autobinx: false,
                         xbins: {
                             start: gConMin,
@@ -440,8 +496,8 @@
                         colorscale : [['0' , 'white'],['1', '#999999']]
                     };
                     var gconScatterTrace = {
-                        x: d3.map(d3.filter(gConData, d => d['highlightGame']), d => d['JGCon%']),
-                        y: d3.map(d3.filter(gConData, d => d['highlightGame']), d => d['DJGCon%']),
+                        x: d3.map(d3.filter(gConData, d => d['highlightGame']), d => 100.0 * d['JGCon']),
+                        y: d3.map(d3.filter(gConData, d => d['highlightGame']), d => 100.0 * d['DJGCon']),
                         mode: 'markers',
                         marker: {
                             symbol: 'circle',
@@ -559,6 +615,55 @@
                         roundGraphMargin
                     );
 
+                    //Att / Buz$/Att
+                    renderHighlightScatterHistogram(
+                        data,
+                        'scatterhist-att-buz$-per-att',
+                        'Att and Buz$/Att',
+                        d => d['Att'] !== undefined,
+                        d => d['highlightGame'],
+                        'Att',
+                        d => d['Att'],
+                        { start: -0.5, end: 57.5, size: 1 },
+                        'Buz$/Att',
+                        d => 1.0 * d['Buz$'] / d['Att'],
+                        { start: -500, end: 1000, size: 50 },
+                        highlightGameColorFunction,
+                        highlightGameLabelFunction
+                    );
+                    renderHighlightScatterHistogram(
+                        data,
+                        'scatterhist-j-att-buz$-per-att',
+                        null,
+                        d => d['JAtt'] !== undefined,
+                        d => d['highlightGame'],
+                        'J! Att',
+                        d => d['JAtt'],
+                        { start: -0.5, end: 29.5, size: 1 },
+                        'J! Buz$/Att',
+                        d => 1.0 * d['JBuz$'] / d['JAtt'],
+                        { start: -200, end: 700, size: 50 },
+                        highlightGameColorFunction,
+                        highlightGameLabelFunction,
+                        roundGraphMargin
+                    );
+                    renderHighlightScatterHistogram(
+                        data,
+                        'scatterhist-dj-att-buz$-per-att',
+                        null,
+                        d => d['DJAtt'] !== undefined,
+                        d => d['highlightGame'],
+                        'DJ! Att',
+                        d => d['DJAtt'],
+                        { start: -0.5, end: 29.5, size: 1 },
+                        'DJ! Buz$/Att',
+                        d => 1.0 * d['DJBuz$'] / d['DJAtt'],
+                        { start: -500, end: 1300, size: 50 },
+                        highlightGameColorFunction,
+                        highlightGameLabelFunction,
+                        roundGraphMargin
+                    );
+
                     renderHighlightHistogram(
                         data,
                         'hist-att',
@@ -573,7 +678,7 @@
                     );
 
                 } else {
-                    ids = ['contention', 'att-buz%-container', 'speed-solo-container', 'hist-att'];
+                    ids = ['contention', 'att-buz%-container', 'speed-solo-container', 'hist-att', 'att-buz$-per-att-container'];
                     ids.forEach(id => {
                         document.getElementById(id).style.display = 'none';
                     });

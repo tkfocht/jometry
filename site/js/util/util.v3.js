@@ -38,6 +38,53 @@ var getContestantNameFromData = function(data, contestantId) {
     }
 };
 
+var csvDataAccessor = function(row) {
+    var r = {};
+    for (var k in row) {
+        if (k === 'Date') {
+            r[k] = csvDateParse(row[k]);
+        } else if (row[k] === '') {
+            r[k] = undefined;
+        } else {
+            r[k] = +row[k];
+            if (isNaN(r[k])) {
+                r[k] = row[k];
+            }
+        }
+    }
+    r['Buz%'] = 100.0 * r['Buz'] / r['Att'];
+    r['JBuz%'] = 100.0 * r['JBuz'] / r['JAtt'];
+    r['DJBuz%'] = 100.0 * r['DJBuz'] / r['DJAtt'];
+    r['BuzC'] = r['JBuzC'] + r['DJBuzC'];
+    r['BuzInc'] = r['JBuzInc'] + r['DJBuzInc'];
+    r['BuzC$'] = r['JBuzC$'] + r['DJBuzC$'];
+    r['BuzI$'] = r['JBuzI$'] + r['DJBuzI$'];
+    r['DDF'] = r['JDDF'] + r['DJDDF'];
+    r['DD+'] = r['JDD+'] + r['DJDD+'];
+    r['DD$'] = d3.sum(d3.map(['JDD','DJDD1','DJDD2'], k => r[k] === undefined ? 0 : r[k]));
+    r['JDD$'] = d3.sum(d3.map(['JDD'], k => r[k] === undefined ? 0 : r[k]));
+    r['DJDD$'] = d3.sum(d3.map(['DJDD1','DJDD2'], k => r[k] === undefined ? 0 : r[k]));
+    r['FJ$'] = (-1 + (2 * r['FJCor'])) * r['FJWager'];
+    return r;
+};
+
+var formatNumber = function(n, p, dropZeros = true, sign = false) {
+    if (n === undefined) {
+        return undefined;
+    }
+    if (isNaN(n)) {
+        return undefined;
+    }
+    var s = n.toFixed(p);
+    if (dropZeros) {
+        s = s.replace(/[.,]0+$/, "");
+    }
+    if (sign && n >= 0) {
+        s = '+' + s;
+    }
+    return s;
+};
+
 var controlTable = function(tableId, controlClasses) {
     var currentClassIndex = 0;
     d3.selectAll(tableId + ' th.controlled').style('display','none');
