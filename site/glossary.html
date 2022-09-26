@@ -11,6 +11,7 @@
             <div id="navigation">
                 <span class="navigation-item"><a href="/">Home</a></span>
                 <span class="navigation-item"><a href="/glossary.html">Glossary</a></span>
+                <span class="navigation-item"><a href="/about.html">About</a></span>
             </div>
         </div>
 
@@ -34,11 +35,18 @@
                 it ignores Daily Doubles entirely. <i>Why not just use Coryat?</i> The earliest version of
                 this site was based soley on the box scores, and Coryat is not derivable from them. After that,
                 I mostly just decided I liked Buz$ as an in-game contestant statistic better, as it only covers clues available
-                to all players.
+                to all players. I do believe Coryat is better for comparing performance at home, though.
             </div>
         </div>
         <div class="section">
-            <h2>DD: Daily Doubles Found</h2>
+            <h2>Contention</h2>
+            <div class="graph-description">
+                An estimate of the probability that any individual correct response (for any contestant) blocked an
+                opponent from buzzing in.
+            </div>
+        </div>
+        <div class="section">
+            <h2>DDF: Daily Doubles Found</h2>
             <div class="graph-description">
                 Daily Doubles found by the player.
             </div>
@@ -52,13 +60,6 @@
             </div>
         </div>
         <div class="section">
-            <h2>GCon: Game Contention</h2>
-            <div class="graph-description">
-                An estimate of the probability that any individual correct response (for any contestant) block an
-                opponent from buzzing in.
-            </div>
-        </div>
-        <div class="section">
             <h2>Solo: Buzzes that are uncontested</h2>
             <div class="graph-description">
                 An estimate of how many correct responses did not block an opponent's attempt at a correct response.
@@ -69,8 +70,9 @@
             <h2>Speed: Buzzes created through speed</h2>
             <div class="graph-description">
                 An estimate of how many additional response attempts a player gains through speed, or
-                gains through opponents' lack of speed. This statistic is zero-sum: all positive Speed
-                must be balanced by negative Speed for another contestant.
+                gains through opponents' lack of speed. This statistic is almost zero-sum: most positive Speed
+                must be balanced by negative Speed for another contestant, but attempts that are blocked by
+                incorrect responses and then not retried on the rebound keep this from balancing exactly.
             </div>
         </div>
         <div id="footer">
