@@ -150,10 +150,10 @@
             </div>
         </div>
         <div class="section">
-            <h1>Buzz Distribution</h1>
+            <h1>Attempt/Buzz Distribution</h1>
             <div class="graph-description">
                 Average buzzes, by contestant. Correct responses are at the bottom, incorrect responses are lighter and
-                on top.
+                on top of those. If there is data for all contestants, blocked attempts are shown lighter still and placed on top.
             </div>
             <div id="bar-buzzes" class="graph-display-container"></div>
             <div class="graph-description">
@@ -580,6 +580,23 @@
                     }
                 };
                 var attemptsData = [attemptsTraceBuzC, attemptsTraceBuzI];
+                if (d3.filter(data, d => d['Att'] !== '').length === data.length) {
+                    var attemptsTraceBlockedAtt = {
+                        x: d3.map(attemptsOrderedIds, c => d3.filter(data, cd => cd['Jometry Contestant Id'] === c)[0]['Contestant']),
+                        y: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['Att'] - (+cd1['Buz'])))),
+                        text: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['Att'] - (+cd1['Buz']))).toFixed(1)),
+                        type: 'bar',
+                        marker: {
+                            color: d3.map(attemptsOrderedIds, color),
+                            line: {
+                                color: 'black',
+                                width: 1
+                            },
+                            opacity: 0.3
+                        }
+                    };
+                    attemptsData = [attemptsTraceBuzC, attemptsTraceBuzI, attemptsTraceBlockedAtt];
+                }
                 var attemptsLayout = {
                     barmode: 'stack',
                     showlegend: false,
