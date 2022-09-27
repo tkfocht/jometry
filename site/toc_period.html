@@ -297,6 +297,20 @@
             </div>
             <div id="scatter-avg-buz$-buz-vs-buz" class="graph-display-container"></div>
         </div>
+        <div class="section" id="buz$-att-vs-att-section">
+            <h1>Buz$/Att vs Att plot</h1>
+            <div class="graph-description">
+                Buz$/Att vs Att, per game. 4+ game champions are marked larger.
+            </div>
+            <div id="scatter-buz$-att-vs-att" class="graph-display-container"></div>
+        </div>
+        <div class="section" id="avg-buz$-att-vs-att-section">
+            <h1>Avg Buz$/Att vs Att plot</h1>
+            <div class="graph-description">
+                Average Buz$/Att vs Att, per contestant.
+            </div>
+            <div id="scatter-avg-buz$-att-vs-att" class="graph-display-container"></div>
+        </div>
         <div id="footer">
             <p>This site is not affiliated with Jeopardy!. Data is taken from their published <a href="https://www.jeopardy.com/jbuzz/news-events/jeopardy-daily-box-scores">box scores</a>
                 and from <a href="https://j-archive.com">J! Archive</a>.</p>
@@ -989,6 +1003,94 @@
 
                 Plotly.newPlot('scatter-avg-buz$-buz-vs-buz', plotData, layout, {staticPlot: true});
 
+                if (d3.filter(data, d => d['Att'] !== '').length === data.length) {
+                    plotData = [];
+                    for ( var i = 0; i < highlightContestantIds.length; i ++ ) {
+                        var cid = highlightContestantIds[i];
+                        var trace = {
+                            x: d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === cid), cd1 => +cd1['Att']),
+                            y: d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === cid), cd1 => 1.0 * +cd1['Buz$'] / +cd1['Att']),
+                            mode: 'markers',
+                            type: 'scatter',
+                            name: getContestantNameFromData(data, cid),
+                            text: d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === cid), cd1 => cd1['Contestant'] + ", " + dateFormat(cd1['Date'])),
+                            marker: { size: 5 }
+                        };
+                        plotData.push(trace);
+                    }
+                    var trace = {
+                        x: d3.map(d3.filter(data, cd => !highlightContestantIds.includes(cd['Jometry Contestant Id'])), cd1 => +cd1['Att']),
+                        y: d3.map(d3.filter(data, cd => !highlightContestantIds.includes(cd['Jometry Contestant Id'])), cd1 => 1.0 +cd1['Buz$'] / +cd1['Att']),
+                        mode: 'markers',
+                        type: 'scatter',
+                        name: "Others",
+                        text: d3.map(d3.filter(data, cd => !highlightContestantIds.includes(cd['Jometry Contestant Id'])), cd1 => cd1['Contestant'] + ", " + dateFormat(cd1['Date'])),
+                        marker: { size: 2 }
+                    };
+                    plotData.push(trace);
+
+                    var layout = {
+                        xaxis: {
+                            range: [ 0, 50 ]
+                        },
+                        yaxis: {
+                            range: [-500, 1200]
+                        },
+                        legend: {
+                            y: 0.5,
+                            yref: 'paper',
+                            font: {
+                            family: 'Arial, sans-serif',
+                            size: 20,
+                            color: 'grey',
+                            }
+                        },
+                        xaxis: {
+                            title: 'Att'
+                        },
+                        yaxis: {
+                            title: 'Buz$/Att'
+                        },
+                        title:'Buz$/Att vs Att'
+                    };
+
+                    Plotly.newPlot('scatter-buz$-att-vs-att', plotData, layout);
+
+                    plotData = [];
+                    groupedData.forEach((value, key) => {
+                        if (highlightContestantIds.includes(key)) {
+                            var trace = {
+                                x: [d3.mean(d3.map(value, cd1 => +cd1['Att']))],
+                                y: [d3.mean(d3.map(value, cd1 => 1.0 * +cd1['Buz$'] / +cd1['Att']))],
+                                mode: 'markers+text',
+                                type: 'scatter',
+                                text: getContestantNameFromData(data, key),
+                                textposition: 'top center',
+                                marker: { size: 2 * Math.sqrt(value.length) },
+                                showlegend: false
+                            };
+                            plotData.push(trace);
+                        }
+                    });
+                    
+
+                    var layout = {
+                        xaxis: {
+                            title: 'Att'
+                        },
+                        yaxis: {
+                            title: 'Buz$/Att'
+                        },
+                        title:'Average Buz$/Att vs Att'
+                    };
+
+                    Plotly.newPlot('scatter-avg-buz$-att-vs-att', plotData, layout, {staticPlot: true});
+                } else {
+                    ids = ['buz$-att-vs-att-section', 'avg-buz$-att-vs-att-section'];
+                    ids.forEach(id => {
+                        document.getElementById(id).style.display = 'none';
+                    });
+                }
             });
         </script>
     </body>
