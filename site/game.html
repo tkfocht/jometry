@@ -40,7 +40,7 @@
                             <th class="controlled game">BuzI</th>
                             <th class="controlled game">Buz$</th>
                             <th class="controlled game">Buz$/</th>
-                            <th class="controlled game">Speed</th>
+                            <th class="controlled game">Time</th>
                             <th class="controlled game">Solo</th>
                             <th class="controlled game">DDF</th>
                             <th class="controlled game">DD+</th>
@@ -55,7 +55,7 @@
                             <th class="controlled j">BuzI</th>
                             <th class="controlled j">Buz$</th>
                             <th class="controlled j">Buz$/</th>
-                            <th class="controlled j">Speed</th>
+                            <th class="controlled j">Time</th>
                             <th class="controlled j">Solo</th>
                             <th class="controlled j">DDF</th>
                             <th class="controlled j">DD+</th>
@@ -67,7 +67,7 @@
                             <th class="controlled dj">BuzI</th>
                             <th class="controlled dj">Buz$</th>
                             <th class="controlled dj">Buz$/</th>
-                            <th class="controlled dj">Speed</th>
+                            <th class="controlled dj">Time</th>
                             <th class="controlled dj">Solo</th>
                             <th class="controlled dj">DDF</th>
                             <th class="controlled dj">DD+</th>
@@ -79,7 +79,7 @@
             </div>
             <div class="graph-description">
                 GCon = Game contention, Att = Attempts, BuzC = Correct on buzz,
-                Speed = Est. buzzes created through speed, Solo = Estimated buzzes uncontested,
+                Time = Est. buzzes created through buzzer timing, Solo = Estimated buzzes uncontested,
                 Buz$ = Score on buzz, DDF = Daily Doubles found, DD+ = Daily Doubles found above expectation
             </div>
         </div>
@@ -181,10 +181,10 @@
                 <div id="scatterhist-j-buz-buz$-per-buz" class="full-round-trio-j"></div>
                 <div id="scatterhist-dj-buz-buz$-per-buz" class="full-round-trio-dj"></div>
             </div>
-            <div class="graph-display-container full-round-trio-container" id="speed-solo-container">
-                <div id="scatterhist-speed-solo" class="full-round-trio-full"></div>
-                <div id="scatterhist-j-speed-solo" class="full-round-trio-j"></div>
-                <div id="scatterhist-dj-speed-solo" class="full-round-trio-dj"></div>
+            <div class="graph-display-container full-round-trio-container" id="timing-solo-container">
+                <div id="scatterhist-timing-solo" class="full-round-trio-full"></div>
+                <div id="scatterhist-j-timing-solo" class="full-round-trio-j"></div>
+                <div id="scatterhist-dj-timing-solo" class="full-round-trio-dj"></div>
             </div>
             <div id="hist-att" class="graph-display-container"></div>
             <div id="hist-buz" class="graph-display-container"></div>
@@ -518,14 +518,14 @@
                     };
                     Plotly.newPlot('scatterhist-gcon', [gconScatterTrace, gconHistTrace], gconScatterLayout, {staticPlot: true});
 
-                    //Speed/Solo
+                    //Timing/Solo
                     renderHighlightScatterHistogram(
                         data,
-                        'scatterhist-speed-solo',
-                        'Speed and Solo',
+                        'scatterhist-timing-solo',
+                        'Timing and Solo',
                         d => d['Speed'] !== '' && d['Solo'] !== '',
                         d => d['highlightGame'],
-                        'Speed',
+                        'Timing',
                         d => d['Speed'],
                         { start: -20, end: 20, size: 1 },
                         'Solo',
@@ -536,11 +536,11 @@
                     );
                     renderHighlightScatterHistogram(
                         data,
-                        'scatterhist-j-speed-solo',
+                        'scatterhist-j-timing-solo',
                         null,
                         d => d['JSpeed'] !== '' && d['JSolo'] !== '',
                         d => d['highlightGame'],
-                        'J! Speed',
+                        'J! Timing',
                         d => d['JSpeed'],
                         { start: -10, end: 10, size: 1 },
                         'J! Solo',
@@ -552,11 +552,11 @@
                     );
                     renderHighlightScatterHistogram(
                         data,
-                        'scatterhist-dj-speed-solo',
+                        'scatterhist-dj-timing-solo',
                         null,
                         d => d['DJSpeed'] !== '' && d['DJSolo'] !== '',
                         d => d['highlightGame'],
-                        'DJ! Speed',
+                        'DJ! Timing',
                         d => d['DJSpeed'],
                         { start: -10, end: 10, size: 1 },
                         'DJ! Solo',
@@ -679,7 +679,7 @@
                     );
 
                 } else {
-                    ids = ['contention', 'att-buz%-container', 'speed-solo-container', 'hist-att', 'att-buz$-per-att-container'];
+                    ids = ['contention', 'att-buz%-container', 'timing-solo-container', 'hist-att', 'att-buz$-per-att-container'];
                     ids.forEach(id => {
                         document.getElementById(id).style.display = 'none';
                     });

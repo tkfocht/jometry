@@ -63,7 +63,7 @@
                             <th class="controlled game-average">Buz%</th>
                             <th class="controlled game-average">BuzC</th>
                             <th class="controlled game-average">BuzC$</th>
-                            <th class="controlled game-average">Spd</th>
+                            <th class="controlled game-average">Time</th>
                             <th class="controlled game-average">Sol</th>
                             <th class="controlled game-average">DDF</th>
                             <th class="controlled game-average">DD+</th>
@@ -79,7 +79,7 @@
                             <th class="controlled j-average">Buz%</th>
                             <th class="controlled j-average">BuzC</th>
                             <th class="controlled j-average">BuzC$</th>
-                            <th class="controlled j-average">Spd</th>
+                            <th class="controlled j-average">Time</th>
                             <th class="controlled j-average">Sol</th>
                             <th class="controlled j-average">DDF</th>
                             <th class="controlled j-average">DD+</th>
@@ -91,7 +91,7 @@
                             <th class="controlled dj-average">Buz%</th>
                             <th class="controlled dj-average">BuzC</th>
                             <th class="controlled dj-average">BuzC$</th>
-                            <th class="controlled dj-average">Spd</th>
+                            <th class="controlled dj-average">Time</th>
                             <th class="controlled dj-average">Sol</th>
                             <th class="controlled dj-average">DDF</th>
                             <th class="controlled dj-average">DD+</th>
@@ -103,7 +103,7 @@
                             <th class="controlled game-maximum">Buz%</th>
                             <th class="controlled game-maximum">BuzC</th>
                             <th class="controlled game-maximum">BuzC$</th>
-                            <th class="controlled game-maximum">Spd</th>
+                            <th class="controlled game-maximum">Time</th>
                             <th class="controlled game-maximum">Sol</th>
                             <th class="controlled game-maximum">DDF</th>
                             <th class="controlled game-maximum">DD+</th>
@@ -119,7 +119,7 @@
                             <th class="controlled j-maximum">Buz%</th>
                             <th class="controlled j-maximum">BuzC</th>
                             <th class="controlled j-maximum">BuzC$</th>
-                            <th class="controlled j-maximum">Spd</th>
+                            <th class="controlled j-maximum">Time</th>
                             <th class="controlled j-maximum">Sol</th>
                             <th class="controlled j-maximum">DDF</th>
                             <th class="controlled j-maximum">DD+</th>
@@ -131,7 +131,7 @@
                             <th class="controlled dj-maximum">Buz%</th>
                             <th class="controlled dj-maximum">BuzC</th>
                             <th class="controlled dj-maximum">BuzC$</th>
-                            <th class="controlled dj-maximum">Spd</th>
+                            <th class="controlled dj-maximum">Time</th>
                             <th class="controlled dj-maximum">Sol</th>
                             <th class="controlled dj-maximum">DDF</th>
                             <th class="controlled dj-maximum">DD+</th>
@@ -144,7 +144,7 @@
             <div class="graph-description">
                 W = Wins, Ld = Leads (at end of DJ), Cr = Crushes, Lk = Locks, Win$ = Winnings, Att = Attempts,
                 Buz = Buzzes, BuzC = Correct on buzz, BuzI = Incorrect on buzz,
-                Spd = Speed = Est. buzzes created through speed, Sol = Solo = Estimated buzzes uncontested,
+                Time = Timing = Est. buzzes created through buzzer timing, Sol = Solo = Estimated buzzes uncontested,
                 Buz$ = Score on buzz, Buz$/ = Buz$ per Buz, DDF = Daily Doubles found, DD+ = Daily Doubles found above expectation,
                 FJ$ = Net score in FJ
             </div>
@@ -213,13 +213,13 @@
             </div>
         </div>
         <div class="section">
-            <h1>Speed</h1>
+            <h1>Timing</h1>
             <div class="graph-description">
-                Estimated buzzes earned by speed, by contestant, in each game.
+                Estimated buzzes earned by buzzer timing, by contestant, in each game.
             </div>
-            <div class="graph-display-container full-splitround-container" id="speed-container">
-                <div id="box-speed" class="full-splitround-full"></div>
-                <div id="line-speed-j-dj" class="full-splitround-split"></div>
+            <div class="graph-display-container full-splitround-container" id="timing-container">
+                <div id="box-timing" class="full-splitround-full"></div>
+                <div id="line-timing-j-dj" class="full-splitround-split"></div>
             </div>
         </div>
         <div class="section">
@@ -233,13 +233,13 @@
             </div>
         </div>
         <div class="section">
-            <h1>Speed plus Solo</h1>
+            <h1>Timing plus Solo</h1>
             <div class="graph-description">
-                Speed plus Solo, by contestant, in each game. Each value varies widely based on the competition, but the sum is meaningful.
+                Timing plus Solo, by contestant, in each game. Each value varies widely based on the competition, but the sum is meaningful.
             </div>
-            <div class="graph-display-container full-splitround-container" id="speed-plus-solo-container">
-                <div id="box-speed-plus-solo" class="full-splitround-full"></div>
-                <div id="line-speed-plus-solo-j-dj" class="full-splitround-split"></div>
+            <div class="graph-display-container full-splitround-container" id="timing-plus-solo-container">
+                <div id="box-timing-plus-solo" class="full-splitround-full"></div>
+                <div id="line-timing-plus-solo-j-dj" class="full-splitround-split"></div>
             </div>
         </div>
         <div class="section">
@@ -748,8 +748,8 @@
                     data,
                     highlightContestantIds,
                     cd1 => +cd1['Speed'],
-                    'box-speed',
-                    'Speed',
+                    'box-timing',
+                    'Timing',
                     cd1 => cd1['Speed'] !== "",
                     rawColorFunction
                 );
@@ -758,11 +758,11 @@
                     highlightContestantIds,
                     cd1 => +cd1['JSpeed'],
                     cd1 => +cd1['DJSpeed'],
-                    'line-speed-j-dj',
-                    'Speed difference',
+                    'line-timing-j-dj',
+                    'Timing difference',
                     cd1 => cd1['Speed'] !== "",
                     rawColorFunction,
-                    'Speed'
+                    'Timing'
                 );
 
                 renderHighlightContestantBoxPlot(
@@ -790,8 +790,8 @@
                     data,
                     highlightContestantIds,
                     cd1 => +cd1['Speed'] + +cd1['Solo'],
-                    'box-speed-plus-solo',
-                    'Speed + Solo',
+                    'box-timing-plus-solo',
+                    'Timing + Solo',
                     cd1 => cd1['Solo'] !== "",
                     rawColorFunction
                 );
@@ -800,11 +800,11 @@
                     highlightContestantIds,
                     cd1 => +cd1['JSpeed'] + +cd1['JSolo'],
                     cd1 => +cd1['DJSpeed'] + +cd1['DJSolo'],
-                    'line-speed-plus-solo-j-dj',
-                    'Speed+Solo difference',
+                    'line-timing-plus-solo-j-dj',
+                    'Timing+Solo difference',
                     cd1 => cd1['Solo'] !== "",
                     rawColorFunction,
-                    'Speed + Solo'
+                    'Timing + Solo'
                 );
 
                 renderHighlightContestantBoxPlot(

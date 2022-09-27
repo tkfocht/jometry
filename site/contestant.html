@@ -40,7 +40,7 @@
                             <th class="controlled game">BuzI</th>
                             <th class="controlled game">Buz$</th>
                             <th class="controlled game">Buz$/</th>
-                            <th class="controlled game">Speed</th>
+                            <th class="controlled game">Time</th>
                             <th class="controlled game">Solo</th>
                             <th class="controlled game">DDF</th>
                             <th class="controlled game">DD+</th>
@@ -55,7 +55,7 @@
                             <th class="controlled j">BuzI</th>
                             <th class="controlled j">Buz$</th>
                             <th class="controlled j">Buz$/</th>
-                            <th class="controlled j">Speed</th>
+                            <th class="controlled j">Time</th>
                             <th class="controlled j">Solo</th>
                             <th class="controlled j">DDF</th>
                             <th class="controlled j">DD+</th>
@@ -67,7 +67,7 @@
                             <th class="controlled dj">BuzI</th>
                             <th class="controlled dj">Buz$</th>
                             <th class="controlled dj">Buz$/</th>
-                            <th class="controlled dj">Speed</th>
+                            <th class="controlled dj">Time</th>
                             <th class="controlled dj">Solo</th>
                             <th class="controlled dj">DDF</th>
                             <th class="controlled dj">DD+</th>
@@ -79,7 +79,7 @@
             </div>
             <div class="graph-description">
                 Att = Attempts, BuzC = Correct on buzz,
-                Speed = Est. buzzes created through speed, Solo = Estimated buzzes uncontested,
+                Time = Est. buzzes created through buzzer timing, Solo = Estimated buzzes uncontested,
                 Buz$ = Score on buzz, DDF = Daily Doubles found
             </div>
         </div>
@@ -103,7 +103,7 @@
             </div>
             <div id="scatterhist-att-buz%" class="graph-display-container"></div>
             <div id="scatterhist-buz-buz$-per-buz" class="graph-display-container"></div>
-            <div id="scatterhist-speed-solo" class="graph-display-container"></div>
+            <div id="scatterhist-timing-solo" class="graph-display-container"></div>
             <div id="hist-att" class="graph-display-container"></div>
             <div id="hist-buz" class="graph-display-container"></div>
             <div id="hist-buzc" class="graph-display-container"></div>
@@ -387,14 +387,14 @@
                 var hasBoxScoreData = d3.filter(data, d => d['highlightContestant'] && d['Att'] !== '').length > 0;
 
                 if (hasBoxScoreData) {
-                    //Speed/Solo
+                    //Timing/Solo
                     renderHighlightScatterHistogram(
                         data,
-                        'scatterhist-speed-solo',
-                        'Speed and Solo',
+                        'scatterhist-timing-solo',
+                        'Timing and Solo',
                         d => d['Speed'] !== '' && d['Solo'] !== '',
                         d => d['highlightContestant'],
-                        'Speed',
+                        'Timing',
                         d => d['Speed'],
                         { start: -20.5, end: 20.5, size: 1 },
                         'Solo',
@@ -434,7 +434,7 @@
                         labelFunction
                     );                    
                 } else {
-                    ids = ['scatterhist-att-buz%', 'scatterhist-speed-solo', 'hist-att'];
+                    ids = ['scatterhist-att-buz%', 'scatterhist-timing-solo', 'hist-att'];
                     ids.forEach(id => {
                         document.getElementById(id).style.display = 'none';
                     });
