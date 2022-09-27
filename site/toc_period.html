@@ -172,7 +172,7 @@
                 <div id="line-buz-j-dj" class="full-splitround-split"></div>
             </div>
         </div>
-        <div class="section">
+        <div class="section" id="att-section">
             <h1>Attempts</h1>
             <div class="graph-description">
                 Attempts, by contestant, in each game.
@@ -182,7 +182,7 @@
                 <div id="line-att-j-dj" class="full-splitround-split"></div>
             </div>
         </div>
-        <div class="section">
+        <div class="section" id="buz%-section">
             <h1>Buz%</h1>
             <div class="graph-description">
                 Buzzes/Attempts, by contestant, in each game.
@@ -212,7 +212,7 @@
                 <div id="line-buz$-per-buz-j-dj" class="full-splitround-split"></div>
             </div>
         </div>
-        <div class="section">
+        <div class="section" id="timing-section">
             <h1>Timing</h1>
             <div class="graph-description">
                 Estimated buzzes earned by buzzer timing, by contestant, in each game.
@@ -222,7 +222,7 @@
                 <div id="line-timing-j-dj" class="full-splitround-split"></div>
             </div>
         </div>
-        <div class="section">
+        <div class="section" id="solo-section">
             <h1>Solo</h1>
             <div class="graph-description">
                 Estimated buzzes where only contestant attempting, by contestant, in each game.
@@ -232,7 +232,7 @@
                 <div id="line-solo-j-dj" class="full-splitround-split"></div>
             </div>
         </div>
-        <div class="section">
+        <div class="section" id="timing-solo-section">
             <h1>Timing plus Solo</h1>
             <div class="graph-description">
                 Timing plus Solo, by contestant, in each game. Each value varies widely based on the competition, but the sum is meaningful.
@@ -677,47 +677,118 @@
                     'Buz'
                 );
 
-                renderHighlightContestantBoxPlot(
-                    data,
-                    highlightContestantIds,
-                    cd1 => +cd1['Att'],
-                    'box-att',
-                    'Att',
-                    cd1 => cd1['Att'] !== "",
-                    rawColorFunction
-                );
-                renderHighlightContestantRoundLinePlot(
-                    data,
-                    highlightContestantIds,
-                    cd1 => +cd1['JAtt'],
-                    cd1 => +cd1['DJAtt'],
-                    'line-att-j-dj',
-                    'Att difference',
-                    cd1 => cd1['Att'] !== "",
-                    rawColorFunction,
-                    'Att'
-                );
+                if (d3.filter(data, d => d['Att'] !== '').length > 0) {
+                    renderHighlightContestantBoxPlot(
+                        data,
+                        highlightContestantIds,
+                        cd1 => +cd1['Att'],
+                        'box-att',
+                        'Att',
+                        cd1 => cd1['Att'] !== "",
+                        rawColorFunction
+                    );
+                    renderHighlightContestantRoundLinePlot(
+                        data,
+                        highlightContestantIds,
+                        cd1 => +cd1['JAtt'],
+                        cd1 => +cd1['DJAtt'],
+                        'line-att-j-dj',
+                        'Att difference',
+                        cd1 => cd1['Att'] !== "",
+                        rawColorFunction,
+                        'Att'
+                    );
 
-                renderHighlightContestantBoxPlot(
-                    data,
-                    highlightContestantIds,
-                    cd1 => +cd1['Buz%'],
-                    'box-buz%',
-                    'Buz%',
-                    cd1 => cd1['Att'] !== "",
-                    rawColorFunction
-                );
-                renderHighlightContestantRoundLinePlot(
-                    data,
-                    highlightContestantIds,
-                    cd1 => +cd1['JBuz%'],
-                    cd1 => +cd1['DJBuz%'],
-                    'line-buz%-j-dj',
-                    'Buz% difference',
-                    cd1 => cd1['Att'] !== "",
-                    rawColorFunction,
-                    'Buz%'
-                );
+                    renderHighlightContestantBoxPlot(
+                        data,
+                        highlightContestantIds,
+                        cd1 => +cd1['Buz%'],
+                        'box-buz%',
+                        'Buz%',
+                        cd1 => cd1['Att'] !== "",
+                        rawColorFunction
+                    );
+                    renderHighlightContestantRoundLinePlot(
+                        data,
+                        highlightContestantIds,
+                        cd1 => +cd1['JBuz%'],
+                        cd1 => +cd1['DJBuz%'],
+                        'line-buz%-j-dj',
+                        'Buz% difference',
+                        cd1 => cd1['Att'] !== "",
+                        rawColorFunction,
+                        'Buz%'
+                    );
+
+                    renderHighlightContestantBoxPlot(
+                        data,
+                        highlightContestantIds,
+                        cd1 => +cd1['Speed'],
+                        'box-timing',
+                        'Timing',
+                        cd1 => cd1['Speed'] !== "",
+                        rawColorFunction
+                    );
+                    renderHighlightContestantRoundLinePlot(
+                        data,
+                        highlightContestantIds,
+                        cd1 => +cd1['JSpeed'],
+                        cd1 => +cd1['DJSpeed'],
+                        'line-timing-j-dj',
+                        'Timing difference',
+                        cd1 => cd1['Speed'] !== "",
+                        rawColorFunction,
+                        'Timing'
+                    );
+
+                    renderHighlightContestantBoxPlot(
+                        data,
+                        highlightContestantIds,
+                        cd1 => +cd1['Solo'],
+                        'box-solo',
+                        'Solo',
+                        cd1 => cd1['Solo'] !== "",
+                        rawColorFunction
+                    );
+                    renderHighlightContestantRoundLinePlot(
+                        data,
+                        highlightContestantIds,
+                        cd1 => +cd1['JSolo'],
+                        cd1 => +cd1['DJSolo'],
+                        'line-solo-j-dj',
+                        'Solo difference',
+                        cd1 => cd1['Solo'] !== "",
+                        rawColorFunction,
+                        'Solo'
+                    );
+
+                    renderHighlightContestantBoxPlot(
+                        data,
+                        highlightContestantIds,
+                        cd1 => +cd1['Speed'] + +cd1['Solo'],
+                        'box-timing-plus-solo',
+                        'Timing + Solo',
+                        cd1 => cd1['Solo'] !== "",
+                        rawColorFunction
+                    );
+                    renderHighlightContestantRoundLinePlot(
+                        data,
+                        highlightContestantIds,
+                        cd1 => +cd1['JSpeed'] + +cd1['JSolo'],
+                        cd1 => +cd1['DJSpeed'] + +cd1['DJSolo'],
+                        'line-timing-plus-solo-j-dj',
+                        'Timing+Solo difference',
+                        cd1 => cd1['Solo'] !== "",
+                        rawColorFunction,
+                        'Timing + Solo'
+                    );
+                } else {
+                    ids = ['att-section', 'buz%-section', 'timing-section', 'solo-section', 'timing-solo-section'];
+                    ids.forEach(id => {
+                        document.getElementById(id).style.display = 'none';
+                    });
+                }
+
 
                 renderHighlightContestantBoxPlot(
                     data,
@@ -761,68 +832,7 @@
                     'Buz$ (J dollars)'
                 );
 
-                renderHighlightContestantBoxPlot(
-                    data,
-                    highlightContestantIds,
-                    cd1 => +cd1['Speed'],
-                    'box-timing',
-                    'Timing',
-                    cd1 => cd1['Speed'] !== "",
-                    rawColorFunction
-                );
-                renderHighlightContestantRoundLinePlot(
-                    data,
-                    highlightContestantIds,
-                    cd1 => +cd1['JSpeed'],
-                    cd1 => +cd1['DJSpeed'],
-                    'line-timing-j-dj',
-                    'Timing difference',
-                    cd1 => cd1['Speed'] !== "",
-                    rawColorFunction,
-                    'Timing'
-                );
 
-                renderHighlightContestantBoxPlot(
-                    data,
-                    highlightContestantIds,
-                    cd1 => +cd1['Solo'],
-                    'box-solo',
-                    'Solo',
-                    cd1 => cd1['Solo'] !== "",
-                    rawColorFunction
-                );
-                renderHighlightContestantRoundLinePlot(
-                    data,
-                    highlightContestantIds,
-                    cd1 => +cd1['JSolo'],
-                    cd1 => +cd1['DJSolo'],
-                    'line-solo-j-dj',
-                    'Solo difference',
-                    cd1 => cd1['Solo'] !== "",
-                    rawColorFunction,
-                    'Solo'
-                );
-
-                renderHighlightContestantBoxPlot(
-                    data,
-                    highlightContestantIds,
-                    cd1 => +cd1['Speed'] + +cd1['Solo'],
-                    'box-timing-plus-solo',
-                    'Timing + Solo',
-                    cd1 => cd1['Solo'] !== "",
-                    rawColorFunction
-                );
-                renderHighlightContestantRoundLinePlot(
-                    data,
-                    highlightContestantIds,
-                    cd1 => +cd1['JSpeed'] + +cd1['JSolo'],
-                    cd1 => +cd1['DJSpeed'] + +cd1['DJSolo'],
-                    'line-timing-plus-solo-j-dj',
-                    'Timing+Solo difference',
-                    cd1 => cd1['Solo'] !== "",
-                    rawColorFunction,
-                    'Timing + Solo'
-                );
 
                 renderHighlightContestantBoxPlot(
                     data,
