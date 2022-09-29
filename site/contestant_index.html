@@ -1,0 +1,125 @@
+<html>
+    <head>
+        <title>J!ometry: Jeopardy! Data Visualizations</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+        <link rel="stylesheet" href="css/site.css"></link>
+        <script src="/js/d3/d3.v7.min.js"></script>
+        <script src="/js/util/util.v3.js"></script>
+    </head>
+    <body>
+        <div id="header">
+            <div id="site-mast">J!ometry</div>
+            <div id="navigation">
+                <span class="navigation-item"><a href="/">Home</a></span>
+                <span class="navigation-item"><a href="/contestant_index.html">Contestant Index</a></span>
+                <span class="navigation-item"><a href="/glossary.html">Glossary</a></span>
+                <span class="navigation-item"><a href="/about.html">About</a></span>
+            </div>
+        </div>
+
+        <div class="toc-period" id="TOC2023">
+            <div class="toc-period-header"><span class="toc-period-play-class-label">Contestants</span></div>
+            <div class="toc-period-play-class" id="TOC2023R">
+                <div class="toc-period-play-game-list">
+                    <table class="game-list" id="contestant-index-list">
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer">
+            <p>This site is not affiliated with Jeopardy!. Data is taken from their published <a href="https://www.jeopardy.com/jbuzz/news-events/jeopardy-daily-box-scores">box scores</a>
+            and from <a href="https://j-archive.com">J! Archive</a>.</p>
+        </div>
+        <script type="text/javascript">
+            var tocPeriods = ['TOC2023R','TOC2022R','NCC2022','TOC2022P','TOC2021R','TOC2021T','TOC2021C','TOC2019R','TOC2019T1','TOC2019T2','TOC2019C'];
+            var renderContestantIndex = function(
+                contestantData
+            ) {
+                console.log(contestantData);
+                contestantData = d3.group(contestantData, cd => cd['Jometry Contestant Id']);
+                console.log(contestantData);
+
+                var sortedContestantIds = Array.from(contestantData.keys());
+                console.log(sortedContestantIds);
+                sortedContestantIds.sort(function compareFn(a, b) {
+                    if (contestantData.get(a)[0]['Contestant'].toLowerCase() < contestantData.get(b)[0]['Contestant'].toLowerCase()) {
+                        return -1;
+                    } else if (contestantData.get(a)[0]['Contestant'].toLowerCase() > contestantData.get(b)[0]['Contestant'].toLowerCase()) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                console.log(sortedContestantIds);
+
+                d3.select('table#contestant-index-list tbody').selectAll('tr')
+                    .data(sortedContestantIds)
+                    .enter()
+                    .append('tr')
+                    .html(function(d) {
+                        var contestantGames = contestantData.get(d);
+                        var contestantGamesByTocPeriod = d3.rollup(contestantGames, v => v.length, cg => cg['tocPeriodId']);
+                        var contestantTocPeriods = Array.from(contestantGamesByTocPeriod.keys());
+                        contestantTocPeriods.sort(function compareFn(a, b) {
+                            return tocPeriods.indexOf(b) - tocPeriods.indexOf(a);
+                        })
+                        console.log(contestantGamesByTocPeriod);
+                        var s = '<td>' + contestantGames[0]['Contestant'] + '</td>';
+                        contestantTocPeriods.forEach(function(tocPeriod) {
+                            s += '<td>' + tocPeriod + '</td>';
+                        });
+                        return s;
+                    });
+/*                data = Array.from(d3.group(data, d => d['Jometry Game Id']),
+                    ([gameId,gameData]) => [
+                        gameId,
+                        gameData[0]['Date'],
+                        gameData[0]['Contestant'], gameData[1]['Contestant'], gameData[2]['Contestant'],
+                        gameData[0]['Season'],
+                        gameData[0]['Game In Season']]);
+                data.sort(d => d[0]);
+                data.reverse();
+
+                d3.select("#" + tocPeriodId + " table.game-list tbody").selectAll('tr')
+                    .data(data)
+                    .enter()
+                    .append('tr')
+                    .html(function(d) {
+                        return '<td><a href="game.html?toc_period_id=' + tocPeriodId + '&game_id=' + d[0] + '">Season ' + d[5] + ' Game ' + d[6] + '</a></td>' +
+                            '<td>' + dateFormat(d[1]) + '</td>' +
+                            '<td>' + d.slice(2,5).join(' vs ') + '</td>';
+                    });
+                
+                    d3.select('#' + tocPeriodId + ' span.show-games')
+                        .on('click', function() {
+                            d3.select(this).style('display', 'none');
+                            d3.select('#' + tocPeriodId + ' .toc-period-play-game-list').style('display','block');
+                            d3.select('#' + tocPeriodId + ' span.hide-games').style('display', 'inline');
+                        });
+                    d3.select('#' + tocPeriodId + ' span.hide-games')
+                        .on('click', function(ev) {
+                            d3.select(this).style('display', 'none');
+                            d3.select('#' + tocPeriodId + ' .toc-period-play-game-list').style('display', 'none');
+                            d3.select('#' + tocPeriodId + ' span.show-games').style('display', 'inline');
+                        });*/
+            }
+
+            var collatedData = [];
+            var collatedCount = 0;
+            for (const tocPeriodId of tocPeriods) {
+                d3.csv(csvUrlForTocPeriod(tocPeriodId), csvDataAccessor).then(function(data) {
+                    data.forEach(function(d) {
+                        d['tocPeriodId'] = tocPeriodId;
+                    });
+                    Array.prototype.push.apply(collatedData, data);
+                    collatedCount++;
+                    if (collatedCount >= tocPeriods.length) {
+                        renderContestantIndex(collatedData);
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>
