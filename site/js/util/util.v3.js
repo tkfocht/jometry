@@ -39,6 +39,7 @@ var getContestantNameFromData = function(data, contestantId) {
 };
 
 var csvDataAccessor = function(row) {
+    console.log(row);
     var r = {};
     for (var k in row) {
         if (k === 'Date') {
@@ -52,6 +53,8 @@ var csvDataAccessor = function(row) {
             }
         }
     }
+    if (r['FJCor'] === '') r['FJCor'] = undefined;
+
     r['Buz%'] = 100.0 * r['Buz'] / r['Att'];
     r['JBuz%'] = 100.0 * r['JBuz'] / r['JAtt'];
     r['DJBuz%'] = 100.0 * r['DJBuz'] / r['DJAtt'];
@@ -64,7 +67,7 @@ var csvDataAccessor = function(row) {
     r['DD$'] = d3.sum(d3.map(['JDD','DJDD1','DJDD2'], k => r[k] === undefined ? 0 : r[k]));
     r['JDD$'] = d3.sum(d3.map(['JDD'], k => r[k] === undefined ? 0 : r[k]));
     r['DJDD$'] = d3.sum(d3.map(['DJDD1','DJDD2'], k => r[k] === undefined ? 0 : r[k]));
-    r['FJ$'] = (-1 + (2 * r['FJCor'])) * r['FJWager'];
+    r['FJ$'] = r['FJCor'] === undefined ? undefined : (-1 + (2 * r['FJCor'])) * r['FJWager'];
     return r;
 };
 
