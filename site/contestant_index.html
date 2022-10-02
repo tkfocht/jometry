@@ -38,12 +38,9 @@
             var renderContestantIndex = function(
                 contestantData
             ) {
-                console.log(contestantData);
                 contestantData = d3.group(contestantData, cd => cd['Jometry Contestant Id']);
-                console.log(contestantData);
 
                 var sortedContestantIds = Array.from(contestantData.keys());
-                console.log(sortedContestantIds);
                 sortedContestantIds.sort(function compareFn(a, b) {
                     if (contestantData.get(a)[0]['Contestant'].toLowerCase() < contestantData.get(b)[0]['Contestant'].toLowerCase()) {
                         return -1;
@@ -52,7 +49,6 @@
                     }
                     return 0;
                 });
-                console.log(sortedContestantIds);
 
                 d3.select('table#contestant-index-list tbody').selectAll('tr')
                     .data(sortedContestantIds)
@@ -68,7 +64,7 @@
                         console.log(contestantGamesByTocPeriod);
                         var s = '<td>' + contestantGames[0]['Contestant'] + '</td>';
                         contestantTocPeriods.forEach(function(tocPeriod) {
-                            s += '<td>' + tocPeriod + '</td>';
+                            s += '<td><a href="/contestant.html?toc_period_id=' + tocPeriod + '&contestant=' + d + '">' + getNameForTocPeriod(tocPeriod) + ' (' + contestantGamesByTocPeriod.get(tocPeriod) + ')</a></td>';
                         });
                         return s;
                     });

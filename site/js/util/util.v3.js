@@ -39,7 +39,6 @@ var getContestantNameFromData = function(data, contestantId) {
 };
 
 var csvDataAccessor = function(row) {
-    console.log(row);
     var r = {};
     for (var k in row) {
         if (k === 'Date') {
