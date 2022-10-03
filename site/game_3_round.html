@@ -1,0 +1,1012 @@
+<html>
+    <head>
+        <title>J!ometry: Daily Jeopardy Visualizations</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+        <link rel="stylesheet" href="css/site.css"></link>
+        <link rel="stylesheet" href="css/game.css"></link>
+        <script src="/js/plotly/plotly-2.12.1.min.js"></script>
+        <script src="/js/d3/d3.v7.min.js"></script>
+        <script src="/js/util/util.v3.js"></script>
+        <script src="/js/graphs/scatterhist.v1.js"></script>
+    </head>
+    <body>
+        <div id="header">
+            <div id="site-mast">J!ometry</div>
+            <div id="navigation">
+                <span class="navigation-item"><a href="/">Home</a></span>
+                <span class="navigation-item"><a href="/contestant_index.html">Contestant Index</a></span>
+                <span class="navigation-item"><a href="/glossary.html">Glossary</a></span>
+                <span class="navigation-item"><a href="/about.html">About</a></span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h1><span id="toc-period-id"></span> Season <span id="season"></span> Game <span id="game-number"></span> <span id="game-date"></span></h1>
+            <div id="game-summary">
+                <table class="controlled-table" id="game-summary-table">
+                    <thead>
+                        <tr>
+                            <th colspan="1" class="empty"></th>
+                            <th colspan="15" class="game controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">Game Totals<span id="gcon"></span></div><div class="table-control table-control-right">&#9654;</div></div></th>
+                            <th colspan="12" class="j controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">Jeopardy! Round<span id="j-gcon"></span></div><div class="table-control table-control-right">&#9654;</div></div></th>
+                            <th colspan="12" class="dj controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">Double Jeopardy! Round<span id="dj-gcon"></span></div><div class="table-control table-control-right">&#9654;</div></div></th>
+                            <th colspan="12" class="tj controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">Triple Jeopardy! Round<span id="tj-gcon"></span></div><div class="table-control table-control-right">&#9654;</div></div></th>
+                        </tr>
+                        <tr>
+                            <th>Contestant</th>
+                            <th class="controlled game">Att</th>
+                            <th class="controlled game">Buz</th>
+                            <th class="controlled game">Buz%</th>
+                            <th class="controlled game">BuzC</th>
+                            <th class="controlled game">BuzI</th>
+                            <th class="controlled game">Buz$</th>
+                            <th class="controlled game">Buz$/</th>
+                            <th class="controlled game">Time</th>
+                            <th class="controlled game">Solo</th>
+                            <th class="controlled game">DDF</th>
+                            <th class="controlled game">DD+</th>
+                            <th class="controlled game">DD$</th>
+                            <th class="controlled game">TJFinal$</th>
+                            <th class="controlled game">FJ$</th>
+                            <th class="controlled game">FJFinal$</th>
+                            <th class="controlled j">Att</th>
+                            <th class="controlled j">Buz</th>
+                            <th class="controlled j">Buz%</th>
+                            <th class="controlled j">BuzC</th>
+                            <th class="controlled j">BuzI</th>
+                            <th class="controlled j">Buz$</th>
+                            <th class="controlled j">Buz$/</th>
+                            <th class="controlled j">Time</th>
+                            <th class="controlled j">Solo</th>
+                            <th class="controlled j">DDF</th>
+                            <th class="controlled j">DD+</th>
+                            <th class="controlled j">DD$</th>
+                            <th class="controlled dj">Att</th>
+                            <th class="controlled dj">Buz</th>
+                            <th class="controlled dj">Buz%</th>
+                            <th class="controlled dj">BuzC</th>
+                            <th class="controlled dj">BuzI</th>
+                            <th class="controlled dj">Buz$</th>
+                            <th class="controlled dj">Buz$/</th>
+                            <th class="controlled dj">Time</th>
+                            <th class="controlled dj">Solo</th>
+                            <th class="controlled dj">DDF</th>
+                            <th class="controlled dj">DD+</th>
+                            <th class="controlled dj">DD$</th>
+                            <th class="controlled tj">Att</th>
+                            <th class="controlled tj">Buz</th>
+                            <th class="controlled tj">Buz%</th>
+                            <th class="controlled tj">BuzC</th>
+                            <th class="controlled tj">BuzI</th>
+                            <th class="controlled tj">Buz$</th>
+                            <th class="controlled tj">Buz$/</th>
+                            <th class="controlled tj">Time</th>
+                            <th class="controlled tj">Solo</th>
+                            <th class="controlled tj">DDF</th>
+                            <th class="controlled tj">DD+</th>
+                            <th class="controlled tj">DD$</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="graph-description">
+                GCon = Game contention, Att = Attempts, BuzC = Correct on buzz,
+                Time = Est. buzzes created through buzzer timing, Solo = Estimated buzzes uncontested,
+                Buz$ = Score on buzz, DDF = Daily Doubles found, DD+ = Daily Doubles found above expectation
+            </div>
+        </div>
+        <div class="section">
+            <h1>Correct Responses</h1>
+            <div id="view-boards">
+                <table class="view-board" id="j-board">
+                    <thead>
+                        <tr>
+                            <th colspan="6">Jeopardy! Round</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <table class="view-board" id="dj-board">
+                    <thead>
+                        <tr>
+                            <th colspan="6">Double Jeopardy! Round</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <table class="view-board" id="tj-board">
+                    <thead>
+                        <tr>
+                            <th colspan="6">Triple Jeopardy! Round</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                </div>
+        </div>
+        <div class="section">
+            <h1>Final Jeopardy! Matrix</h1>
+            <div id="fj-matrix-container">
+                <table class="view-board" id="fj-matrix">
+                    <tr>
+                        <th style="border: 0;"></th>
+                        <th colspan="2" style="background-color: #E69F00;">Correct</th>
+                        <th colspan="2" style="background-color: #E69F00;">Incorrect</th>
+                    </tr>
+                    <tr>
+                        <th style="border: 0;"></th>
+                        <th style="background-color: #009E73;">Correct</th>
+                        <th style="background-color: #009E73;">Incorrect</th>
+                        <th style="background-color: #009E73;">Correct</th>
+                        <th style="background-color: #009E73;">Incorrect</th>
+                    </tr>
+                    <tr>
+                        <th style="background-color: #0072B2;">Correct</th>
+                        <td id="fj-matrix-111"></td>
+                        <td id="fj-matrix-110"></td>
+                        <td id="fj-matrix-101"></td>
+                        <td id="fj-matrix-100"></td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: #0072B2;">Incorrect</th>
+                        <td id="fj-matrix-011"></td>
+                        <td id="fj-matrix-010"></td>
+                        <td id="fj-matrix-001"></td>
+                        <td id="fj-matrix-000"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="section" id="score">
+            <h1>Score</h1>
+            <div class="graph-description">
+                Score over the course of the game.
+            </div>
+            <div id="line-score" class="graph-display-container"></div>
+        </div>
+        <div class="section">
+            <h1>Attempts</h1>
+            <div class="graph-description">
+                Attempts by contestants. Successful, correct buzzes are shown full color at the bottom. Buzzes with incorrect
+                responses are shown in the middle. Attempts that were blocked are shown on top (if known).
+            </div>
+            <div class="graph-display-container">
+                <div id="bar-attempts"></div>
+            </div>
+        </div>
+        <div class="section">
+            <h1>Player Statistics</h1>
+            <div class="graph-description">
+                A collection of player statistics for this game, with the distribution of player performance for the play period shown in gray.
+            </div>
+            <div class="graph-display-container full-round-trio-container" id="att-buz%-container">
+                <div id="scatterhist-att-buz%" class="full-round-trio-full"></div>
+                <div id="scatterhist-j-att-buz%" class="full-round-trio-j"></div>
+                <div id="scatterhist-dj-att-buz%" class="full-round-trio-dj"></div>
+                <div id="scatterhist-tj-att-buz%" class="full-round-trio-tj"></div>
+            </div>
+            <div class="graph-display-container full-round-trio-container" id="att-buz$-per-att-container">
+                <div id="scatterhist-att-buz$-per-att" class="full-round-trio-full"></div>
+                <div id="scatterhist-j-att-buz$-per-att" class="full-round-trio-j"></div>
+                <div id="scatterhist-dj-att-buz$-per-att" class="full-round-trio-dj"></div>
+                <div id="scatterhist-tj-att-buz$-per-att" class="full-round-trio-tj"></div>
+            </div>
+            <div class="graph-display-container full-round-trio-container" id="buz-buz$-container">
+                <div id="scatterhist-buz-buz$-per-buz" class="full-round-trio-full"></div>
+                <div id="scatterhist-j-buz-buz$-per-buz" class="full-round-trio-j"></div>
+                <div id="scatterhist-dj-buz-buz$-per-buz" class="full-round-trio-dj"></div>
+                <div id="scatterhist-tj-buz-buz$-per-buz" class="full-round-trio-tj"></div>
+            </div>
+            <div class="graph-display-container full-round-trio-container" id="timing-solo-container">
+                <div id="scatterhist-timing-solo" class="full-round-trio-full"></div>
+                <div id="scatterhist-j-timing-solo" class="full-round-trio-j"></div>
+                <div id="scatterhist-dj-timing-solo" class="full-round-trio-dj"></div>
+                <div id="scatterhist-tj-timing-solo" class="full-round-trio-tj"></div>
+            </div>
+            <div id="hist-att" class="graph-display-container"></div>
+            <div id="hist-buz" class="graph-display-container"></div>
+            <div id="hist-buzc" class="graph-display-container"></div>
+            <div id="hist-buz$" class="graph-display-container"></div>
+        </div>
+        <div id="footer">
+            <p>This site is not affiliated with Jeopardy!. Data is taken from their published <a href="https://www.jeopardy.com/jbuzz/news-events/jeopardy-daily-box-scores">box scores</a>.
+                Further data for this game taken from its <a id="jarchive-link" href="https://j-archive.com">J! Archive page</a>.</p>
+        </div>
+        <script type="text/javascript">
+            var threeColorSet = ['#0072B2','#E69F00','#009E73'];
+            var tocPeriodId = new URLSearchParams(window.location.search).get('toc_period_id');
+            var highlightGame = new URLSearchParams(window.location.search).get('game_id');
+            d3.select("#toc-period-id")
+                .data([getNameForTocPeriod(tocPeriodId)])
+                .text(d => d);
+
+            var gameClueData = undefined;
+            var tocPeriodData = undefined;
+            var runForCombinedData = function() {
+                if (gameClueData === undefined) return;
+                if (tocPeriodData === undefined) return;
+                var highlightGameData = d3.filter(tocPeriodData, d => d['highlightGame']);
+                var contestantIds = d3.map([1,2,3], i => d3.filter(highlightGameData, d => +d['Podium'] === i)[0]['Jometry Contestant Id']);
+                var contestantNames = d3.map(contestantIds, cid => getContestantNameFromData(highlightGameData, cid));
+
+                var x = ['0'].concat(d3.map(gameClueData, d => d['Round of Game'] + "-" + d['Clue of Round']));
+                var podium1ScoreTrace = {
+                    x: x,
+                    y: [0].concat(d3.map(gameClueData, d => +d['PostScore1'])),
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: contestantNames[0],
+                    line: {
+                        color: threeColorSet[0]
+                    }
+                };
+                var podium2ScoreTrace = {
+                    x: x,
+                    y: [0].concat(d3.map(gameClueData, d => +d['PostScore2'])),
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: contestantNames[1],
+                    line: {
+                        color: threeColorSet[1]
+                    }
+                };
+                var podium3ScoreTrace = {
+                    x: x,
+                    y: [0].concat(d3.map(gameClueData, d => +d['PostScore3'])),
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: contestantNames[2],
+                    line: {
+                        color: threeColorSet[2]
+                    }
+                };
+                var scoreLayout = {};
+                var scoreData = [podium1ScoreTrace, podium2ScoreTrace, podium3ScoreTrace];
+                Plotly.newPlot('line-score', scoreData, scoreLayout, {staticPlot: true});
+            };
+
+            d3.csv(csvUrlForGameClue(highlightGame)).then(function(data) {
+                gameClueData = data;
+                runForCombinedData();
+                var populateViewBoard = function(tableId, round) {
+                    var tableRows = d3.select('table#' + tableId + ' tbody')
+                        .selectAll('tr')
+                        .data([200*round, 400*round, 600*round, 800*round, 1000*round])
+                        .enter()
+                        .append('tr');
+                    var tableCells = tableRows.selectAll('td')
+                        .data(function (d, i) {
+                            r = [];
+                            for (var j=0; j < 6; ++j) {
+                                r.push({
+                                    'Base Value': d,
+                                    'Column': j + 1
+                                })
+                            }
+                            return r;
+                        })
+                        .enter()
+                        .append('td');
+                    var tableCellDivs1 = tableCells.selectAll('div')
+                        .data(d => [d])
+                        .enter()
+                        .append('div');
+                    tableCellDivs1.attr('class', function(d) {
+                        var filteredData = d3.filter(data, f => +f['Round of Game'] === round && +f['Column'] == d['Column'] && +f['Base Value'] == d['Base Value']);
+                        if (filteredData.length > 0 && filteredData[0]['DD'] === '1') {
+                            return 'daily-double';
+                        }
+                        return '';
+                    });
+                    var tableCellDivs2 = tableCellDivs1.selectAll('div')
+                        .data(function(d,i) {
+                            var filteredData = d3.filter(data, f => +f['Round of Game'] === round && +f['Column'] == d['Column'] && +f['Base Value'] == d['Base Value']);
+                            if (filteredData.length == 0) {
+                                return [-1];
+                            }
+                            var corrects = [];
+                            filteredData = filteredData[0];
+                            if (filteredData['Correct1'] === '1') corrects.push(1);
+                            if (filteredData['Correct2'] === '1') corrects.push(2);
+                            if (filteredData['Correct3'] === '1') corrects.push(3);
+                            if (corrects.length == 0) {
+                                return [0];
+                            }
+                            return corrects;
+                        })
+                        .enter()
+                        .append('div');
+                    tableCellDivs2
+                        .attr('style', function(d) {
+                            var string = 'background-color: ';
+                            switch(d) {
+                                case -1:    string += 'black';
+                                            break;
+                                case 0:     string += 'gray';
+                                            break;
+                                default:    string += threeColorSet[d-1];
+                            }
+                            return string;
+                        });
+                };
+                populateViewBoard('j-board', 1);
+                populateViewBoard('dj-board', 2);
+                populateViewBoard('tj-board', 3);
+
+
+                var fjRecord = d3.filter(data, d => +d['Round of Game'] === 4 && +d['Clue of Round'] === 1)[0];
+                var fjInitialScores = d3.map([1,2,3], p => +fjRecord['PreScore' + p]);
+                var fjWagers = d3.map([1,2,3], p => +fjRecord['Wager' + p]);
+                var fjMatrixTds = d3.selectAll('table#fj-matrix td')
+                    .data([
+                        [true, true, true],
+                        [true, true, false],
+                        [true, false, true],
+                        [true, false, false],
+                        [false, true, true],
+                        [false, true, false],
+                        [false, false, true],
+                        [false, false, false]
+                    ])
+                    .html(d => {
+                        var fjFinalScores = d3.map([0,1,2], p => fjInitialScores[p] + (fjWagers[p] * (d[p] ? 1 : -1)));
+                        var winningScore = d3.max(fjFinalScores);
+                        var s = '<div>';
+                        for (var p = 0; p < 3; ++p) {
+                            if (fjFinalScores[p] >= winningScore && winningScore > 0) {
+                                s += '<div style="background-color: ' + threeColorSet[p] + ';"></div>'
+                            }
+                        }
+                        if (winningScore <= 0) {
+                            s += '<div style="background-color: black;"></div>'
+                        }
+                        s +=    '</div>';
+                        return s;
+                    });
+            });
+
+            d3.csv(csvUrlForTocPeriod(tocPeriodId), csvDataAccessor).then(function(data) {
+                var margin = {top: 20, right: 20, bottom: 50, left: 70},
+                    width = 960 - margin.left - margin.right,
+                    height = 500 - margin.top - margin.bottom;
+
+                //Data transformations
+                data.forEach(function(d) {
+                    d['highlightGame'] = d['Jometry Game Id'] == highlightGame;
+                });
+                tocPeriodData = data;
+                runForCombinedData();
+
+                var highlightGameData = d3.filter(data, d => d['highlightGame']);
+
+                d3.select("#season").data([highlightGameData[0]]).text(d => d['Season']);
+                d3.select("#game-number").data([highlightGameData[0]]).text(d => d['Game In Season']);
+                d3.select("#game-date").data([highlightGameData[0]]).text(d => dateFormat(d['Date']));
+                document.getElementById("jarchive-link").href = 'https://j-archive.com/showgame.php?game_id=' + highlightGameData[0]['Jarchive Game Id'];
+                var highlightGameContestantIds = d3.map(highlightGameData, d => d['Jometry Contestant Id']);
+                data.forEach(function(d) {
+                    d['highlightContestant'] = highlightGameContestantIds.includes(d['Jometry Contestant Id']);
+                });
+
+                //Graphics functions
+                var color = d3.scaleOrdinal()
+                    .domain(highlightGameContestantIds)
+                    .range(threeColorSet)
+                var highlightGameColorFunction = function(d) {
+                    if (d['highlightGame'] || d['highlightContestant']) {
+                        return color(d['Jometry Contestant Id']);
+                    } else {
+                        return "black";
+                    }
+                };
+                var highlightGameLabelFunction = function(d) {
+                    if (d['highlightGame']) {
+                        return d['Contestant'];
+                    }
+                };
+
+                //Summary table
+                var summaryTr = d3.select("#game-summary table tbody")
+                    .selectAll("tr")
+                    .data(highlightGameData)
+                    .enter()
+                    .append("tr");
+                if (highlightGameData[0]['JGCon'] !== undefined) {
+                    d3.select("#game-summary span#j-gcon")
+                        .text(", Contention: " + (100 * highlightGameData[0]['JGCon']).toFixed(0) + "%");
+                    d3.select("#game-summary span#dj-gcon")
+                        .text(", Contention: " + (100 * highlightGameData[0]['DJGCon']).toFixed(0) + "%");
+                    d3.select("#game-summary span#tj-gcon")
+                        .text(", Contention: " + (100 * highlightGameData[0]['TJGCon']).toFixed(0) + "%");
+                }
+                summaryTr.selectAll("td")
+                    .data(function(d,i) {
+                        console.log(d);
+                        return [
+                            [d['Jometry Contestant Id'], d['Contestant']],
+                            d['Att'],
+                            d['Buz'],
+                            formatNumber(d['Buz%'], 1, false),
+                            d['BuzC'],
+                            d['BuzInc'],
+                            d['Buz$'],
+                            formatNumber(d['Buz$/Buz'], 0),
+                            formatNumber(d['Speed'], 1, false, true),
+                            formatNumber(d['Solo'], 1, false),
+                            d['DDF'],
+                            formatNumber(d['DD+'], 1, false),
+                            d['DD$'],
+                            d['TJFinal$'],
+                            d['FJ$'],
+                            d['FJFinal$'],
+                            d['JAtt'],
+                            d['JBuz'],
+                            formatNumber(d['JBuz%'], 1, false),
+                            d['JBuzC'],
+                            d['JBuzInc'],
+                            d['JBuz$'],
+                            formatNumber(d['JBuz$/Buz'], 0),
+                            formatNumber(d['JSpeed'], 1, false, true),
+                            formatNumber(d['JSolo'], 1, false),
+                            d['JDDF'],
+                            formatNumber(d['JDD+'], 1, false),
+                            d['JDD$'],
+                            d['DJAtt'],
+                            d['DJBuz'],
+                            formatNumber(d['DJBuz%'], 1, false),
+                            d['DJBuzC'],
+                            d['DJBuzInc'],
+                            d['DJBuz$'],
+                            formatNumber(d['DJBuz$/Buz'], 0),
+                            formatNumber(d['DJSpeed'], 1, false, true),
+                            formatNumber(d['DJSolo'], 1, false),
+                            d['DJDDF'],
+                            formatNumber(d['DJDD+'], 1, false),
+                            d['DJDD$'],
+                            d['TJAtt'],
+                            d['TJBuz'],
+                            formatNumber(d['TJBuz%'], 1, false),
+                            d['TJBuzC'],
+                            d['TJBuzInc'],
+                            d['TJBuz$'],
+                            formatNumber(d['TJBuz$/Buz'], 0),
+                            formatNumber(d['TJSpeed'], 1, false, true),
+                            formatNumber(d['TJSolo'], 1, false),
+                            d['TJDDF'],
+                            formatNumber(d['TJDD+'], 1, false),
+                            d['TJDD$']
+                        ];
+                    })
+                    .enter()
+                    .append("td")
+                    .attr('class', function(d,i) {
+                        if (i < 1) {
+                            return '';
+                        } else if (i < 16) {
+                            return 'controlled game';
+                        } else if (i < 28) {
+                            return 'controlled j';
+                        } else if (i < 40) {
+                            return 'controlled dj';
+                        } else if (i < 52) {
+                            return 'controlled tj';
+                        } else {
+                            return '';
+                        }
+                    })
+                    .html(function(d,i) {
+                        if (i>0) return d;
+                        return '<span style="color: ' + color(d) + '">&#9632;</span>&nbsp;<a href="contestant_3_round.html?toc_period_id=' + tocPeriodId + '&contestant=' + d[0] + '">' + d[1] + "</a>";
+                    });
+                controlTable('table#game-summary-table', ['game','j','dj','tj']);
+
+                var hasBoxScoreData = d3.filter(data, d => d['highlightGame'] && d['Att'] !== undefined).length > 0;
+                var roundGraphMargin = { t: 10, b: 50, l: 70, r: 50, pad: 4 };
+
+                if (hasBoxScoreData) {
+                    //Timing/Solo
+                    renderHighlightScatterHistogram(
+                        data,
+                        'scatterhist-timing-solo',
+                        'Timing and Solo',
+                        d => d['Speed'] !== '' && d['Solo'] !== '',
+                        d => d['highlightGame'],
+                        'Timing',
+                        d => d['Speed'],
+                        { start: -20, end: 20, size: 1 },
+                        'Solo',
+                        d => d['Solo'],
+                        { start: 0, end: 25, size: 1 },
+                        highlightGameColorFunction,
+                        highlightGameLabelFunction
+                    );
+                    renderHighlightScatterHistogram(
+                        data,
+                        'scatterhist-j-timing-solo',
+                        null,
+                        d => d['JSpeed'] !== '' && d['JSolo'] !== '',
+                        d => d['highlightGame'],
+                        'J! Timing',
+                        d => d['JSpeed'],
+                        { start: -10, end: 10, size: 1 },
+                        'J! Solo',
+                        d => d['JSolo'],
+                        { start: 0, end: 20, size: 1 },
+                        highlightGameColorFunction,
+                        highlightGameLabelFunction,
+                        roundGraphMargin
+                    );
+                    renderHighlightScatterHistogram(
+                        data,
+                        'scatterhist-dj-timing-solo',
+                        null,
+                        d => d['DJSpeed'] !== '' && d['DJSolo'] !== '',
+                        d => d['highlightGame'],
+                        'DJ! Timing',
+                        d => d['DJSpeed'],
+                        { start: -10, end: 10, size: 1 },
+                        'DJ! Solo',
+                        d => d['DJSolo'],
+                        { start: 0, end: 20, size: 1 },
+                        highlightGameColorFunction,
+                        highlightGameLabelFunction,
+                        roundGraphMargin
+                    );
+                    renderHighlightScatterHistogram(
+                        data,
+                        'scatterhist-tj-timing-solo',
+                        null,
+                        d => d['TJSpeed'] !== '' && d['TJSolo'] !== '',
+                        d => d['highlightGame'],
+                        'TJ! Timing',
+                        d => d['TJSpeed'],
+                        { start: -10, end: 10, size: 1 },
+                        'TJ! Solo',
+                        d => d['TJSolo'],
+                        { start: 0, end: 20, size: 1 },
+                        highlightGameColorFunction,
+                        highlightGameLabelFunction,
+                        roundGraphMargin
+                    );
+
+                    //Att/Buz%
+                    renderHighlightScatterHistogram(
+                        data,
+                        'scatterhist-att-buz%',
+                        'Att and Buz%',
+                        d => d['Att'] !== '' && d['Buz%'] !== '',
+                        d => d['highlightGame'],
+                        'Att',
+                        d => d['Att'],
+                        { start: -0.5, end: 84.5, size: 1 },
+                        'Buz%',
+                        d => d['Buz%'],
+                        { start: 0, end: 100, size: 5 },
+                        highlightGameColorFunction,
+                        highlightGameLabelFunction
+                    );
+                    renderHighlightScatterHistogram(
+                        data,
+                        'scatterhist-j-att-buz%',
+                        null,
+                        d => d['JAtt'] !== '' && d['JBuz%'] !== '',
+                        d => d['highlightGame'],
+                        'J! Att',
+                        d => d['JAtt'],
+                        { start: -0.5, end: 29.5, size: 1 },
+                        'J! Buz%',
+                        d => d['JBuz%'],
+                        { start: 0, end: 100, size: 10 },
+                        highlightGameColorFunction,
+                        highlightGameLabelFunction,
+                        roundGraphMargin
+                    );
+                    renderHighlightScatterHistogram(
+                        data,
+                        'scatterhist-dj-att-buz%',
+                        null,
+                        d => d['DJAtt'] !== '' && d['DJBuz%'] !== '',
+                        d => d['highlightGame'],
+                        'DJ! Att',
+                        d => d['DJAtt'],
+                        { start: -0.5, end: 29.5, size: 1 },
+                        'DJ! Buz%',
+                        d => d['DJBuz%'],
+                        { start: 0, end: 100, size: 10 },
+                        highlightGameColorFunction,
+                        highlightGameLabelFunction,
+                        roundGraphMargin
+                    );
+                    renderHighlightScatterHistogram(
+                        data,
+                        'scatterhist-tj-att-buz%',
+                        null,
+                        d => d['TJAtt'] !== '' && d['TJBuz%'] !== '',
+                        d => d['highlightGame'],
+                        'TJ! Att',
+                        d => d['TJAtt'],
+                        { start: -0.5, end: 29.5, size: 1 },
+                        'TJ! Buz%',
+                        d => d['TJBuz%'],
+                        { start: 0, end: 100, size: 10 },
+                        highlightGameColorFunction,
+                        highlightGameLabelFunction,
+                        roundGraphMargin
+                    );
+
+                    //Att / Buz$/Att
+                    renderHighlightScatterHistogram(
+                        data,
+                        'scatterhist-att-buz$-per-att',
+                        'Att and Buz$/Att',
+                        d => d['Att'] !== undefined,
+                        d => d['highlightGame'],
+                        'Att',
+                        d => d['Att'],
+                        { start: -0.5, end: 84.5, size: 1 },
+                        'Buz$/Att',
+                        d => 1.0 * d['Buz$'] / d['Att'],
+                        { start: -500, end: 1000, size: 50 },
+                        highlightGameColorFunction,
+                        highlightGameLabelFunction
+                    );
+                    renderHighlightScatterHistogram(
+                        data,
+                        'scatterhist-j-att-buz$-per-att',
+                        null,
+                        d => d['JAtt'] !== undefined,
+                        d => d['highlightGame'],
+                        'J! Att',
+                        d => d['JAtt'],
+                        { start: -0.5, end: 29.5, size: 1 },
+                        'J! Buz$/Att',
+                        d => 1.0 * d['JBuz$'] / d['JAtt'],
+                        { start: -200, end: 700, size: 50 },
+                        highlightGameColorFunction,
+                        highlightGameLabelFunction,
+                        roundGraphMargin
+                    );
+                    renderHighlightScatterHistogram(
+                        data,
+                        'scatterhist-dj-att-buz$-per-att',
+                        null,
+                        d => d['DJAtt'] !== undefined,
+                        d => d['highlightGame'],
+                        'DJ! Att',
+                        d => d['DJAtt'],
+                        { start: -0.5, end: 29.5, size: 1 },
+                        'DJ! Buz$/Att',
+                        d => 1.0 * d['DJBuz$'] / d['DJAtt'],
+                        { start: -500, end: 1300, size: 50 },
+                        highlightGameColorFunction,
+                        highlightGameLabelFunction,
+                        roundGraphMargin
+                    );
+                    renderHighlightScatterHistogram(
+                        data,
+                        'scatterhist-tj-att-buz$-per-att',
+                        null,
+                        d => d['TJAtt'] !== undefined,
+                        d => d['highlightGame'],
+                        'TJ! Att',
+                        d => d['TJAtt'],
+                        { start: -0.5, end: 29.5, size: 1 },
+                        'TJ! Buz$/Att',
+                        d => 1.0 * d['TJBuz$'] / d['TJAtt'],
+                        { start: -500, end: 1300, size: 50 },
+                        highlightGameColorFunction,
+                        highlightGameLabelFunction,
+                        roundGraphMargin
+                    );
+
+                    renderHighlightHistogram(
+                        data,
+                        'hist-att',
+                        'Attempts',
+                        d => d['Att'] !== '',
+                        d => d['highlightGame'],
+                        'Att',
+                        d => +d['Att'],
+                        { start: -0.5, end: 84.5, size: 1 },
+                        highlightGameColorFunction,
+                        highlightGameLabelFunction
+                    );
+
+                } else {
+                    ids = ['contention', 'att-buz%-container', 'timing-solo-container', 'hist-att', 'att-buz$-per-att-container'];
+                    ids.forEach(id => {
+                        document.getElementById(id).style.display = 'none';
+                    });
+                }
+
+                //Buz vs Buz$/Buz
+                renderHighlightScatterHistogram(
+                    data,
+                    'scatterhist-buz-buz$-per-buz',
+                    'Buz vs Buz$/Buz',
+                    d => true,
+                    d => d['highlightGame'],
+                    'Buz',
+                    d => d['Buz'],
+                    { start: -0.5, end: 60.5, size: 1 },
+                    'Buz$/Buz',
+                    d => d['Buz$/Buz'],
+                    { start: -650, end: 1150, size: 100 },
+                    highlightGameColorFunction,
+                    highlightGameLabelFunction
+                );
+                renderHighlightScatterHistogram(
+                    data,
+                    'scatterhist-j-buz-buz$-per-buz',
+                    null,
+                    d => true,
+                    d => d['highlightGame'],
+                    'J! Buz',
+                    d => d['JBuz'],
+                    { start: -0.5, end: 29.5, size: 1 },
+                    'J! Buz$/Buz',
+                    d => d['JBuz$/Buz'],
+                    { start: -650, end: 1050, size: 100 },
+                    highlightGameColorFunction,
+                    highlightGameLabelFunction,
+                    roundGraphMargin
+                );
+                renderHighlightScatterHistogram(
+                    data,
+                    'scatterhist-dj-buz-buz$-per-buz',
+                    null,
+                    d => true,
+                    d => d['highlightGame'],
+                    'DJ! Buz',
+                    d => d['DJBuz'],
+                    { start: -0.5, end: 29.5, size: 1 },
+                    'DJ! Buz$/Buz',
+                    d => d['DJBuz$/Buz'],
+                    { start: -1050, end: 2050, size: 100 },
+                    highlightGameColorFunction,
+                    highlightGameLabelFunction,
+                    roundGraphMargin
+                );
+                renderHighlightScatterHistogram(
+                    data,
+                    'scatterhist-tj-buz-buz$-per-buz',
+                    null,
+                    d => true,
+                    d => d['highlightGame'],
+                    'TJ! Buz',
+                    d => d['TJBuz'],
+                    { start: -0.5, end: 29.5, size: 1 },
+                    'TJ! Buz$/Buz',
+                    d => d['TJBuz$/Buz'],
+                    { start: -1050, end: 2050, size: 100 },
+                    highlightGameColorFunction,
+                    highlightGameLabelFunction,
+                    roundGraphMargin
+                );
+
+                renderHighlightHistogram(
+                    data,
+                    'hist-buz',
+                    'Buzzes',
+                    d => true,
+                    d => d['highlightGame'],
+                    'Buz',
+                    d => +d['Buz'],
+                    { start: -0.5, end: 84.5, size: 1 },
+                    highlightGameColorFunction,
+                    highlightGameLabelFunction
+                );
+
+                renderHighlightHistogram(
+                    data,
+                    'hist-buzc',
+                    'Correct Buzzes',
+                    d => true,
+                    d => d['highlightGame'],
+                    'BuzC',
+                    d => +d['JBuzC'] + +d['DJBuzC'],
+                    { start: -0.5, end: 84.5, size: 1 },
+                    highlightGameColorFunction,
+                    highlightGameLabelFunction
+                );
+
+                renderHighlightHistogram(
+                    data,
+                    'hist-buz$',
+                    'Buz$',
+                    d => true,
+                    d => d['highlightGame'],
+                    'Buz$',
+                    d => +d['Buz$'],
+                    { start: -20000, end: 100000, size: 1000 },
+                    highlightGameColorFunction,
+                    highlightGameLabelFunction
+                );
+
+                //Attempts
+                var attemptsTraceJBuzC = {
+                    x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
+                    y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => +cd1['JBuzC']))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => +cd1['JBuzC']))),
+                    type: 'bar',
+                    marker: {
+                        color: d3.map(highlightGameContestantIds, color),
+                        line: {
+                            color: 'black',
+                            width: 1
+                        }
+                    },
+                    xaxis: 'x',
+                    yaxis: 'y'
+                };
+                var attemptsTraceJBuzI = {
+                    x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
+                    y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => +cd1['JBuzInc']))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => +cd1['JBuzInc']))),
+                    type: 'bar',
+                    marker: {
+                        color: d3.map(highlightGameContestantIds, color),
+                        line: {
+                            color: 'black',
+                            width: 1
+                        },
+                        opacity: 0.6
+                    },
+                    xaxis: 'x',
+                    yaxis: 'y'
+                };
+                var attemptsTraceJAttBlocked = {
+                    x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
+                    y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => +cd1['JAtt'] - +cd1['JBuz']))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => +cd1['JAtt'] - +cd1['JBuz']))),
+                    type: 'bar',
+                    marker: {
+                        color: d3.map(highlightGameContestantIds, color),
+                        line: {
+                            color: 'black',
+                            width: 1
+                        },
+                        opacity: 0.2
+                    },
+                    xaxis: 'x',
+                    yaxis: 'y'
+                };
+                var attemptsTraceDJBuzC = {
+                    x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
+                    y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => +cd1['DJBuzC']))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => +cd1['DJBuzC']))),
+                    type: 'bar',
+                    marker: {
+                        color: d3.map(highlightGameContestantIds, color),
+                        line: {
+                            color: 'black',
+                            width: 1
+                        }
+                    },
+                    xaxis: 'x2',
+                    yaxis: 'y'
+                };
+                var attemptsTraceDJBuzI = {
+                    x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
+                    y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => +cd1['DJBuzInc']))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => +cd1['DJBuzInc']))),
+                    type: 'bar',
+                    marker: {
+                        color: d3.map(highlightGameContestantIds, color),
+                        line: {
+                            color: 'black',
+                            width: 1
+                        },
+                        opacity: 0.6
+                    },
+                    xaxis: 'x2',
+                    yaxis: 'y'
+                };
+                var attemptsTraceDJAttBlocked = {
+                    x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
+                    y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => +cd1['DJAtt'] - +cd1['DJBuz']))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => +cd1['DJAtt'] - +cd1['DJBuz']))),
+                    type: 'bar',
+                    marker: {
+                        color: d3.map(highlightGameContestantIds, color),
+                        line: {
+                            color: 'black',
+                            width: 1
+                        },
+                        opacity: 0.2
+                    },
+                    xaxis: 'x2',
+                    yaxis: 'y'
+                };
+                var attemptsTraceTJBuzC = {
+                    x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
+                    y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => +cd1['TJBuzC']))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => +cd1['TJBuzC']))),
+                    type: 'bar',
+                    marker: {
+                        color: d3.map(highlightGameContestantIds, color),
+                        line: {
+                            color: 'black',
+                            width: 1
+                        }
+                    },
+                    xaxis: 'x3',
+                    yaxis: 'y'
+                };
+                var attemptsTraceTJBuzI = {
+                    x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
+                    y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => +cd1['TJBuzInc']))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => +cd1['TJBuzInc']))),
+                    type: 'bar',
+                    marker: {
+                        color: d3.map(highlightGameContestantIds, color),
+                        line: {
+                            color: 'black',
+                            width: 1
+                        },
+                        opacity: 0.6
+                    },
+                    xaxis: 'x3',
+                    yaxis: 'y'
+                };
+                var attemptsTraceTJAttBlocked = {
+                    x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
+                    y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => +cd1['TJAtt'] - +cd1['TJBuz']))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => +cd1['TJAtt'] - +cd1['TJBuz']))),
+                    type: 'bar',
+                    marker: {
+                        color: d3.map(highlightGameContestantIds, color),
+                        line: {
+                            color: 'black',
+                            width: 1
+                        },
+                        opacity: 0.2
+                    },
+                    xaxis: 'x3',
+                    yaxis: 'y'
+                };
+
+                var attemptsLayout = {
+                    barmode: 'stack',
+                    showlegend: false,
+                    grid: {
+                        rows: 1,
+                        columns: 3,
+                        subplots: ['xy,x2y','x3y']
+                    },
+                    xaxis: {
+                        title: {
+                            text: "J",
+                            standoff: 10
+                        },
+                    },
+                    xaxis2: {
+                        title: {
+                            text: "DJ",
+                            standoff: 10
+                        },
+                    },
+                    xaxis3: {
+                        title: {
+                            text: "TJ",
+                            standoff: 10
+                        },
+                    },
+                    yaxis: {
+                        title: {
+                            text: "Buzzes -> Attempts",
+                            standoff: 20
+                        },
+                    }
+                };
+                Plotly.newPlot('bar-attempts', [attemptsTraceJBuzC, attemptsTraceJBuzI, attemptsTraceJAttBlocked,
+                    attemptsTraceDJBuzC, attemptsTraceDJBuzI, attemptsTraceDJAttBlocked,
+                    attemptsTraceTJBuzC, attemptsTraceTJBuzI, attemptsTraceTJAttBlocked], attemptsLayout, {staticPlot: true});
+
+
+            });
+        </script>
+    </body>
+</html>

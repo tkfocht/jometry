@@ -200,11 +200,32 @@
             </div>
         </div>
 
+        <div class="toc-period" id="C2023">
+            <div class="toc-period-header"><span class="toc-period-play-class-label">Celebrity Jeopardy 2022-2023</span></div>
+            <div class="toc-period-play-class" id="PCJ2023">
+                <div class="toc-period-play-class-header">
+                    <span class="toc-period-play-class-label"></span>
+                    <!--<span class="toc-period-play-class-item"><a class="toc-period-play-class-navigation-item" href="/toc_period_3_round.html?toc_period=PCJ2023">Leaders</a></span>-->
+                </div>
+                <div class="toc-period-play-class-controls">
+                    <span class="toc-period-play-class-control show-games">Show Games</span>
+                    <span class="toc-period-play-class-control hide-games" style="display: none">Hide Games</span>
+                </div>
+                <div class="toc-period-play-game-list" style="display: none">
+                    <table class="game-list">
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
         <div id="footer">
             <p>This site is not affiliated with Jeopardy!. Data is taken from their published <a href="https://www.jeopardy.com/jbuzz/news-events/jeopardy-daily-box-scores">box scores</a>
             and from <a href="https://j-archive.com">J! Archive</a>.</p>
         </div>
         <script type="text/javascript">
+            var threeRoundCompetitions = ['PCJ2023'];
+
             var renderTocPeriodAndTypeSection = function(
                 tocPeriodId,
                 data
@@ -227,6 +248,11 @@
                     .enter()
                     .append('tr')
                     .html(function(d) {
+                        if (threeRoundCompetitions.includes(tocPeriodId)) {
+                            return '<td><a href="game_3_round.html?toc_period_id=' + tocPeriodId + '&game_id=' + d[0] + '">Season ' + d[5] + ' Game ' + d[6] + '</a></td>' +
+                            '<td>' + dateFormat(d[1]) + '</td>' +
+                            '<td>' + d.slice(2,5).join(' vs ') + '</td>';
+                        }
                         return '<td><a href="game.html?toc_period_id=' + tocPeriodId + '&game_id=' + d[0] + '">Season ' + d[5] + ' Game ' + d[6] + '</a></td>' +
                             '<td>' + dateFormat(d[1]) + '</td>' +
                             '<td>' + d.slice(2,5).join(' vs ') + '</td>';
@@ -246,7 +272,7 @@
                         });
             }
 
-            for (const tocPeriodId of ['TOC2023R','TOC2022R','NCC2022','TOC2022P','TOC2021R','TOC2021T','TOC2021C','TOC2019R','TOC2019T1','TOC2019T2','TOC2019C']) {
+            for (const tocPeriodId of ['TOC2023R','TOC2022R','NCC2022','TOC2022P','TOC2021R','TOC2021T','TOC2021C','TOC2019R','TOC2019T1','TOC2019T2','TOC2019C','PCJ2023']) {
                 d3.select('#' + tocPeriodId + ' span.toc-period-play-class-label').text(getNameForTocPeriod(tocPeriodId));
                 d3.csv(csvUrlForTocPeriod(tocPeriodId)).then(function(data) {
                     renderTocPeriodAndTypeSection(tocPeriodId, data);

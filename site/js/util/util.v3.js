@@ -30,6 +30,7 @@ var getNameForTocPeriod = function(id) {
         case 'NCC2022':     return '2022 National College Championship';
         case 'TOC2021C':    return '2020 College Championship (S36)';
         case 'TOC2019C':    return '2018 College Championship (S34)';
+        case 'PCJ2023':     return 'Primetime Celebrity Jeopardy! S1';
     }
 }
 
@@ -60,15 +61,17 @@ var csvDataAccessor = function(row) {
     r['Buz%'] = 100.0 * r['Buz'] / r['Att'];
     r['JBuz%'] = 100.0 * r['JBuz'] / r['JAtt'];
     r['DJBuz%'] = 100.0 * r['DJBuz'] / r['DJAtt'];
+    r['TJBuz%'] = 100.0 * r['TJBuz'] / r['TJAtt'];
     r['BuzC'] = r['JBuzC'] + r['DJBuzC'];
     r['BuzInc'] = r['JBuzInc'] + r['DJBuzInc'];
     r['BuzC$'] = r['JBuzC$'] + r['DJBuzC$'];
     r['BuzI$'] = r['JBuzI$'] + r['DJBuzI$'];
-    r['DDF'] = r['JDDF'] + r['DJDDF'];
-    r['DD+'] = r['JDD+'] + r['DJDD+'];
+    r['DDF'] = r['JDDF'] + r['DJDDF'] + ('TJDDF' in r ? r['TJDDF'] : 0);
+    r['DD+'] = r['JDD+'] + r['DJDD+'] + ('TJDD+' in r ? r['TJDD+'] : 0);
     r['DD$'] = d3.sum(d3.map(['JDD','DJDD1','DJDD2'], k => r[k] === undefined ? 0 : r[k]));
     r['JDD$'] = d3.sum(d3.map(['JDD'], k => r[k] === undefined ? 0 : r[k]));
     r['DJDD$'] = d3.sum(d3.map(['DJDD1','DJDD2'], k => r[k] === undefined ? 0 : r[k]));
+    r['TJDD$'] = d3.sum(d3.map(['TJDD1','TJDD2','TJDD3'], k => r[k] === undefined ? 0 : r[k]));
     r['FJ$'] = r['FJCor'] === undefined ? undefined : (-1 + (2 * r['FJCor'])) * r['FJWager'];
     return r;
 };
