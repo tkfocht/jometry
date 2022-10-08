@@ -1021,7 +1021,7 @@
                     }
                     var trace = {
                         x: d3.map(d3.filter(data, cd => !highlightContestantIds.includes(cd['Jometry Contestant Id'])), cd1 => +cd1['Att']),
-                        y: d3.map(d3.filter(data, cd => !highlightContestantIds.includes(cd['Jometry Contestant Id'])), cd1 => 1.0 +cd1['Buz$'] / +cd1['Att']),
+                        y: d3.map(d3.filter(data, cd => !highlightContestantIds.includes(cd['Jometry Contestant Id'])), cd1 => 1.0 * +cd1['Buz$'] / +cd1['Att']),
                         mode: 'markers',
                         type: 'scatter',
                         name: "Others",
