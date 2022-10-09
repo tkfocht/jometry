@@ -322,9 +322,9 @@
             d3.select("#toc-period-id")
                 .data([getNameForTocPeriod(tocPeriodId)])
                 .text(d => d);
-            d3.csv(csvUrlForTocPeriod(tocPeriodId)).then(function(data) {
+            d3.csv(csvUrlForTocPeriod(tocPeriodId), csvDataAccessor).then(function(data) {
                 //Data transformations
-                data.forEach(function(d) {
+                /*data.forEach(function(d) {
                     d['Date'] = csvDateParse(d['Date']);
                     d['BuzC'] = +d['JBuzC'] + +d['DJBuzC'];
                     d['BuzC$'] = +d['JBuzC$'] + +d['DJBuzC$'];
@@ -334,12 +334,12 @@
                     d['DJBuz%'] = 100.0 * d['DJBuz'] / d['DJAtt'];
                     d['Buz%'] = 100.0 * d['Buz'] / d['Att'];
                     d['FJ$'] = d['FJCor'] === "" ? 0 : (2 * +d['FJCor'] - 1) * +d['FJWager'];
-                });
+                });*/
 
                 var highlightContestantIds = new URLSearchParams(window.location.search).get('contestants');
-                var highlightContestantCounts = d3.rollup(data, v => d3.sum(d3.map(v, cd => (+cd['Wins']))), d => d['Jometry Contestant Id']);
-                var contestantWinnings = d3.rollup(data, v => d3.sum(d3.map(v, cd => (+cd['Wins'] * +cd['FJFinal$']))), d => d['Jometry Contestant Id']);
-                var contestantScores = d3.rollup(data, v => d3.sum(d3.map(v, cd => +cd['FJFinal$'])), d => d['Jometry Contestant Id']);
+                var highlightContestantCounts = d3.rollup(data, v => d3.sum(d3.map(v, cd => cd['Wins'])), d => d['Jometry Contestant Id']);
+                var contestantWinnings = d3.rollup(data, v => d3.sum(d3.map(v, cd => cd['Wins'] * cd['FJFinal$'])), d => d['Jometry Contestant Id']);
+                var contestantScores = d3.rollup(data, v => d3.sum(d3.map(v, cd => cd['FJFinal$'])), d => d['Jometry Contestant Id']);
                 if (highlightContestantIds === null) {
                     var gameThreshold = 4;
                     highlightContestantIds = d3.filter(highlightContestantCounts.keys(), k => highlightContestantCounts.get(k) >= gameThreshold);
@@ -372,7 +372,7 @@
                         return contestantScores.get(b) - contestantScores.get(a);
                     });
                 } else {
-                    highlightContestantIds = highlightContestantIds.split(',');
+                    highlightContestantIds = d3.map(highlightContestantIds.split(','), cid => +cid);
                 }
 
                 var latestDate = d3.max(d3.map(data, d => d['Date']));
@@ -433,104 +433,104 @@
                             contestantData = d3.filter(data, d => d['highlightContestant']);
                             labelCellHtml = 'All Listed Contestants';
                         }
-                        var contestantDataWithBoxScore = d3.filter(contestantData, d => d['Att'] !== '');
+                        var contestantDataWithBoxScore = d3.filter(contestantData, d => d['Att'] !== undefined);
                         return [
                             labelCellHtml,
-                            d3.sum(contestantData, d => +d['Wins']),
-                            d3.sum(contestantData, d => +d['Leads']),
-                            d3.sum(contestantData, d => +d['Crushes']),
-                            d3.sum(contestantData, d => +d['Locks']),
-                            d3.sum(contestantData, d => +d['FJFinal$'] * +d['Wins']),
+                            d3.sum(contestantData, d => d['Wins']),
+                            d3.sum(contestantData, d => d['Leads']),
+                            d3.sum(contestantData, d => d['Crushes']),
+                            d3.sum(contestantData, d => d['Locks']),
+                            d3.sum(contestantData, d => d['FJFinal$'] * d['Wins']),
                             contestantDataWithBoxScore.length > 0 ? d3.sum(contestantDataWithBoxScore, d => d['Att']).toFixed(0) : '',
-                            d3.sum(contestantData, d => +d['Buz']).toFixed(0),
-                            contestantDataWithBoxScore.length > 0 ? (100 * d3.sum(contestantDataWithBoxScore, d => +d['Buz']) / d3.sum(contestantDataWithBoxScore, d => +d['Att'])).toFixed(1) : '',
-                            d3.sum(contestantData, d => +d['Buz$']).toFixed(0),
-                            d3.sum(contestantData, d => +d['JDDF'] + +d['DJDDF']).toFixed(0),
-                            d3.sum(contestantData, d => +d['JDD+'] + +d['DJDD+']).toFixed(2),
-                            d3.sum(contestantData, d => +d['JDD'] + +d['DJDD1'] + +d['DJDD2']).toFixed(0),
-                            d3.sum(contestantData, d => +d['FJCor']) + '/' + d3.sum(contestantData, d => +d['DJFinal$'] > 0 ? 1 : 0),
-                            d3.sum(contestantData, d => +d['FJ$']).toFixed(0),
-                            d3.sum(contestantData, d => +d['FJFinal$']).toFixed(0),
-                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => +d['Att']).toFixed(1) : '',
-                            d3.mean(contestantData, d => +d['Buz']).toFixed(1),
-                            d3.mean(contestantData, d => +d['Buz$']).toFixed(0),
-                            d3.mean(contestantData, d => +d['Buz'] === 0 ? 0 : d['Buz$'] / d['Buz']).toFixed(0),
-                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => +d['Att'] === 0 ? 0 : 100.0 * +d['Buz'] / +d['Att']).toFixed(1) : '',
-                            d3.mean(contestantData, d => +d['BuzC']).toFixed(1),
-                            d3.mean(contestantData, d => +d['BuzC$']).toFixed(0),
-                            contestantDataWithBoxScore.length > 0 ? formatNumber(d3.mean(contestantDataWithBoxScore, d => +d['Speed']), 1, false, true) : '',
-                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => +d['Solo']).toFixed(1) : '',
-                            d3.mean(contestantData, d => +d['JDDF'] + +d['DJDDF']).toFixed(1),
-                            d3.mean(contestantData, d => +d['JDD+'] + +d['DJDD+']).toFixed(2),
-                            d3.mean(contestantData, d => +d['JDD'] + +d['DJDD1'] + +d['DJDD2']).toFixed(0),
-                            d3.mean(contestantData, d => +d['JFinal$']).toFixed(0),
-                            d3.mean(contestantData, d => +d['DJFinal$']).toFixed(0),
-                            d3.mean(contestantData, d => +d['FJ$']).toFixed(0),
-                            d3.mean(contestantData, d => +d['FJFinal$']).toFixed(0),
-                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => +d['JAtt']).toFixed(1) : '',
-                            d3.mean(contestantData, d => +d['JBuz']).toFixed(1),
-                            d3.mean(contestantData, d => +d['JBuz$']).toFixed(0),
-                            d3.mean(contestantData, d => +d['JBuz'] === 0 ? 0 : +d['JBuz$'] / +d['JBuz']).toFixed(0),
-                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => +d['JAtt'] === 0 ? 0 : 100.0 * +d['JBuz'] / +d['JAtt']).toFixed(1) : '',
-                            d3.mean(contestantData, d => +d['JBuzC']).toFixed(1),
-                            d3.mean(contestantData, d => +d['JBuzC$']).toFixed(0),
-                            contestantDataWithBoxScore.length > 0 ? formatNumber(d3.mean(contestantDataWithBoxScore, d => +d['JSpeed']), 1, false, true) : '',
-                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => +d['JSolo']).toFixed(1) : '',
-                            d3.mean(contestantData, d => +d['JDDF']).toFixed(1),
-                            d3.mean(contestantData, d => +d['JDD+']).toFixed(2),
-                            d3.mean(contestantData, d => +d['JDD']).toFixed(0),
-                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => +d['DJAtt']).toFixed(1) : '',
-                            d3.mean(contestantData, d => +d['DJBuz']).toFixed(1),
-                            d3.mean(contestantData, d => +d['DJBuz$']).toFixed(0),
-                            d3.mean(contestantData, d => +d['DJBuz'] === 0 ? 0 : d['DJBuz$'] / d['DJBuz']).toFixed(0),
-                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => +d['DJAtt'] === 0 ? 0 : 100.0 * +d['DJBuz'] / +d['DJAtt']).toFixed(1) : '',
-                            d3.mean(contestantData, d => +d['DJBuzC']).toFixed(1),
-                            d3.mean(contestantData, d => +d['DJBuzC$']).toFixed(0),
-                            contestantDataWithBoxScore.length > 0 ? formatNumber(d3.mean(contestantDataWithBoxScore, d => +d['DJSpeed']), 1, false, true) : '',
-                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => +d['DJSolo']).toFixed(1) : '',
-                            d3.mean(contestantData, d => +d['DJDDF']).toFixed(1),
-                            d3.mean(contestantData, d => +d['DJDD+']).toFixed(2),
-                            d3.mean(contestantData, d => +d['DJDD1'] + +d['DJDD2']).toFixed(0),
-                            contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => +d['Att']).toFixed(0) : '',
-                            d3.max(contestantData, d => +d['Buz']).toFixed(0),
-                            d3.max(contestantData, d => +d['Buz$']).toFixed(0),
-                            d3.max(contestantData, d => +d['Buz'] === 0 ? 0 : +d['Buz$'] / +d['Buz']).toFixed(0),
-                            contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => +d['Att'] === 0 ? 0 : 100.0 * +d['Buz'] / +d['Att']).toFixed(1) : '',
-                            d3.max(contestantData, d => +d['BuzC']).toFixed(0),
-                            d3.max(contestantData, d => +d['BuzC$']).toFixed(0),
-                            contestantDataWithBoxScore.length > 0 ? formatNumber(d3.max(contestantDataWithBoxScore, d => +d['Speed']), 1, false, true) : '',
-                            contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => +d['Solo']).toFixed(1) : '',
-                            d3.max(contestantData, d => +d['JDDF'] + +d['DJDDF']).toFixed(0),
-                            d3.max(contestantData, d => +d['JDD+'] + +d['DJDD+']).toFixed(2),
-                            d3.max(contestantData, d => +d['JDD'] + +d['DJDD1'] + +d['DJDD2']).toFixed(0),
-                            d3.max(contestantData, d => +d['JFinal$']).toFixed(0),
-                            d3.max(contestantData, d => +d['DJFinal$']).toFixed(0),
-                            d3.max(contestantData, d => +d['FJ$']).toFixed(0),
-                            d3.max(contestantData, d => +d['FJFinal$']).toFixed(0),
-                            contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => +d['JAtt']).toFixed(0) : '',
-                            d3.max(contestantData, d => +d['JBuz']).toFixed(0),
-                            d3.max(contestantData, d => +d['JBuz$']).toFixed(0),
-                            d3.max(contestantData, d => +d['JBuz'] === 0 ? 0 : d['JBuz$'] / d['JBuz']).toFixed(0),
-                            contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => +d['JAtt'] === 0 ? 0 : 100.0 * +d['JBuz'] / +d['JAtt']).toFixed(1) : '',
-                            d3.max(contestantData, d => +d['JBuzC']).toFixed(0),
-                            d3.max(contestantData, d => +d['JBuzC$']).toFixed(0),
-                            contestantDataWithBoxScore.length > 0 ? formatNumber(d3.max(contestantDataWithBoxScore, d => +d['JSpeed']), 1, false, true) : '',
-                            contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => +d['JSolo']).toFixed(1) : '',
-                            d3.max(contestantData, d => +d['JDDF']).toFixed(0),
-                            d3.max(contestantData, d => +d['JDD+']).toFixed(2),
-                            d3.max(contestantData, d => +d['JDD']).toFixed(0),
-                            contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => +d['DJAtt']).toFixed(0) : '',
-                            d3.max(contestantData, d => +d['DJBuz']).toFixed(0),
-                            d3.max(contestantData, d => +d['DJBuz$']).toFixed(0),
-                            d3.max(contestantData, d => +d['DJBuz'] === 0 ? 0 : d['DJBuz$'] / d['DJBuz']).toFixed(0),
-                            contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => +d['DJAtt'] === 0 ? 0 : 100.0 * +d['DJBuz'] / +d['DJAtt']).toFixed(1) : '',
-                            d3.max(contestantData, d => +d['DJBuzC']).toFixed(0),
-                            d3.max(contestantData, d => +d['DJBuzC$']).toFixed(0),
-                            contestantDataWithBoxScore.length > 0 ? formatNumber(d3.max(contestantDataWithBoxScore, d => +d['DJSpeed']), 1, false, true) : '',
-                            contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => +d['DJSolo']).toFixed(1) : '',
-                            d3.max(contestantData, d => +d['DJDDF']).toFixed(0),
-                            d3.max(contestantData, d => +d['DJDD+']).toFixed(2),
-                            d3.max(contestantData, d => +d['DJDD1'] + +d['DJDD2']).toFixed(0),
+                            d3.sum(contestantData, d => d['Buz']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? (100 * d3.sum(contestantDataWithBoxScore, d => d['Buz']) / d3.sum(contestantDataWithBoxScore, d => d['Att'])).toFixed(1) : '',
+                            d3.sum(contestantData, d => d['Buz$']).toFixed(0),
+                            d3.sum(contestantData, d => d['DDF']).toFixed(0),
+                            d3.sum(contestantData, d => d['DD+']).toFixed(2),
+                            d3.sum(contestantData, d => d['DD$']).toFixed(0),
+                            d3.sum(contestantData, d => d['FJCor']) + '/' + d3.sum(contestantData, d => d['DJFinal$'] > 0 ? 1 : 0),
+                            d3.sum(contestantData, d => d['FJ$']).toFixed(0),
+                            d3.sum(contestantData, d => d['FJFinal$']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => d['Att']).toFixed(1) : '',
+                            d3.mean(contestantData, d => d['Buz']).toFixed(1),
+                            d3.mean(contestantData, d => d['Buz$']).toFixed(0),
+                            d3.mean(contestantData, d => d['Buz'] === 0 ? 0 : d['Buz$'] / d['Buz']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => d['Att'] === 0 ? 0 : 100.0 * d['Buz'] / d['Att']).toFixed(1) : '',
+                            d3.mean(contestantData, d => d['BuzC']).toFixed(1),
+                            d3.mean(contestantData, d => d['BuzC$']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? formatNumber(d3.mean(contestantDataWithBoxScore, d => d['Speed']), 1, false, true) : '',
+                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => d['Solo']).toFixed(1) : '',
+                            d3.mean(contestantData, d => d['DDF']).toFixed(1),
+                            d3.mean(contestantData, d => d['DD+']).toFixed(2),
+                            d3.mean(contestantData, d => d['DD$']).toFixed(0),
+                            d3.mean(contestantData, d => d['JFinal$']).toFixed(0),
+                            d3.mean(contestantData, d => d['DJFinal$']).toFixed(0),
+                            d3.mean(contestantData, d => d['FJ$']).toFixed(0),
+                            d3.mean(contestantData, d => d['FJFinal$']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => d['JAtt']).toFixed(1) : '',
+                            d3.mean(contestantData, d => d['JBuz']).toFixed(1),
+                            d3.mean(contestantData, d => d['JBuz$']).toFixed(0),
+                            d3.mean(contestantData, d => d['JBuz'] === 0 ? 0 : d['JBuz$'] / d['JBuz']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => d['JAtt'] === 0 ? 0 : 100.0 * d['JBuz'] / d['JAtt']).toFixed(1) : '',
+                            d3.mean(contestantData, d => d['JBuzC']).toFixed(1),
+                            d3.mean(contestantData, d => d['JBuzC$']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? formatNumber(d3.mean(contestantDataWithBoxScore, d => d['JSpeed']), 1, false, true) : '',
+                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => d['JSolo']).toFixed(1) : '',
+                            d3.mean(contestantData, d => d['JDDF']).toFixed(1),
+                            d3.mean(contestantData, d => d['JDD+']).toFixed(2),
+                            d3.mean(contestantData, d => d['JDD$']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => d['DJAtt']).toFixed(1) : '',
+                            d3.mean(contestantData, d => d['DJBuz']).toFixed(1),
+                            d3.mean(contestantData, d => d['DJBuz$']).toFixed(0),
+                            d3.mean(contestantData, d => d['DJBuz'] === 0 ? 0 : d['DJBuz$'] / d['DJBuz']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => d['DJAtt'] === 0 ? 0 : 100.0 * d['DJBuz'] / d['DJAtt']).toFixed(1) : '',
+                            d3.mean(contestantData, d => d['DJBuzC']).toFixed(1),
+                            d3.mean(contestantData, d => d['DJBuzC$']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? formatNumber(d3.mean(contestantDataWithBoxScore, d => d['DJSpeed']), 1, false, true) : '',
+                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => d['DJSolo']).toFixed(1) : '',
+                            d3.mean(contestantData, d => d['DJDDF']).toFixed(1),
+                            d3.mean(contestantData, d => d['DJDD+']).toFixed(2),
+                            d3.mean(contestantData, d => d['DJDD$']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => d['Att']).toFixed(0) : '',
+                            d3.max(contestantData, d => d['Buz']).toFixed(0),
+                            d3.max(contestantData, d => d['Buz$']).toFixed(0),
+                            d3.max(contestantData, d => d['Buz'] === 0 ? 0 : d['Buz$'] / d['Buz']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => d['Att'] === 0 ? 0 : 100.0 * d['Buz'] / d['Att']).toFixed(1) : '',
+                            d3.max(contestantData, d => d['BuzC']).toFixed(0),
+                            d3.max(contestantData, d => d['BuzC$']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? formatNumber(d3.max(contestantDataWithBoxScore, d => d['Speed']), 1, false, true) : '',
+                            contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => d['Solo']).toFixed(1) : '',
+                            d3.max(contestantData, d => d['DDF']).toFixed(0),
+                            d3.max(contestantData, d => d['DD+']).toFixed(2),
+                            d3.max(contestantData, d => d['DD$']).toFixed(0),
+                            d3.max(contestantData, d => d['JFinal$']).toFixed(0),
+                            d3.max(contestantData, d => d['DJFinal$']).toFixed(0),
+                            d3.max(contestantData, d => d['FJ$']).toFixed(0),
+                            d3.max(contestantData, d => d['FJFinal$']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => d['JAtt']).toFixed(0) : '',
+                            d3.max(contestantData, d => d['JBuz']).toFixed(0),
+                            d3.max(contestantData, d => d['JBuz$']).toFixed(0),
+                            d3.max(contestantData, d => d['JBuz'] === 0 ? 0 : d['JBuz$'] / d['JBuz']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => d['JAtt'] === 0 ? 0 : 100.0 * +d['JBuz'] / +d['JAtt']).toFixed(1) : '',
+                            d3.max(contestantData, d => d['JBuzC']).toFixed(0),
+                            d3.max(contestantData, d => d['JBuzC$']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? formatNumber(d3.max(contestantDataWithBoxScore, d => d['JSpeed']), 1, false, true) : '',
+                            contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => d['JSolo']).toFixed(1) : '',
+                            d3.max(contestantData, d => d['JDDF']).toFixed(0),
+                            d3.max(contestantData, d => d['JDD+']).toFixed(2),
+                            d3.max(contestantData, d => d['JDD$']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => d['DJAtt']).toFixed(0) : '',
+                            d3.max(contestantData, d => d['DJBuz']).toFixed(0),
+                            d3.max(contestantData, d => d['DJBuz$']).toFixed(0),
+                            d3.max(contestantData, d => d['DJBuz'] === 0 ? 0 : d['DJBuz$'] / d['DJBuz']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => d['DJAtt'] === 0 ? 0 : 100.0 * d['DJBuz'] / d['DJAtt']).toFixed(1) : '',
+                            d3.max(contestantData, d => d['DJBuzC']).toFixed(0),
+                            d3.max(contestantData, d => d['DJBuzC$']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? formatNumber(d3.max(contestantDataWithBoxScore, d => d['DJSpeed']), 1, false, true) : '',
+                            contestantDataWithBoxScore.length > 0 ? d3.max(contestantDataWithBoxScore, d => d['DJSolo']).toFixed(1) : '',
+                            d3.max(contestantData, d => d['DJDDF']).toFixed(0),
+                            d3.max(contestantData, d => d['DJDD+']).toFixed(2),
+                            d3.max(contestantData, d => d['DJDD$']).toFixed(0),
                         ];
                     })
                     .enter()
@@ -563,14 +563,14 @@
                 //Buzzes
                 var attemptsOrderedIds = highlightContestantIds.slice();
                 attemptsOrderedIds.sort(function(a,b) {
-                    return d3.mean(d3.filter(data, cd => cd['Jometry Contestant Id'] === b), cd1 => +cd1['BuzC']) -
-                        d3.mean(d3.filter(data, cd => cd['Jometry Contestant Id'] === a), cd1 => +cd1['BuzC']);
+                    return d3.mean(d3.filter(data, cd => cd['Jometry Contestant Id'] === b), cd1 => cd1['BuzC']) -
+                        d3.mean(d3.filter(data, cd => cd['Jometry Contestant Id'] === a), cd1 => cd1['BuzC']);
                 });
 
                 var attemptsTraceBuzC = {
                     x: d3.map(attemptsOrderedIds, c => d3.filter(data, cd => cd['Jometry Contestant Id'] === c)[0]['Contestant']),
-                    y: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['BuzC']))),
-                    text: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['BuzC'])).toFixed(1)),
+                    y: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => cd1['BuzC']))),
+                    text: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => cd1['BuzC'])).toFixed(1)),
                     type: 'bar',
                     marker: {
                         color: d3.map(attemptsOrderedIds, color),
@@ -582,8 +582,8 @@
                 };
                 var attemptsTraceBuzI = {
                     x: d3.map(attemptsOrderedIds, c => d3.filter(data, cd => cd['Jometry Contestant Id'] === c)[0]['Contestant']),
-                    y: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['BuzI']))),
-                    text: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['BuzI'])).toFixed(1)),
+                    y: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => cd1['BuzI']))),
+                    text: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => cd1['BuzI'])).toFixed(1)),
                     type: 'bar',
                     marker: {
                         color: d3.map(attemptsOrderedIds, color),
@@ -595,11 +595,11 @@
                     }
                 };
                 var attemptsData = [attemptsTraceBuzC, attemptsTraceBuzI];
-                if (d3.filter(data, d => d['Att'] !== '').length === data.length) {
+                if (d3.filter(data, d => d['Att'] !== undefined).length === data.length) {
                     var attemptsTraceBlockedAtt = {
                         x: d3.map(attemptsOrderedIds, c => d3.filter(data, cd => cd['Jometry Contestant Id'] === c)[0]['Contestant']),
-                        y: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['Att'] - (+cd1['Buz'])))),
-                        text: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['Att'] - (+cd1['Buz']))).toFixed(1)),
+                        y: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => cd1['Att'] - cd1['Buz']))),
+                        text: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => cd1['Att'] - cd1['Buz'])).toFixed(1)),
                         type: 'bar',
                         marker: {
                             color: d3.map(attemptsOrderedIds, color),
@@ -626,13 +626,13 @@
 
                 var buzScoreOrderedIds = highlightContestantIds.slice();
                 buzScoreOrderedIds.sort(function(a,b) {
-                    return d3.mean(d3.filter(data, cd => cd['Jometry Contestant Id'] === b), cd1 => +cd1['Buz$']) -
-                        d3.mean(d3.filter(data, cd => cd['Jometry Contestant Id'] === a), cd1 => +cd1['Buz$']);
+                    return d3.mean(d3.filter(data, cd => cd['Jometry Contestant Id'] === b), cd1 => cd1['Buz$']) -
+                        d3.mean(d3.filter(data, cd => cd['Jometry Contestant Id'] === a), cd1 => cd1['Buz$']);
                 });
                 var traceBuzScore = {
                     x: d3.map(buzScoreOrderedIds, c => d3.filter(data, cd => cd['Jometry Contestant Id'] === c)[0]['Contestant']),
-                    y: d3.map(buzScoreOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['Buz$']))),
-                    text: d3.map(buzScoreOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['Buz$'])).toFixed(0)),
+                    y: d3.map(buzScoreOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => cd1['Buz$']))),
+                    text: d3.map(buzScoreOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => cd1['Buz$'])).toFixed(0)),
                     type: 'bar',
                     marker: {
                         color: d3.map(buzScoreOrderedIds, color),
@@ -644,8 +644,8 @@
                 };
                 var traceBuzIScore = {
                     x: d3.map(buzScoreOrderedIds, c => d3.filter(data, cd => cd['Jometry Contestant Id'] === c)[0]['Contestant']),
-                    y: d3.map(buzScoreOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['JBuzI$'] + +cd1['DJBuzI$']))),
-                    text: d3.map(buzScoreOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => +cd1['JBuzI$'] + +cd1['DJBuzI$'])).toFixed(0)),
+                    y: d3.map(buzScoreOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => cd1['JBuzI$'] + cd1['DJBuzI$']))),
+                    text: d3.map(buzScoreOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => cd1['JBuzI$'] + cd1['DJBuzI$'])).toFixed(0)),
                     type: 'bar',
                     marker: {
                         color: d3.map(buzScoreOrderedIds, color),
@@ -674,7 +674,7 @@
                 renderHighlightContestantBoxPlot(
                     data,
                     highlightContestantIds,
-                    cd1 => +cd1['Buz'],
+                    cd1 => cd1['Buz'],
                     'box-buz',
                     'Buz',
                     cd1 => true,
@@ -683,8 +683,8 @@
                 renderHighlightContestantRoundLinePlot(
                     data,
                     highlightContestantIds,
-                    cd1 => +cd1['JBuz'],
-                    cd1 => +cd1['DJBuz'],
+                    cd1 => cd1['JBuz'],
+                    cd1 => cd1['DJBuz'],
                     'line-buz-j-dj',
                     'Buz difference',
                     cd => true,
@@ -692,24 +692,24 @@
                     'Buz'
                 );
 
-                if (d3.filter(data, d => d['Att'] !== '').length > 0) {
+                if (d3.filter(data, d => d['Att'] !== undefined).length > 0) {
                     renderHighlightContestantBoxPlot(
                         data,
                         highlightContestantIds,
-                        cd1 => +cd1['Att'],
+                        cd1 => cd1['Att'],
                         'box-att',
                         'Att',
-                        cd1 => cd1['Att'] !== "",
+                        cd1 => cd1['Att'] !== undefined,
                         rawColorFunction
                     );
                     renderHighlightContestantRoundLinePlot(
                         data,
                         highlightContestantIds,
-                        cd1 => +cd1['JAtt'],
-                        cd1 => +cd1['DJAtt'],
+                        cd1 => cd1['JAtt'],
+                        cd1 => cd1['DJAtt'],
                         'line-att-j-dj',
                         'Att difference',
-                        cd1 => cd1['Att'] !== "",
+                        cd1 => cd1['Att'] !== undefined,
                         rawColorFunction,
                         'Att'
                     );
@@ -717,20 +717,20 @@
                     renderHighlightContestantBoxPlot(
                         data,
                         highlightContestantIds,
-                        cd1 => +cd1['Buz%'],
+                        cd1 => cd1['Buz%'],
                         'box-buz%',
                         'Buz%',
-                        cd1 => cd1['Att'] !== "",
+                        cd1 => cd1['Att'] !== undefined,
                         rawColorFunction
                     );
                     renderHighlightContestantRoundLinePlot(
                         data,
                         highlightContestantIds,
-                        cd1 => +cd1['JBuz%'],
-                        cd1 => +cd1['DJBuz%'],
+                        cd1 => cd1['JBuz%'],
+                        cd1 => cd1['DJBuz%'],
                         'line-buz%-j-dj',
                         'Buz% difference',
-                        cd1 => cd1['Att'] !== "",
+                        cd1 => cd1['Att'] !== undefined,
                         rawColorFunction,
                         'Buz%'
                     );
@@ -738,20 +738,20 @@
                     renderHighlightContestantBoxPlot(
                         data,
                         highlightContestantIds,
-                        cd1 => +cd1['Speed'],
+                        cd1 => cd1['Speed'],
                         'box-timing',
                         'Timing',
-                        cd1 => cd1['Speed'] !== "",
+                        cd1 => cd1['Speed'] !== undefined,
                         rawColorFunction
                     );
                     renderHighlightContestantRoundLinePlot(
                         data,
                         highlightContestantIds,
-                        cd1 => +cd1['JSpeed'],
-                        cd1 => +cd1['DJSpeed'],
+                        cd1 => cd1['JSpeed'],
+                        cd1 => cd1['DJSpeed'],
                         'line-timing-j-dj',
                         'Timing difference',
-                        cd1 => cd1['Speed'] !== "",
+                        cd1 => cd1['Speed'] !== undefined,
                         rawColorFunction,
                         'Timing'
                     );
@@ -759,20 +759,20 @@
                     renderHighlightContestantBoxPlot(
                         data,
                         highlightContestantIds,
-                        cd1 => +cd1['Solo'],
+                        cd1 => cd1['Solo'],
                         'box-solo',
                         'Solo',
-                        cd1 => cd1['Solo'] !== "",
+                        cd1 => cd1['Solo'] !== undefined,
                         rawColorFunction
                     );
                     renderHighlightContestantRoundLinePlot(
                         data,
                         highlightContestantIds,
-                        cd1 => +cd1['JSolo'],
-                        cd1 => +cd1['DJSolo'],
+                        cd1 => cd1['JSolo'],
+                        cd1 => cd1['DJSolo'],
                         'line-solo-j-dj',
                         'Solo difference',
-                        cd1 => cd1['Solo'] !== "",
+                        cd1 => cd1['Solo'] !== undefined,
                         rawColorFunction,
                         'Solo'
                     );
@@ -780,20 +780,20 @@
                     renderHighlightContestantBoxPlot(
                         data,
                         highlightContestantIds,
-                        cd1 => +cd1['Speed'] + +cd1['Solo'],
+                        cd1 => cd1['Speed'] + cd1['Solo'],
                         'box-timing-plus-solo',
                         'Timing + Solo',
-                        cd1 => cd1['Solo'] !== "",
+                        cd1 => cd1['Solo'] !== undefined,
                         rawColorFunction
                     );
                     renderHighlightContestantRoundLinePlot(
                         data,
                         highlightContestantIds,
-                        cd1 => +cd1['JSpeed'] + +cd1['JSolo'],
-                        cd1 => +cd1['DJSpeed'] + +cd1['DJSolo'],
+                        cd1 => cd1['JSpeed'] + cd1['JSolo'],
+                        cd1 => cd1['DJSpeed'] + cd1['DJSolo'],
                         'line-timing-plus-solo-j-dj',
                         'Timing+Solo difference',
-                        cd1 => cd1['Solo'] !== "",
+                        cd1 => cd1['Solo'] !== undefined,
                         rawColorFunction,
                         'Timing + Solo'
                     );
@@ -808,7 +808,7 @@
                 renderHighlightContestantBoxPlot(
                     data,
                     highlightContestantIds,
-                    cd1 => +cd1['Buz$'],
+                    cd1 => cd1['Buz$'],
                     'box-buz$',
                     'Buz$',
                     cd1 => true,
@@ -817,8 +817,8 @@
                 renderHighlightContestantRoundLinePlot(
                     data,
                     highlightContestantIds,
-                    cd1 => +cd1['JBuz$'],
-                    cd1 => +cd1['DJBuz$'] / 2.0,
+                    cd1 => cd1['JBuz$'],
+                    cd1 => cd1['DJBuz$'] / 2.0,
                     'line-buz$-j-dj',
                     'Buz$ difference',
                     cd => true,
@@ -829,7 +829,7 @@
                 renderHighlightContestantBoxPlot(
                     data,
                     highlightContestantIds,
-                    cd1 => 1.0 * +cd1['Buz$'] / +cd1['Buz'],
+                    cd1 => 1.0 * cd1['Buz$'] / cd1['Buz'],
                     'box-buz$-per-buz',
                     'Buz$/Buz',
                     cd1 => true,
@@ -838,8 +838,8 @@
                 renderHighlightContestantRoundLinePlot(
                     data,
                     highlightContestantIds,
-                    cd1 => +cd1['JBuz$'] / +cd1['JBuz'],
-                    cd1 => +cd1['DJBuz$'] / 2.0 / +cd1['DJBuz'],
+                    cd1 => cd1['JBuz$'] / cd1['JBuz'],
+                    cd1 => cd1['DJBuz$'] / 2.0 / cd1['DJBuz'],
                     'line-buz$-per-buz-j-dj',
                     'Buz$/Buz difference',
                     cd => true,
@@ -852,17 +852,17 @@
                 renderHighlightContestantBoxPlot(
                     data,
                     highlightContestantIds,
-                    cd1 => +cd1['DD+'],
+                    cd1 => cd1['DD+'],
                     'box-dd+',
                     'DD+',
-                    cd1 => cd1['DD+'] !== "",
+                    cd1 => cd1['DD+'] !== undefined,
                     rawColorFunction
                 );
                 renderHighlightContestantRoundLinePlot(
                     data,
                     highlightContestantIds,
-                    cd1 => +cd1['JDD+'],
-                    cd1 => +cd1['DJDD+'],
+                    cd1 => cd1['JDD+'],
+                    cd1 => cd1['DJDD+'],
                     'line-dd+-j-dj',
                     'DD+ difference',
                     cd => true,
@@ -873,7 +873,7 @@
                 renderHighlightContestantBoxPlot(
                     data,
                     highlightContestantIds,
-                    cd1 => +cd1['JDD'] + +cd1['DJDD1'] + +cd1['DJDD2'],
+                    cd1 => cd1['DD$'],
                     'box-dd$',
                     'DD$',
                     cd1 => true,
@@ -882,8 +882,8 @@
                 renderHighlightContestantRoundLinePlot(
                     data,
                     highlightContestantIds,
-                    cd1 => +cd1['JDD'],
-                    cd1 => (+cd1['DJDD1'] + +cd1['DJDD2']) / 2.0,
+                    cd1 => cd1['JDD$'],
+                    cd1 => cd1['DJDD$'] / 2.0,
                     'line-dd$-j-dj',
                     'DD$ difference',
                     cd => true,
@@ -894,30 +894,30 @@
                 renderHighlightContestantBoxPlot(
                     data,
                     highlightContestantIds,
-                    cd1 => +cd1['DJFinal$'],
+                    cd1 => cd1['DJFinal$'],
                     'box-djfinal$',
                     'DJFinal$',
-                    cd1 => cd1['DJFinal$'] !== "",
+                    cd1 => cd1['DJFinal$'] !== undefined,
                     rawColorFunction
                 );
 
                 renderHighlightContestantBoxPlot(
                     data,
                     highlightContestantIds,
-                    cd1 => +cd1['FJ$'],
+                    cd1 => cd1['FJ$'],
                     'box-fj$',
                     'FJ$',
-                    cd1 => cd1['FJ$'] !== "",
+                    cd1 => cd1['FJ$'] !== undefined,
                     rawColorFunction
                 );
                 
                 renderHighlightContestantBoxPlot(
                     data,
                     highlightContestantIds,
-                    cd1 => +cd1['FJFinal$'],
+                    cd1 => cd1['FJFinal$'],
                     'box-fjfinal$',
                     'FJFinal$',
-                    cd1 => cd1['FJFinal$'] !== "",
+                    cd1 => cd1['FJFinal$'] !== undefined,
                     rawColorFunction
                 );
                 
@@ -926,8 +926,8 @@
                 for ( var i = 0; i < highlightContestantIds.length; i ++ ) {
                     var cid = highlightContestantIds[i];
                     var trace = {
-                        x: d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === cid), cd1 => +cd1['Buz']),
-                        y: d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === cid), cd1 => +cd1['Buz$'] / +cd1['Buz']),
+                        x: d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === cid), cd1 => cd1['Buz']),
+                        y: d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === cid), cd1 => cd1['Buz$'] / cd1['Buz']),
                         mode: 'markers',
                         type: 'scatter',
                         name: getContestantNameFromData(data, cid),
@@ -937,8 +937,8 @@
                     plotData.push(trace);
                 }
                 var trace = {
-                    x: d3.map(d3.filter(data, cd => !highlightContestantIds.includes(cd['Jometry Contestant Id'])), cd1 => +cd1['Buz']),
-                    y: d3.map(d3.filter(data, cd => !highlightContestantIds.includes(cd['Jometry Contestant Id'])), cd1 => +cd1['Buz$'] / +cd1['Buz']),
+                    x: d3.map(d3.filter(data, cd => !highlightContestantIds.includes(cd['Jometry Contestant Id'])), cd1 => cd1['Buz']),
+                    y: d3.map(d3.filter(data, cd => !highlightContestantIds.includes(cd['Jometry Contestant Id'])), cd1 => cd1['Buz$'] / cd1['Buz']),
                     mode: 'markers',
                     type: 'scatter',
                     name: "Others",
@@ -978,8 +978,8 @@
                 groupedData.forEach((value, key) => {
                     if (highlightContestantIds.includes(key)) {
                         var trace = {
-                            x: [d3.mean(d3.map(value, cd1 => +cd1['Buz']))],
-                            y: [d3.mean(d3.map(value, cd1 => +cd1['Buz$'] / +cd1['Buz']))],
+                            x: [d3.mean(d3.map(value, cd1 => cd1['Buz']))],
+                            y: [d3.mean(d3.map(value, cd1 => cd1['Buz$'] / cd1['Buz']))],
                             mode: 'markers+text',
                             type: 'scatter',
                             text: getContestantNameFromData(data, key),
@@ -1004,13 +1004,13 @@
 
                 Plotly.newPlot('scatter-avg-buz$-buz-vs-buz', plotData, layout, {staticPlot: true});
 
-                if (d3.filter(data, d => d['Att'] !== '').length === data.length) {
+                if (d3.filter(data, d => d['Att'] !== undefined).length === data.length) {
                     plotData = [];
                     for ( var i = 0; i < highlightContestantIds.length; i ++ ) {
                         var cid = highlightContestantIds[i];
                         var trace = {
-                            x: d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === cid), cd1 => +cd1['Att']),
-                            y: d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === cid), cd1 => 1.0 * +cd1['Buz$'] / +cd1['Att']),
+                            x: d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === cid), cd1 => cd1['Att']),
+                            y: d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === cid), cd1 => 1.0 * cd1['Buz$'] / cd1['Att']),
                             mode: 'markers',
                             type: 'scatter',
                             name: getContestantNameFromData(data, cid),
@@ -1020,8 +1020,8 @@
                         plotData.push(trace);
                     }
                     var trace = {
-                        x: d3.map(d3.filter(data, cd => !highlightContestantIds.includes(cd['Jometry Contestant Id'])), cd1 => +cd1['Att']),
-                        y: d3.map(d3.filter(data, cd => !highlightContestantIds.includes(cd['Jometry Contestant Id'])), cd1 => 1.0 * +cd1['Buz$'] / +cd1['Att']),
+                        x: d3.map(d3.filter(data, cd => !highlightContestantIds.includes(cd['Jometry Contestant Id'])), cd1 => cd1['Att']),
+                        y: d3.map(d3.filter(data, cd => !highlightContestantIds.includes(cd['Jometry Contestant Id'])), cd1 => 1.0 * cd1['Buz$'] / cd1['Att']),
                         mode: 'markers',
                         type: 'scatter',
                         name: "Others",
@@ -1061,8 +1061,8 @@
                     groupedData.forEach((value, key) => {
                         if (highlightContestantIds.includes(key)) {
                             var trace = {
-                                x: [d3.mean(d3.map(value, cd1 => +cd1['Att']))],
-                                y: [d3.mean(d3.map(value, cd1 => 1.0 * +cd1['Buz$'] / +cd1['Att']))],
+                                x: [d3.mean(d3.map(value, cd1 => cd1['Att']))],
+                                y: [d3.mean(d3.map(value, cd1 => 1.0 * cd1['Buz$'] / cd1['Att']))],
                                 mode: 'markers+text',
                                 type: 'scatter',
                                 text: getContestantNameFromData(data, key),
