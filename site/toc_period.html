@@ -324,18 +324,6 @@
                 .text(d => d);
             d3.csv(csvUrlForTocPeriod(tocPeriodId), csvDataAccessor).then(function(data) {
                 //Data transformations
-                /*data.forEach(function(d) {
-                    d['Date'] = csvDateParse(d['Date']);
-                    d['BuzC'] = +d['JBuzC'] + +d['DJBuzC'];
-                    d['BuzC$'] = +d['JBuzC$'] + +d['DJBuzC$'];
-                    d['BuzI'] = +d['JBuzInc'] + +d['DJBuzInc'];
-                    d['BuzI$'] = +d['JBuzI$'] + +d['DJBuzI$'];
-                    d['JBuz%'] = 100.0 * d['JBuz'] / d['JAtt'];
-                    d['DJBuz%'] = 100.0 * d['DJBuz'] / d['DJAtt'];
-                    d['Buz%'] = 100.0 * d['Buz'] / d['Att'];
-                    d['FJ$'] = d['FJCor'] === "" ? 0 : (2 * +d['FJCor'] - 1) * +d['FJWager'];
-                });*/
-
                 var highlightContestantIds = new URLSearchParams(window.location.search).get('contestants');
                 var highlightContestantCounts = d3.rollup(data, v => d3.sum(d3.map(v, cd => cd['Wins'])), d => d['Jometry Contestant Id']);
                 var contestantWinnings = d3.rollup(data, v => d3.sum(d3.map(v, cd => cd['Wins'] * cd['FJFinal$'])), d => d['Jometry Contestant Id']);
@@ -385,6 +373,8 @@
                     d['highlightContestant'] = highlightContestantIds.includes(d['Jometry Contestant Id']);
                 });
                 var groupedData = d3.group(data, cd => cd['Jometry Contestant Id']);
+                var dataWithBoxScore = d3.filter(data, d => d['Att'] !== undefined);
+                var groupedDataWithBoxScore = d3.group(dataWithBoxScore, cd => cd['Jometry Contestant Id']);
 
                 //Graphics functions
                 var color = d3.scaleOrdinal()
@@ -1004,28 +994,28 @@
 
                 Plotly.newPlot('scatter-avg-buz$-buz-vs-buz', plotData, layout, {staticPlot: true});
 
-                if (d3.filter(data, d => d['Att'] !== undefined).length === data.length) {
+                if (dataWithBoxScore.length > 0) {
                     plotData = [];
                     for ( var i = 0; i < highlightContestantIds.length; i ++ ) {
                         var cid = highlightContestantIds[i];
                         var trace = {
-                            x: d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === cid), cd1 => cd1['Att']),
-                            y: d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === cid), cd1 => 1.0 * cd1['Buz$'] / cd1['Att']),
+                            x: d3.map(d3.filter(dataWithBoxScore, cd => cd['Jometry Contestant Id'] === cid), cd1 => cd1['Att']),
+                            y: d3.map(d3.filter(dataWithBoxScore, cd => cd['Jometry Contestant Id'] === cid), cd1 => 1.0 * cd1['Buz$'] / cd1['Att']),
                             mode: 'markers',
                             type: 'scatter',
-                            name: getContestantNameFromData(data, cid),
-                            text: d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === cid), cd1 => cd1['Contestant'] + ", " + dateFormat(cd1['Date'])),
+                            name: getContestantNameFromData(dataWithBoxScore, cid),
+                            text: d3.map(d3.filter(dataWithBoxScore, cd => cd['Jometry Contestant Id'] === cid), cd1 => cd1['Contestant'] + ", " + dateFormat(cd1['Date'])),
                             marker: { size: 5 }
                         };
                         plotData.push(trace);
                     }
                     var trace = {
-                        x: d3.map(d3.filter(data, cd => !highlightContestantIds.includes(cd['Jometry Contestant Id'])), cd1 => cd1['Att']),
-                        y: d3.map(d3.filter(data, cd => !highlightContestantIds.includes(cd['Jometry Contestant Id'])), cd1 => 1.0 * cd1['Buz$'] / cd1['Att']),
+                        x: d3.map(d3.filter(dataWithBoxScore, cd => !highlightContestantIds.includes(cd['Jometry Contestant Id'])), cd1 => cd1['Att']),
+                        y: d3.map(d3.filter(dataWithBoxScore, cd => !highlightContestantIds.includes(cd['Jometry Contestant Id'])), cd1 => 1.0 * cd1['Buz$'] / cd1['Att']),
                         mode: 'markers',
                         type: 'scatter',
                         name: "Others",
-                        text: d3.map(d3.filter(data, cd => !highlightContestantIds.includes(cd['Jometry Contestant Id'])), cd1 => cd1['Contestant'] + ", " + dateFormat(cd1['Date'])),
+                        text: d3.map(d3.filter(dataWithBoxScore, cd => !highlightContestantIds.includes(cd['Jometry Contestant Id'])), cd1 => cd1['Contestant'] + ", " + dateFormat(cd1['Date'])),
                         marker: { size: 2 }
                     };
                     plotData.push(trace);
@@ -1058,7 +1048,7 @@
                     Plotly.newPlot('scatter-buz$-att-vs-att', plotData, layout);
 
                     plotData = [];
-                    groupedData.forEach((value, key) => {
+                    groupedDataWithBoxScore.forEach((value, key) => {
                         if (highlightContestantIds.includes(key)) {
                             var trace = {
                                 x: [d3.mean(d3.map(value, cd1 => cd1['Att']))],
@@ -1074,7 +1064,6 @@
                         }
                     });
                     
-
                     var layout = {
                         xaxis: {
                             title: 'Att'
