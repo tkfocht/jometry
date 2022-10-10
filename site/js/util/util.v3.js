@@ -71,10 +71,10 @@ var csvDataAccessor = function(row) {
     r['BuzI$'] = r['JBuzI$'] + r['DJBuzI$'];
     r['DDF'] = r['JDDF'] + r['DJDDF'] + ('TJDDF' in r ? r['TJDDF'] : 0);
     r['DD+'] = r['JDD+'] + r['DJDD+'] + ('TJDD+' in r ? r['TJDD+'] : 0);
-    r['DD$'] = d3.sum(d3.map(['JDD','DJDD1','DJDD2'], k => r[k] === undefined ? 0 : r[k]));
     r['JDD$'] = d3.sum(d3.map(['JDD'], k => r[k] === undefined ? 0 : r[k]));
     r['DJDD$'] = d3.sum(d3.map(['DJDD1','DJDD2'], k => r[k] === undefined ? 0 : r[k]));
     r['TJDD$'] = d3.sum(d3.map(['TJDD1','TJDD2','TJDD3'], k => r[k] === undefined ? 0 : r[k]));
+    r['DD$'] = r['JDD$'] + r['DJDD$'] + r['TJDD$'];
     r['FJ$'] = r['FJCor'] === undefined ? undefined : (-1 + (2 * r['FJCor'])) * r['FJWager'];
     return r;
 };
