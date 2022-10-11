@@ -974,7 +974,7 @@
                             type: 'scatter',
                             text: getContestantNameFromData(data, key),
                             textposition: 'top center',
-                            marker: { size: 2 * Math.sqrt(value.length) },
+                            marker: { size: 2 * Math.sqrt(value.length), color: colorFunction({'highlightContestant': true, 'Jometry Contestant Id': key }) },
                             showlegend: false
                         };
                         plotData.push(trace);
@@ -1057,7 +1057,7 @@
                                 type: 'scatter',
                                 text: getContestantNameFromData(data, key),
                                 textposition: 'top center',
-                                marker: { size: 2 * Math.sqrt(value.length) },
+                                marker: { size: 2 * Math.sqrt(value.length), color: colorFunction({'highlightContestant': true, 'Jometry Contestant Id': key }) },
                                 showlegend: false
                             };
                             plotData.push(trace);
