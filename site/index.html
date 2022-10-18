@@ -55,6 +55,21 @@
                     </table>
                 </div>
             </div>
+            <div class="toc-period-play-class" id="TOC2022SC">
+                <div class="toc-period-play-class-header">
+                    <span class="toc-period-play-class-label"></span>
+                    <span class="toc-period-play-class-item"><a class="toc-period-play-class-navigation-item" href="/toc_period.html?toc_period=TOC2022SC">Semifinalists</a></span>
+                </div>
+                <div class="toc-period-play-class-controls">
+                    <span class="toc-period-play-class-control show-games">Show Games</span>
+                    <span class="toc-period-play-class-control hide-games" style="display: none">Hide Games</span>
+                </div>
+                <div class="toc-period-play-game-list" style="display: none">
+                    <table class="game-list">
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
             <div class="toc-period-play-class" id="NCC2022">
                 <div class="toc-period-play-class-header">
                     <span class="toc-period-play-class-label"></span>
@@ -272,7 +287,7 @@
                         });
             }
 
-            for (const tocPeriodId of ['TOC2023R','TOC2022R','NCC2022','TOC2022P','TOC2021R','TOC2021T','TOC2021C','TOC2019R','TOC2019T1','TOC2019T2','TOC2019C','PCJ2023']) {
+            for (const tocPeriodId of ['TOC2023R','TOC2022SC','TOC2022R','NCC2022','TOC2022P','TOC2021R','TOC2021T','TOC2021C','TOC2019R','TOC2019T1','TOC2019T2','TOC2019C','PCJ2023']) {
                 d3.select('#' + tocPeriodId + ' span.toc-period-play-class-label').text(getNameForTocPeriod(tocPeriodId));
                 d3.csv(csvUrlForTocPeriod(tocPeriodId)).then(function(data) {
                     renderTocPeriodAndTypeSection(tocPeriodId, data);

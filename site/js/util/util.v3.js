@@ -18,6 +18,7 @@ var getNameForTocPeriod = function(id) {
     switch(id) {
         case 'TOC2023R':    return '2023 TOC Regular Play (S39)';
         case 'TOC2022H':    return '2022 Tournament of Champions (S39)';
+        case 'TOC2022SC':   return '2022 Second Chance (S39)';
         case 'TOC2022R':    return '2022 TOC Regular Play (S37-S38)';
         case 'TOC2021H':    return '2021 Tournament of Champions (S37)';
         case 'TOC2021R':    return '2021 TOC Regular Play (S35-S37)';
