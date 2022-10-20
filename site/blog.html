@@ -1,0 +1,231 @@
+<html>
+    <head>
+        <title>J!ometry: Daily Jeopardy Visualizations</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+        <link rel="stylesheet" href="css/site.css"></link>
+        <link rel="stylesheet" href="css/blog.css"></link>
+    </head>
+    <body>
+        <div id="header">
+            <div id="site-mast">J!ometry</div>
+            <div id="navigation">
+                <span class="navigation-item"><a href="/">Home</a></span>
+                <span class="navigation-item"><a href="/glossary.html">Glossary</a></span>
+                <span class="navigation-item"><a href="/blog.html">Blog</a></span>
+                <span class="navigation-item"><a href="/about.html">About</a></span>
+            </div>
+        </div>
+
+        <h1>October 20, 2022 - Attempt Scores and Second Chance Week 1</h1>
+        <div class="entry">
+            <p>
+                I've been playing with some metrics for Second Chance and while they're not yet up on the site, I think
+                they're worth using to review the Week 1 semifinals.
+            </p>
+            <p>
+                I've spent some time trying to estimate how much total
+                money players are attempting on. The attempt counts are new and shiny from the box scores, and although I
+                think we still can't say very much about them very confidently, I do think something happens in the high 30s
+                to low 40s. Which makes some sense intuitively! You can get to 30 attempts just with the top three rows of
+                both boards. You can only get to 40 if you're playing at the bottom with some consistency. Games with
+                multiple players in the 30s are sometimes very close and sometimes very lopsided, as someone plays the
+                bottom more. This could just be stuff they happen to know more than the top rows, or it could be that
+                although J! mostly rewards knowing a little about a lot of things, it can also reward knowing a lot about
+                some specific things. It's better to know a whole column of five than five clues scattered around the top.
+            </p>
+            <p>
+                Using the attempt numbers in combination with the J-Archive game record of known responses, I made some
+                initial assumptions about how unseen attempts might be distributed for each player. The first assumption
+                is that attempts at the top are more common than at the bottom, which is probably true for an individual.
+                It's definitely true across the universe of players. I adapted the overall ratios into weights for
+                probability calculations. I also made an assumption that most of the time a player attempts but is blocked
+                by an incorrect answer, they would go on to attempt again. That's obviously not true all the time (what
+                if they had the same wrong answer?), but I'm just documenting an assumption here. I expect that the exact
+                magic that goes into this is something I'll work on over time. For instance, I think it's likely that
+                knowing someone got correct answers at the bottom of a column makes it more likely they attempted at the
+                top, generally. But there's not really a way to actually know that right now, so it's still just thoughts.
+                The min and max range for the cash value of the attempt distribution <i>is</i> fully calculable, so I'm
+                including the bounds in this post.
+            </p>
+            <p>
+                My basic conception of the buzzing part of the game is that there's three big filters.
+                <ul>
+                    <li>What do you think you know (attempting)</li>
+                    <li>Do you get to answer it (timing)</li>
+                    <li>Are you right if you do (correctness)</li>
+                </ul>
+                The estimate of what players are attempting on is an attempt to get a better handle on the first, and
+                then tools with the known responses and scores are reflections of the second and third within that context.
+                With that, let's get to putting this lens on this week's games. In each table, where a percentage is listed,
+                it is of the value to the left, and can be thought of as a measure of how each of the filters above got applied.
+            </p>
+            <h3>Monday</h3>
+            <table>
+                <tr>
+                    <th>Contestant</th>
+                    <th>Min Att Total</th>
+                    <th>Max Att Total</th>
+                    <th>Est Att Total</th>
+                    <th>Buz Value Total</th>
+                    <th>Buz$</th>
+                </tr>
+                <tr>
+                    <td>Cindy</td>
+                    <td>20400</td>
+                    <td>31800</td>
+                    <td>25518</td>
+                    <td>11200 (44%)</td>
+                    <td>9600 (86%)</td>
+                </tr>
+                <tr>
+                    <td>Aaron</td>
+                    <td>21600</td>
+                    <td>31400</td>
+                    <td>25600</td>
+                    <td>13000 (51%)</td>
+                    <td>5800 (45%)</td>
+                </tr>
+                <tr>
+                    <td>Jessica</td>
+                    <td>25600</td>
+                    <td>36400</td>
+                    <td>30067</td>
+                    <td>16600 (55%)</td>
+                    <td>14600 (88%)</td>
+                </tr>
+            </table>
+            <p>
+                In <a href="/game.html?toc_period_id=TOC2022SC&game_id=1544">Monday's game</a>, the raw counts on
+                timing metrics favored Aaron. His buzz% was significantly higher than Cindy's or Jessica's and he got
+                around 4 or 5 extra buzzes because of it. The raw attempt counts favored Jessica. My initial estimate
+                is that Jessica attempted on just over $30000 worth of clues, while Cindy and Aaron
+                were each attempting in the mid $25000s. The additional attempts and the tilt of them towards the bottom
+                meant that Jessica buzzed in on $16600 of clues, more than Aaron's $13000 and a better percentage of her
+                possible total, even with his better timing. That seems like a direct effect of playing strongly
+                at the bottom in DJ!.
+                Cindy got in on $11200. Of those possible earnings on buzzing, Jessica actually earned $14600,
+                Aaron $5800, and Cindy $9600. With the DDs spread across all three players and Jessica being the only
+                one correct, what initially looks somewhat even on the counting metrics for attempts and buzzes
+                resulted in a runaway game for her.
+            </p>
+            <h3>Tuesday</h3>
+            <table>
+                <tr>
+                    <th>Contestant</th>
+                    <th>Min Att Total</th>
+                    <th>Max Att Total</th>
+                    <th>Est Att Total</th>
+                    <th>Buz Value Total</th>
+                    <th>Buz$</th>
+                </tr>
+                <tr>
+                    <td>Erica</td>
+                    <td>24400</td>
+                    <td>32800</td>
+                    <td>27599</td>
+                    <td>12800 (46%)</td>
+                    <td>12000 (94%)</td>
+                </tr>
+                <tr>
+                    <td>Tracy</td>
+                    <td>23200</td>
+                    <td>32400</td>
+                    <td>26990</td>
+                    <td>12600 (47%)</td>
+                    <td>6600 (52%)</td>
+                </tr>
+                <tr>
+                    <td>Molly</td>
+                    <td>29600</td>
+                    <td>36800</td>
+                    <td>34255</td>
+                    <td>11800 (34%)</td>
+                    <td>5400 (46%)</td>
+                </tr>
+            </table>
+            <p>
+                On <a href="/game.html?toc_period_id=TOC2022SC&game_id=1545">Tuesday</a>, the attempt counts are all
+                very similar at 36-36-38. However, Molly attempted many clues at the bottom of the DJ! board, so her
+                total attempted value was around $34000 while Erica and Tracy were both closer to $27000. Something that isn't
+                necessarily clear at first glance is that Tracy's actual buzzes were concentrated in the J! round, so
+                Erica was in on slightly more value than her at $12800. (In this case,
+                it looks like Erica may have found a better rhythm in between rounds, too.) Erica maintained
+                a high correctness rate, actually earning $12000 of that $12800, while Tracy earned $6600 and Molly earned
+                $5400. The DDs were key for Molly to keep it close enough to bet strategically in FJ!, which does emphasize
+                another point: opportunities to get DDs are earned just by being correct, without regard to the dollar value
+                of the clue, so her better play in the top and mid rows helped in this without contributing a lot of money
+                to offset her incorrect answers at the bottom.
+            </p>
+            <h3>Wednesday</h3>
+            <table>
+                <tr>
+                    <th>Contestant</th>
+                    <th>Min Att Total</th>
+                    <th>Max Att Total</th>
+                    <th>Est Att Total</th>
+                    <th>Buz Value Total</th>
+                    <th>Buz$</th>
+                </tr>
+                <tr>
+                    <td>James</td>
+                    <td>22200</td>
+                    <td>32200</td>
+                    <td>26905</td>
+                    <td>17000 (63%)</td>
+                    <td>16200 (95%)</td>
+                </tr>
+                <tr>
+                    <td>Ren&eacute;e</td>
+                    <td>21800</td>
+                    <td>31800</td>
+                    <td>26931</td>
+                    <td>8600 (32%)</td>
+                    <td>4200 (49%)</td>
+                </tr>
+                <tr>
+                    <td>Pam</td>
+                    <td>22000</td>
+                    <td>31800</td>
+                    <td>26675</td>
+                    <td>15400 (58%)</td>
+                    <td>15400 (100%)</td>
+                </tr>
+            </table>
+            <p>
+                These metrics support the idea that <a href="/game.html?toc_period_id=TOC2022SC&game_id=1546">Wednesday</a> was
+                a shootout. James, Ren&eacute;e, and Pam all attempted 33 or 34 times, all for roughly equal distributions. James
+                had better raw numbers for timing, but Pam was close when looking at it through this idea of value, which passes
+                the eye test in that she seemed to pick up rhythm late in the game with valuable clues. My guess is that Ren&eacute;e
+                found herself squeezed, not just in rhythm itself, but in overlapping on attempts with both James and Pam, who were
+                possibly overlapping with each other less. That forced her to go riskier, especially after the missed DD. 
+            </p>
+            <h3>Overall</h3>
+            <p>
+                Overall, this is... useful, maybe? The error bars on the estimated attempt value totals are unknown, and this is
+                an obviously small sample, but I'm pleased with the way the numbers tie in with the results well and tell stories
+                that match what I think I saw. I've looked at some other games with this, especially
+                <a href="/game.html?toc_period_id=TOC2023R&game_id=1529">September 30's game</a> of David Sibley v Pam Warren v
+                Cris Panullo, where the attempt value totals agree with the story that Cris was playing stronger on high values.
+            </p>
+            <p>
+                As I grow more satisfied with these estimates, I'll start rolling it out to the stat pages. I suspect that
+                attempt value total may be a measure that is pretty consistent for a player from day to day, and that variations
+                might represent specific differences in difficulty or in player approach, rather than luck or level of
+                competition. This is also part of a larger effort to incorporate more direct knowledge from J-Archive game records
+                into estimates of Timing and Speed, which are still based solely on data from the box scores.
+            </p>
+            <p>
+                Looking at these with percentages attached, it also brings home just what a trade-off incorrect answers are. You
+                have to try sometimes (that's some jeopardy), but each one can crush the amount of money you're making, with the
+                lost opportunity and the actual lost money compounding on each other. I'm interested in looking for signs of the
+                vicious cycle at work, where some bad results (incorrect responses or getting locked out) push riskier behavior,
+                which in turn push bad results.
+            </p>
+        </div>
+        <div id="footer">
+            <p>This site is not affiliated with Jeopardy!. Data is taken from their published <a href="https://www.jeopardy.com/jbuzz/news-events/jeopardy-daily-box-scores">box scores</a>
+                and from <a href="https://j-archive.com">J! Archive</a>.</p>
+        </div>
+    </body>
+</html>
