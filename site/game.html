@@ -29,7 +29,7 @@
                     <thead>
                         <tr>
                             <th colspan="1" class="empty"></th>
-                            <th colspan="15" class="game controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">Game Totals<span id="gcon"></span></div><div class="table-control table-control-right">&#9654;</div></div></th>
+                            <th colspan="17" class="game controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">Game Totals<span id="gcon"></span></div><div class="table-control table-control-right">&#9654;</div></div></th>
                             <th colspan="12" class="j controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">Jeopardy! Round<span id="j-gcon"></span></div><div class="table-control table-control-right">&#9654;</div></div></th>
                             <th colspan="12" class="dj controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">Double Jeopardy! Round<span id="dj-gcon"></span></div><div class="table-control table-control-right">&#9654;</div></div></th>
                         </tr>
@@ -39,12 +39,14 @@
                             <th class="controlled game">Buz</th>
                             <th class="controlled game">Buz%</th>
                             <th class="controlled game">BuzC</th>
-                            <th class="controlled game">BuzI</th>
-                            <th class="controlled game">Buz$</th>
-                            <th class="controlled game">Buz$/</th>
+                            <th class="controlled game">BuzC%</th>
                             <th class="controlled game">Time</th>
                             <th class="controlled game">Solo</th>
-                            <th class="controlled game">DDF</th>
+                            <th class="controlled game">AttV</th>
+                            <th class="controlled game">BuzV</th>
+                            <th class="controlled game">Buz$</th>
+                            <th class="controlled game">TimeV</th>
+                            <th class="controlled game">SoloV</th>
                             <th class="controlled game">DD+</th>
                             <th class="controlled game">DD$</th>
                             <th class="controlled game">DJFinal$</th>
@@ -80,9 +82,11 @@
                 </table>
             </div>
             <div class="graph-description">
-                GCon = Game contention, Att = Attempts, BuzC = Correct on buzz,
-                Time = Est. buzzes created through buzzer timing, Solo = Estimated buzzes uncontested,
-                Buz$ = Score on buzz, DDF = Daily Doubles found, DD+ = Daily Doubles found above expectation
+                Att = Attempts, Buz = Buzzes, BuzC = Correct on buzz,
+                Time = Est. buzzes created through buzzer timing, Solo = Est. buzzes uncontested,
+                AttV = Est. values of clues attempted, BuzV = Value of clues buzzed on,
+                Buz$ = Score on buzz, TimeV = Est. BuzV created through timing, SoloV = Est. BuzV uncontested,
+                DD+ = Daily Doubles found above expectation
             </div>
         </div>
         <div class="section">
@@ -410,12 +414,14 @@
                             d['Buz'],
                             formatNumber(d['Buz%'], 1, false),
                             d['BuzC'],
-                            d['BuzInc'],
-                            d['Buz$'],
-                            formatNumber(d['Buz$/Buz'], 0),
+                            formatNumber(100.0 * d['BuzC'] / d['Buz'], 1, false),
                             formatNumber(d['Timing'], 1, false, true),
                             formatNumber(d['Solo'], 1, false),
-                            d['DDF'],
+                            formatNumber(d['AttValue'], 0),
+                            d['BuzValue'],
+                            d['Buz$'],
+                            formatNumber(d['TimingValue'], 0, false, true),
+                            formatNumber(d['SoloValue'], 0),
                             formatNumber(d['DD+'], 1, false),
                             d['DD$'],
                             d['DJFinal$'],
@@ -452,11 +458,11 @@
                     .attr('class', function(d,i) {
                         if (i < 1) {
                             return '';
-                        } else if (i < 16) {
+                        } else if (i < 18) {
                             return 'controlled game';
-                        } else if (i < 28) {
+                        } else if (i < 30) {
                             return 'controlled j';
-                        } else if (i < 40) {
+                        } else if (i < 42) {
                             return 'controlled dj';
                         } else {
                             return '';
