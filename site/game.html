@@ -208,7 +208,9 @@
                 <div id="scatterhist-dj-timing-solo" class="full-round-trio-dj"></div>
             </div>
             <div id="hist-att" class="graph-display-container"></div>
+            <div id="hist-att-value" class="graph-display-container"></div>
             <div id="hist-buz" class="graph-display-container"></div>
+            <div id="hist-buz-value" class="graph-display-container"></div>
             <div id="hist-buzc" class="graph-display-container"></div>
             <div id="hist-buz$" class="graph-display-container"></div>
         </div>
@@ -706,8 +708,21 @@
                         highlightGameLabelFunction
                     );
 
+                    renderHighlightHistogram(
+                        data,
+                        'hist-att-value',
+                        'Attempt Value',
+                        d => d['AttValue'] !== '',
+                        d => d['highlightGame'],
+                        'Att Value',
+                        d => +d['AttValue'],
+                        { start: 0, end: 60000, size: 1000 },
+                        highlightGameColorFunction,
+                        highlightGameLabelFunction
+                    );
+
                 } else {
-                    ids = ['contention', 'att-buz%-container', 'timing-solo-container', 'hist-att', 'att-buz$-per-att-container'];
+                    ids = ['contention', 'att-buz%-container', 'timing-solo-container', 'hist-att', 'hist-att-value', 'att-buz$-per-att-container'];
                     ids.forEach(id => {
                         document.getElementById(id).style.display = 'none';
                     });
@@ -771,6 +786,19 @@
                     'Buz',
                     d => +d['Buz'],
                     { start: -0.5, end: 57.5, size: 1 },
+                    highlightGameColorFunction,
+                    highlightGameLabelFunction
+                );
+
+                renderHighlightHistogram(
+                    data,
+                    'hist-buz-value',
+                    'Buzz Value',
+                    d => true,
+                    d => d['highlightGame'],
+                    'BuzValue',
+                    d => +d['BuzValue'],
+                    { start: 0, end: 60000, size: 1000 },
                     highlightGameColorFunction,
                     highlightGameLabelFunction
                 );
