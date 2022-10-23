@@ -7,7 +7,7 @@ var csvUrlForSeason = function(id) {
 };
 
 var csvUrlForTocPeriod = function(id) {
-    return "https://j-ometry.com/csvs/" + id + "_full_hybrid.csv";
+    return "https://j-ometry.com/csvs/" + id + "_full.csv";
 };
 
 var csvUrlForGameClue = function(id) {
