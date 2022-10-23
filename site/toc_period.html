@@ -35,8 +35,8 @@
                             <th colspan="1" class="empty"></th>
                             <th colspan="15" class="cumulative controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">Totals</div><div class="table-control table-control-right">&#9654;</div></div></th>
                             <th colspan="16" class="game-average controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">Game Averages</div><div class="table-control table-control-right">&#9654;</div></div></th>
-                            <th colspan="12" class="j-average controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">J! Averages</div><div class="table-control table-control-right">&#9654;</div></div></th>
-                            <th colspan="12" class="dj-average controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">DJ! Averages</div><div class="table-control table-control-right">&#9654;</div></div></th>
+                            <th colspan="13" class="j-average controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">J! Averages</div><div class="table-control table-control-right">&#9654;</div></div></th>
+                            <th colspan="13" class="dj-average controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">DJ! Averages</div><div class="table-control table-control-right">&#9654;</div></div></th>
                             <th colspan="16" class="game-maximum controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">Game Maximums</div><div class="table-control table-control-right">&#9654;</div></div></th>
                             <th colspan="12" class="j-maximum controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">J! Maximums</div><div class="table-control table-control-right">&#9654;</div></div></th>
                             <th colspan="12" class="dj-maximum controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">DJ! Maximums</div><div class="table-control table-control-right">&#9654;</div></div></th>
@@ -60,14 +60,14 @@
                             <th class="controlled cumulative">FJFinal$</th>
                             <th class="controlled game-average">Att</th>
                             <th class="controlled game-average">Buz</th>
-                            <th class="controlled game-average">Buz$</th>
-                            <th class="controlled game-average">Buz$/</th>
-                            <th class="controlled game-average">Buz%</th>
                             <th class="controlled game-average">BuzC</th>
-                            <th class="controlled game-average">BuzC$</th>
                             <th class="controlled game-average">Time</th>
                             <th class="controlled game-average">Sol</th>
-                            <th class="controlled game-average">DDF</th>
+                            <th class="controlled game-average">AttV</th>
+                            <th class="controlled game-average">BuzV</th>
+                            <th class="controlled game-average">Buz$</th>
+                            <th class="controlled game-average">TimeV</th>
+                            <th class="controlled game-average">SolV</th>
                             <th class="controlled game-average">DD+</th>
                             <th class="controlled game-average">DD$</th>
                             <th class="controlled game-average">JFinal$</th>
@@ -76,25 +76,27 @@
                             <th class="controlled game-average">FJFinal$</th>
                             <th class="controlled j-average">Att</th>
                             <th class="controlled j-average">Buz</th>
-                            <th class="controlled j-average">Buz$</th>
-                            <th class="controlled j-average">Buz$/</th>
-                            <th class="controlled j-average">Buz%</th>
                             <th class="controlled j-average">BuzC</th>
-                            <th class="controlled j-average">BuzC$</th>
                             <th class="controlled j-average">Time</th>
                             <th class="controlled j-average">Sol</th>
+                            <th class="controlled j-average">AttV</th>
+                            <th class="controlled j-average">BuzV</th>
+                            <th class="controlled j-average">Buz$</th>
+                            <th class="controlled j-average">TimeV</th>
+                            <th class="controlled j-average">SolV</th>
                             <th class="controlled j-average">DDF</th>
                             <th class="controlled j-average">DD+</th>
                             <th class="controlled j-average">DD$</th>
                             <th class="controlled dj-average">Att</th>
                             <th class="controlled dj-average">Buz</th>
-                            <th class="controlled dj-average">Buz$</th>
-                            <th class="controlled dj-average">Buz$/</th>
-                            <th class="controlled dj-average">Buz%</th>
                             <th class="controlled dj-average">BuzC</th>
-                            <th class="controlled dj-average">BuzC$</th>
                             <th class="controlled dj-average">Time</th>
                             <th class="controlled dj-average">Sol</th>
+                            <th class="controlled dj-average">AttV</th>
+                            <th class="controlled dj-average">BuzV</th>
+                            <th class="controlled dj-average">Buz$</th>
+                            <th class="controlled dj-average">TimeV</th>
+                            <th class="controlled dj-average">SolV</th>
                             <th class="controlled dj-average">DDF</th>
                             <th class="controlled dj-average">DD+</th>
                             <th class="controlled dj-average">DD$</th>
@@ -145,9 +147,10 @@
             </div>
             <div class="graph-description">
                 W = Wins, Ld = Leads (at end of DJ), Cr = Crushes, Lk = Locks, Win$ = Winnings, Att = Attempts,
-                Buz = Buzzes, BuzC = Correct on buzz, BuzI = Incorrect on buzz,
+                Buz = Buzzes, BuzC = Correct on buzz, AttV = Attempt value, BuzV = Buzz value, Buz$ = Score on buzz, 
                 Time = Timing = Est. buzzes created through buzzer timing, Sol = Solo = Estimated buzzes uncontested,
-                Buz$ = Score on buzz, Buz$/ = Buz$ per Buz, DDF = Daily Doubles found, DD+ = Daily Doubles found above expectation,
+                TimeV = Est. buzz value created through buzzer timing, SolV = Estimated buzz value uncontested,
+                DDF = Daily Doubles found, DD+ = Daily Doubles found above expectation,
                 FJ$ = Net score in FJ
             </div>
         </div>
@@ -164,16 +167,6 @@
             </div>
             <div id="bar-buz$" class="graph-display-container"></div>
         </div>
-        <div class="section">
-            <h1>Buzzes</h1>
-            <div class="graph-description">
-                Buzzes, by contestant, in each game.
-            </div>
-            <div class="graph-display-container full-splitround-container" id="buz-container">
-                <div id="box-buz" class="full-splitround-full"></div>
-                <div id="line-buz-j-dj" class="full-splitround-split"></div>
-            </div>
-        </div>
         <div class="section" id="att-section">
             <h1>Attempts</h1>
             <div class="graph-description">
@@ -184,6 +177,26 @@
                 <div id="line-att-j-dj" class="full-splitround-split"></div>
             </div>
         </div>
+        <div class="section" id="att-section">
+            <h1>Attempt Value</h1>
+            <div class="graph-description">
+                Attempt value, by contestant, in each game.
+            </div>
+            <div class="graph-display-container full-splitround-container" id="att-container">
+                <div id="box-att-value" class="full-splitround-full"></div>
+                <div id="line-att-value-j-dj" class="full-splitround-split"></div>
+            </div>
+        </div>
+        <div class="section">
+            <h1>Buzzes</h1>
+            <div class="graph-description">
+                Buzzes, by contestant, in each game.
+            </div>
+            <div class="graph-display-container full-splitround-container" id="buz-container">
+                <div id="box-buz" class="full-splitround-full"></div>
+                <div id="line-buz-j-dj" class="full-splitround-split"></div>
+            </div>
+        </div>
         <div class="section" id="buz%-section">
             <h1>Buz%</h1>
             <div class="graph-description">
@@ -192,6 +205,16 @@
             <div class="graph-display-container full-splitround-container" id="buz%-container">
                 <div id="box-buz%" class="full-splitround-full"></div>
                 <div id="line-buz%-j-dj" class="full-splitround-split"></div>
+            </div>
+        </div>
+        <div class="section">
+            <h1>Buzz Value</h1>
+            <div class="graph-description">
+                Buzz Value, by contestant, in each game.
+            </div>
+            <div class="graph-display-container full-splitround-container" id="buz-container">
+                <div id="box-buz-value" class="full-splitround-full"></div>
+                <div id="line-buz-value-j-dj" class="full-splitround-split"></div>
             </div>
         </div>
         <div class="section">
@@ -444,14 +467,14 @@
                             d3.sum(contestantData, d => d['FJFinal$']).toFixed(0),
                             contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => d['Att']).toFixed(1) : '',
                             d3.mean(contestantData, d => d['Buz']).toFixed(1),
-                            d3.mean(contestantData, d => d['Buz$']).toFixed(0),
-                            d3.mean(contestantData, d => d['Buz'] === 0 ? 0 : d['Buz$'] / d['Buz']).toFixed(0),
-                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => d['Att'] === 0 ? 0 : 100.0 * d['Buz'] / d['Att']).toFixed(1) : '',
                             d3.mean(contestantData, d => d['BuzC']).toFixed(1),
-                            d3.mean(contestantData, d => d['BuzC$']).toFixed(0),
                             contestantDataWithBoxScore.length > 0 ? formatNumber(d3.mean(contestantDataWithBoxScore, d => d['Timing']), 1, false, true) : '',
                             contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => d['Solo']).toFixed(1) : '',
-                            d3.mean(contestantData, d => d['DDF']).toFixed(1),
+                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => d['AttValue']).toFixed(0) : '',
+                            d3.mean(contestantData, d => d['BuzValue']).toFixed(0),
+                            d3.mean(contestantData, d => d['Buz$']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? formatNumber(d3.mean(contestantDataWithBoxScore, d => d['TimingValue']), 0, false, true) : '',
+                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => d['SoloValue']).toFixed(0) : '',
                             d3.mean(contestantData, d => d['DD+']).toFixed(2),
                             d3.mean(contestantData, d => d['DD$']).toFixed(0),
                             d3.mean(contestantData, d => d['JFinal$']).toFixed(0),
@@ -460,25 +483,27 @@
                             d3.mean(contestantData, d => d['FJFinal$']).toFixed(0),
                             contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => d['JAtt']).toFixed(1) : '',
                             d3.mean(contestantData, d => d['JBuz']).toFixed(1),
-                            d3.mean(contestantData, d => d['JBuz$']).toFixed(0),
-                            d3.mean(contestantData, d => d['JBuz'] === 0 ? 0 : d['JBuz$'] / d['JBuz']).toFixed(0),
-                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => d['JAtt'] === 0 ? 0 : 100.0 * d['JBuz'] / d['JAtt']).toFixed(1) : '',
                             d3.mean(contestantData, d => d['JBuzC']).toFixed(1),
-                            d3.mean(contestantData, d => d['JBuzC$']).toFixed(0),
                             contestantDataWithBoxScore.length > 0 ? formatNumber(d3.mean(contestantDataWithBoxScore, d => d['JTiming']), 1, false, true) : '',
                             contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => d['JSolo']).toFixed(1) : '',
+                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => d['JAttValue']).toFixed(0) : '',
+                            d3.mean(contestantData, d => d['JBuzValue']).toFixed(0),
+                            d3.mean(contestantData, d => d['JBuz$']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? formatNumber(d3.mean(contestantDataWithBoxScore, d => d['JTimingValue']), 0, false, true) : '',
+                            contestantDataWithBoxScore.length > 0 ? formatNumber(d3.mean(contestantDataWithBoxScore, d => d['JSoloValue']), 0) : '',
                             d3.mean(contestantData, d => d['JDDF']).toFixed(1),
                             d3.mean(contestantData, d => d['JDD+']).toFixed(2),
                             d3.mean(contestantData, d => d['JDD$']).toFixed(0),
                             contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => d['DJAtt']).toFixed(1) : '',
                             d3.mean(contestantData, d => d['DJBuz']).toFixed(1),
-                            d3.mean(contestantData, d => d['DJBuz$']).toFixed(0),
-                            d3.mean(contestantData, d => d['DJBuz'] === 0 ? 0 : d['DJBuz$'] / d['DJBuz']).toFixed(0),
-                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => d['DJAtt'] === 0 ? 0 : 100.0 * d['DJBuz'] / d['DJAtt']).toFixed(1) : '',
                             d3.mean(contestantData, d => d['DJBuzC']).toFixed(1),
-                            d3.mean(contestantData, d => d['DJBuzC$']).toFixed(0),
                             contestantDataWithBoxScore.length > 0 ? formatNumber(d3.mean(contestantDataWithBoxScore, d => d['DJTiming']), 1, false, true) : '',
                             contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => d['DJSolo']).toFixed(1) : '',
+                            contestantDataWithBoxScore.length > 0 ? d3.mean(contestantDataWithBoxScore, d => d['DJAttValue']).toFixed(0) : '',
+                            d3.mean(contestantData, d => d['DJBuzValue']).toFixed(0),
+                            d3.mean(contestantData, d => d['DJBuz$']).toFixed(0),
+                            contestantDataWithBoxScore.length > 0 ? formatNumber(d3.mean(contestantDataWithBoxScore, d => d['DJTimingValue']), 0, false, true) : '',
+                            contestantDataWithBoxScore.length > 0 ? formatNumber(d3.mean(contestantDataWithBoxScore, d => d['DJSoloValue']), 0) : '',
                             d3.mean(contestantData, d => d['DJDDF']).toFixed(1),
                             d3.mean(contestantData, d => d['DJDD+']).toFixed(2),
                             d3.mean(contestantData, d => d['DJDD$']).toFixed(0),
@@ -534,15 +559,15 @@
                             return 'controlled cumulative';
                         } else if (i < 32) {
                             return 'controlled game-average';
-                        } else if (i < 44) {
+                        } else if (i < 45) {
                             return 'controlled j-average';
-                        } else if (i < 56) {
+                        } else if (i < 58) {
                             return 'controlled dj-average';
-                        } else if (i < 72) {
+                        } else if (i < 74) {
                             return 'controlled game-maximum';
-                        } else if (i < 84) {
+                        } else if (i < 86) {
                             return 'controlled j-maximum';
-                        } else if (i < 96) {
+                        } else if (i < 98) {
                             return 'controlled dj-maximum';
                         } else {
                             return '';
@@ -574,7 +599,7 @@
                 var attemptsTraceBuzI = {
                     x: d3.map(attemptsOrderedIds, c => d3.filter(data, cd => cd['Jometry Contestant Id'] === c)[0]['Contestant']),
                     y: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => cd1['BuzI']))),
-                    text: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => cd1['BuzI'])).toFixed(1)),
+                    text: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => cd1['Buz'])).toFixed(1)),
                     type: 'bar',
                     marker: {
                         color: d3.map(attemptsOrderedIds, color),
@@ -590,7 +615,7 @@
                     var attemptsTraceBlockedAtt = {
                         x: d3.map(attemptsOrderedIds, c => d3.filter(data, cd => cd['Jometry Contestant Id'] === c)[0]['Contestant']),
                         y: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => cd1['Att'] - cd1['Buz']))),
-                        text: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => cd1['Att'] - cd1['Buz'])).toFixed(1)),
+                        text: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => cd1['Att'])).toFixed(1)),
                         type: 'bar',
                         marker: {
                             color: d3.map(attemptsOrderedIds, color),
@@ -633,10 +658,10 @@
                         }
                     }
                 };
-                var traceBuzIScore = {
+                var traceBuzValue = {
                     x: d3.map(buzScoreOrderedIds, c => d3.filter(data, cd => cd['Jometry Contestant Id'] === c)[0]['Contestant']),
-                    y: d3.map(buzScoreOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => cd1['JBuzI$'] + cd1['DJBuzI$']))),
-                    text: d3.map(buzScoreOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => cd1['JBuzI$'] + cd1['DJBuzI$'])).toFixed(0)),
+                    y: d3.map(buzScoreOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => cd1['BuzValue'] - cd1['Buz$']))),
+                    text: d3.map(buzScoreOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => cd1['BuzValue'])).toFixed(0)),
                     type: 'bar',
                     marker: {
                         color: d3.map(buzScoreOrderedIds, color),
@@ -647,7 +672,24 @@
                         opacity: 0.5
                     }
                 };
-                var buzScoreData = [traceBuzScore, traceBuzIScore];
+                var buzScoreData = [traceBuzScore, traceBuzValue];
+                if (d3.filter(data, d => d['Att'] !== undefined).length === data.length) {
+                    var traceAttValue = {
+                        x: d3.map(attemptsOrderedIds, c => d3.filter(data, cd => cd['Jometry Contestant Id'] === c)[0]['Contestant']),
+                        y: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => cd1['AttValue'] - cd1['BuzValue']))),
+                        text: d3.map(attemptsOrderedIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c), cd1 => cd1['AttValue'])).toFixed(0)),
+                        type: 'bar',
+                        marker: {
+                            color: d3.map(attemptsOrderedIds, color),
+                            line: {
+                                color: 'black',
+                                width: 1
+                            },
+                            opacity: 0.3
+                        }
+                    };
+                    buzScoreData = [traceBuzScore, traceBuzValue, traceAttValue];
+                }
                 var buzScoreLayout = {
                     barmode: 'stack',
                     showlegend: false,
@@ -683,6 +725,27 @@
                     'Buz'
                 );
 
+                renderHighlightContestantBoxPlot(
+                    data,
+                    highlightContestantIds,
+                    cd1 => cd1['BuzValue'],
+                    'box-buz-value',
+                    'BuzValue',
+                    cd1 => true,
+                    rawColorFunction
+                );
+                renderHighlightContestantRoundLinePlot(
+                    data,
+                    highlightContestantIds,
+                    cd1 => cd1['JBuzValue'],
+                    cd1 => cd1['DJBuzValue'] / 2.0,
+                    'line-buz-value-j-dj',
+                    'BuzValue difference',
+                    cd => true,
+                    rawColorFunction,
+                    'BuzValue (J dollars)'
+                );
+
                 if (d3.filter(data, d => d['Att'] !== undefined).length > 0) {
                     renderHighlightContestantBoxPlot(
                         data,
@@ -703,6 +766,27 @@
                         cd1 => cd1['Att'] !== undefined,
                         rawColorFunction,
                         'Att'
+                    );
+
+                    renderHighlightContestantBoxPlot(
+                        data,
+                        highlightContestantIds,
+                        cd1 => cd1['AttValue'],
+                        'box-att-value',
+                        'AttValue',
+                        cd1 => cd1['AttValue'] !== undefined,
+                        rawColorFunction
+                    );
+                    renderHighlightContestantRoundLinePlot(
+                        data,
+                        highlightContestantIds,
+                        cd1 => cd1['JAttValue'],
+                        cd1 => cd1['DJAttValue'] / 2.0,
+                        'line-att-value-j-dj',
+                        'AttValue difference',
+                        cd1 => cd1['AttValue'] !== undefined,
+                        rawColorFunction,
+                        'AttValue (J dollars)'
                     );
 
                     renderHighlightContestantBoxPlot(
