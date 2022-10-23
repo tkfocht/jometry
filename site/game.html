@@ -30,16 +30,16 @@
                         <tr>
                             <th colspan="1" class="empty"></th>
                             <th colspan="17" class="game controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">Game Totals<span id="gcon"></span></div><div class="table-control table-control-right">&#9654;</div></div></th>
-                            <th colspan="12" class="j controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">Jeopardy! Round<span id="j-gcon"></span></div><div class="table-control table-control-right">&#9654;</div></div></th>
-                            <th colspan="12" class="dj controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">Double Jeopardy! Round<span id="dj-gcon"></span></div><div class="table-control table-control-right">&#9654;</div></div></th>
+                            <th colspan="14" class="j controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">Jeopardy! Round<span id="j-gcon"></span></div><div class="table-control table-control-right">&#9654;</div></div></th>
+                            <th colspan="14" class="dj controlled"><div class="control-container"><div class="table-control table-control-left">&#9664;</div><div class="label">Double Jeopardy! Round<span id="dj-gcon"></span></div><div class="table-control table-control-right">&#9654;</div></div></th>
                         </tr>
                         <tr>
                             <th>Contestant</th>
                             <th class="controlled game">Att</th>
                             <th class="controlled game">Buz</th>
-                            <th class="controlled game">Buz%</th>
+                            <th class="controlled game">%</th>
                             <th class="controlled game">BuzC</th>
-                            <th class="controlled game">BuzC%</th>
+                            <th class="controlled game">%</th>
                             <th class="controlled game">Time</th>
                             <th class="controlled game">Solo</th>
                             <th class="controlled game">AttV</th>
@@ -54,26 +54,30 @@
                             <th class="controlled game">FJFinal$</th>
                             <th class="controlled j">Att</th>
                             <th class="controlled j">Buz</th>
-                            <th class="controlled j">Buz%</th>
+                            <th class="controlled j">%</th>
                             <th class="controlled j">BuzC</th>
-                            <th class="controlled j">BuzI</th>
-                            <th class="controlled j">Buz$</th>
-                            <th class="controlled j">Buz$/</th>
+                            <th class="controlled j">%</th>
                             <th class="controlled j">Time</th>
                             <th class="controlled j">Solo</th>
-                            <th class="controlled j">DDF</th>
+                            <th class="controlled j">AttV</th>
+                            <th class="controlled j">BuzV</th>
+                            <th class="controlled j">Buz$</th>
+                            <th class="controlled j">TimeV</th>
+                            <th class="controlled j">SoloV</th>
                             <th class="controlled j">DD+</th>
                             <th class="controlled j">DD$</th>
                             <th class="controlled dj">Att</th>
                             <th class="controlled dj">Buz</th>
-                            <th class="controlled dj">Buz%</th>
+                            <th class="controlled dj">%</th>
                             <th class="controlled dj">BuzC</th>
-                            <th class="controlled dj">BuzI</th>
-                            <th class="controlled dj">Buz$</th>
-                            <th class="controlled dj">Buz$/</th>
+                            <th class="controlled dj">%</th>
                             <th class="controlled dj">Time</th>
                             <th class="controlled dj">Solo</th>
-                            <th class="controlled dj">DDF</th>
+                            <th class="controlled dj">AttV</th>
+                            <th class="controlled dj">BuzV</th>
+                            <th class="controlled dj">Buz$</th>
+                            <th class="controlled dj">TimeV</th>
+                            <th class="controlled dj">SoloV</th>
                             <th class="controlled dj">DD+</th>
                             <th class="controlled dj">DD$</th>
                         </tr>
@@ -165,6 +169,17 @@
             </div>
             <div class="graph-display-container">
                 <div id="bar-attempts"></div>
+            </div>
+        </div>
+        <div class="section">
+            <h1>Attempt Value</h1>
+            <div class="graph-description">
+                Attempt value by contestants. Buz$ is shown full color at the bottom. Buzz value lost vs opportunity is shown
+                in the middle (this is double the raw amount lost, because it is both unearned and lost).
+                Attempt value that were blocked is shown on top (if known).
+            </div>
+            <div class="graph-display-container">
+                <div id="bar-attempt-value"></div>
             </div>
         </div>
         <div class="section">
@@ -431,24 +446,28 @@
                             d['JBuz'],
                             formatNumber(d['JBuz%'], 1, false),
                             d['JBuzC'],
-                            d['JBuzInc'],
-                            d['JBuz$'],
-                            formatNumber(d['JBuz$/Buz'], 0),
+                            formatNumber(100 * d['JBuzC'] / d['JBuz'], 1, false),
                             formatNumber(d['JTiming'], 1, false, true),
                             formatNumber(d['JSolo'], 1, false),
-                            d['JDDF'],
+                            formatNumber(d['JAttValue'], 0),
+                            d['JBuzValue'],
+                            d['JBuz$'],
+                            formatNumber(d['JTimingValue'], 0, false, true),
+                            formatNumber(d['JSoloValue'], 0),
                             formatNumber(d['JDD+'], 1, false),
                             d['JDD$'],
                             d['DJAtt'],
                             d['DJBuz'],
                             formatNumber(d['DJBuz%'], 1, false),
                             d['DJBuzC'],
-                            d['DJBuzInc'],
-                            d['DJBuz$'],
-                            formatNumber(d['DJBuz$/Buz'], 0),
+                            formatNumber(100 * d['DJBuzC'] / d['DJBuz'], 1, false),
                             formatNumber(d['DJTiming'], 1, false, true),
                             formatNumber(d['DJSolo'], 1, false),
-                            d['DJDDF'],
+                            formatNumber(d['DJAttValue'], 0),
+                            d['DJBuzValue'],
+                            d['DJBuz$'],
+                            formatNumber(d['DJTimingValue'], 0, false, true),
+                            formatNumber(d['DJSoloValue'], 0),
                             formatNumber(d['DJDD+'], 1, false),
                             d['DJDD$']
                         ];
@@ -460,9 +479,9 @@
                             return '';
                         } else if (i < 18) {
                             return 'controlled game';
-                        } else if (i < 30) {
+                        } else if (i < 32) {
                             return 'controlled j';
-                        } else if (i < 42) {
+                        } else if (i < 46) {
                             return 'controlled dj';
                         } else {
                             return '';
@@ -909,6 +928,131 @@
                     attemptsTraceDJBuzC, attemptsTraceDJBuzI, attemptsTraceDJAttBlocked], attemptsLayout, {staticPlot: true});
 
 
+                //Attempt Value
+                var attemptValuesTraceJBuz = {
+                    x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
+                    y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => cd1['JBuz$']))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => cd1['JBuz$']))),
+                    type: 'bar',
+                    marker: {
+                        color: d3.map(highlightGameContestantIds, color),
+                        line: {
+                            color: 'black',
+                            width: 1
+                        }
+                    },
+                    xaxis: 'x',
+                    yaxis: 'y'
+                };
+                var attemptValuesTraceJBuzValue = {
+                    x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
+                    y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => cd1['JBuzValue'] - cd1['JBuz$']))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => cd1['JBuzValue'] - cd1['JBuz$']))),
+                    type: 'bar',
+                    marker: {
+                        color: d3.map(highlightGameContestantIds, color),
+                        line: {
+                            color: 'black',
+                            width: 1
+                        },
+                        opacity: 0.6
+                    },
+                    xaxis: 'x',
+                    yaxis: 'y'
+                };
+                var attemptValuesTraceJAttValue = {
+                    x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
+                    y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => cd1['JAttValue'] - cd1['JBuzValue']))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => formatNumber(cd1['JAttValue'] - cd1['JBuzValue'], 0)))),
+                    type: 'bar',
+                    marker: {
+                        color: d3.map(highlightGameContestantIds, color),
+                        line: {
+                            color: 'black',
+                            width: 1
+                        },
+                        opacity: 0.2
+                    },
+                    xaxis: 'x',
+                    yaxis: 'y'
+                };
+                var attemptValuesTraceDJBuz = {
+                    x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
+                    y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => cd1['DJBuz$']))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => cd1['DJBuz$']))),
+                    type: 'bar',
+                    marker: {
+                        color: d3.map(highlightGameContestantIds, color),
+                        line: {
+                            color: 'black',
+                            width: 1
+                        }
+                    },
+                    xaxis: 'x2',
+                    yaxis: 'y'
+                };
+                var attemptValuesTraceDJBuzValue = {
+                    x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
+                    y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => cd1['DJBuzValue'] - cd1['DJBuz$']))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => cd1['DJBuzValue'] - cd1['DJBuz$']))),
+                    type: 'bar',
+                    marker: {
+                        color: d3.map(highlightGameContestantIds, color),
+                        line: {
+                            color: 'black',
+                            width: 1
+                        },
+                        opacity: 0.6
+                    },
+                    xaxis: 'x2',
+                    yaxis: 'y'
+                };
+                var attemptValuesTraceDJAttValue = {
+                    x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
+                    y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => cd1['DJAttValue'] - cd1['DJBuzValue']))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => formatNumber(cd1['DJAttValue'] - cd1['DJBuzValue'], 0)))),
+                    type: 'bar',
+                    marker: {
+                        color: d3.map(highlightGameContestantIds, color),
+                        line: {
+                            color: 'black',
+                            width: 1
+                        },
+                        opacity: 0.2
+                    },
+                    xaxis: 'x2',
+                    yaxis: 'y'
+                };
+
+                var attemptsLayout = {
+                    barmode: 'stack',
+                    showlegend: false,
+                    grid: {
+                        rows: 1,
+                        columns: 2,
+                        subplots: ['xy,x2y']
+                    },
+                    xaxis: {
+                        title: {
+                            text: "J",
+                            standoff: 10
+                        },
+                    },
+                    xaxis2: {
+                        title: {
+                            text: "DJ",
+                            standoff: 10
+                        },
+                    },
+                    yaxis: {
+                        title: {
+                            text: "Buzzes -> Attempts",
+                            standoff: 20
+                        },
+                    }
+                };
+                Plotly.newPlot('bar-attempt-value', [attemptValuesTraceJBuz, attemptValuesTraceJBuzValue, attemptValuesTraceJAttValue,
+                    attemptValuesTraceDJBuz, attemptValuesTraceDJBuzValue, attemptValuesTraceDJAttValue], attemptsLayout, {staticPlot: true});                    
             });
         </script>
     </body>
