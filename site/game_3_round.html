@@ -274,7 +274,7 @@
                 var populateViewBoard = function(tableId, round) {
                     var tableRows = d3.select('table#' + tableId + ' tbody')
                         .selectAll('tr')
-                        .data([200*round, 400*round, 600*round, 800*round, 1000*round])
+                        .data([100*round, 200*round, 300*round, 400*round, 500*round])
                         .enter()
                         .append('tr');
                     var tableCells = tableRows.selectAll('td')
