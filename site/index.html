@@ -104,7 +104,22 @@
         </div>
 
         <div class="toc-period" id="TOC2021">
-            <div class="toc-period-header"><span class="toc-period-play-class-label">TOC 2021 (S37)</span><span class="toc-period-play-class-item"><a class="toc-period-play-class-navigation-item" href="/toc_period.html?toc_period=TOC2021H&contestants=all">Tournament</a></span></div>
+            <div class="toc-period-header"><span class="toc-period-play-class-label">TOC 2021 (S37)</span></div>
+            <div class="toc-period-play-class" id="TOC2021H">
+                <div class="toc-period-play-class-header">
+                    <span class="toc-period-play-class-label"></span>
+                    <span class="toc-period-play-class-item"><a class="toc-period-play-class-navigation-item" href="/toc_period.html?toc_period=TOC2021H&contestants=all">Tournament</a></span>
+                </div>
+                <div class="toc-period-play-class-controls">
+                    <span class="toc-period-play-class-control show-games">Show Games</span>
+                    <span class="toc-period-play-class-control hide-games" style="display: none">Hide Games</span>
+                </div>
+                <div class="toc-period-play-game-list" style="display: none">
+                    <table class="game-list">
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
             <div class="toc-period-play-class" id="TOC2021R">
                 <div class="toc-period-play-class-header">
                     <span class="toc-period-play-class-label"></span>
@@ -153,7 +168,22 @@
         </div>
 
         <div class="toc-period" id="TOC2019">
-            <div class="toc-period-header"><span class="toc-period-play-class-label">TOC 2019 (S36)</span><span class="toc-period-play-class-item"><a class="toc-period-play-class-navigation-item" href="/toc_period.html?toc_period=TOC2019H&contestants=all">Tournament</a></span></div>
+            <div class="toc-period-header"><span class="toc-period-play-class-label">TOC 2019 (S36)</span></div>
+            <div class="toc-period-play-class" id="TOC2019H">
+                <div class="toc-period-play-class-header">
+                    <span class="toc-period-play-class-label"></span>
+                    <span class="toc-period-play-class-item"><a class="toc-period-play-class-navigation-item" href="/toc_period.html?toc_period=TOC2019H&contestants=all">Tournament</a></span>
+                </div>
+                <div class="toc-period-play-class-controls">
+                    <span class="toc-period-play-class-control show-games">Show Games</span>
+                    <span class="toc-period-play-class-control hide-games" style="display: none">Hide Games</span>
+                </div>
+                <div class="toc-period-play-game-list" style="display: none">
+                    <table class="game-list">
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
             <div class="toc-period-play-class" id="TOC2019R">
                 <div class="toc-period-play-class-header">
                     <span class="toc-period-play-class-label"></span>
@@ -288,7 +318,7 @@
                         });
             }
 
-            for (const tocPeriodId of ['TOC2023R','TOC2022SC','TOC2022R','NCC2022','TOC2022P','TOC2021R','TOC2021T','TOC2021C','TOC2019R','TOC2019T1','TOC2019T2','TOC2019C','PCJ2023']) {
+            for (const tocPeriodId of ['TOC2023R','TOC2022SC','TOC2022R','NCC2022','TOC2022P','TOC2021H','TOC2021R','TOC2021T','TOC2021C','TOC2019H','TOC2019R','TOC2019T1','TOC2019T2','TOC2019C','PCJ2023']) {
                 d3.select('#' + tocPeriodId + ' span.toc-period-play-class-label').text(getNameForTocPeriod(tocPeriodId));
                 d3.csv(csvUrlForTocPeriod(tocPeriodId)).then(function(data) {
                     renderTocPeriodAndTypeSection(tocPeriodId, data);
