@@ -180,8 +180,8 @@
         <div class="section">
             <h1>Attempts</h1>
             <div class="graph-description">
-                Attempts by contestants. Successful, correct buzzes are shown full color at the bottom. Buzzes with incorrect
-                responses are shown in the middle. Attempts that were blocked are shown on top (if known).
+                Attempts by contestants. Successful, correct buzzes are shown full color at the bottom. All buzzes are the next
+                in the stack. All attempts (if known) are stacked on top of that.
             </div>
             <div class="graph-display-container">
                 <div id="bar-attempts"></div>
@@ -190,9 +190,8 @@
         <div class="section">
             <h1>Attempt Value</h1>
             <div class="graph-description">
-                Attempt value by contestants. Buz$ is shown full color at the bottom. Buzz value lost vs opportunity is shown
-                in the middle (this is double the raw amount lost, because it is both unearned and lost).
-                Attempt value that were blocked is shown on top (if known).
+                Attempt value by contestants. Buz$ is shown full color at the bottom. Buzz value is next in the stack.
+                Attempt value is shown on top (if known).
             </div>
             <div class="graph-display-container">
                 <div id="bar-attempt-value"></div>
@@ -902,7 +901,7 @@
                 var attemptsTraceJBuzI = {
                     x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
                     y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => +cd1['JBuzInc']))),
-                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => +cd1['JBuzInc']))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => +cd1['JBuz']))),
                     type: 'bar',
                     marker: {
                         color: d3.map(highlightGameContestantIds, color),
@@ -918,7 +917,7 @@
                 var attemptsTraceJAttBlocked = {
                     x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
                     y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => +cd1['JAtt'] - +cd1['JBuz']))),
-                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => +cd1['JAtt'] - +cd1['JBuz']))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => +cd1['JAtt']))),
                     type: 'bar',
                     marker: {
                         color: d3.map(highlightGameContestantIds, color),
@@ -949,7 +948,7 @@
                 var attemptsTraceDJBuzI = {
                     x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
                     y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => +cd1['DJBuzInc']))),
-                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => +cd1['DJBuzInc']))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => +cd1['DJBuz']))),
                     type: 'bar',
                     marker: {
                         color: d3.map(highlightGameContestantIds, color),
@@ -965,7 +964,7 @@
                 var attemptsTraceDJAttBlocked = {
                     x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
                     y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => +cd1['DJAtt'] - +cd1['DJBuz']))),
-                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => +cd1['DJAtt'] - +cd1['DJBuz']))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => +cd1['DJAtt']))),
                     type: 'bar',
                     marker: {
                         color: d3.map(highlightGameContestantIds, color),
@@ -996,7 +995,7 @@
                 var attemptsTraceTJBuzI = {
                     x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
                     y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => +cd1['TJBuzInc']))),
-                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => +cd1['TJBuzInc']))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => +cd1['TJBuz']))),
                     type: 'bar',
                     marker: {
                         color: d3.map(highlightGameContestantIds, color),
@@ -1012,7 +1011,7 @@
                 var attemptsTraceTJAttBlocked = {
                     x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
                     y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => +cd1['TJAtt'] - +cd1['TJBuz']))),
-                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => +cd1['TJAtt'] - +cd1['TJBuz']))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => +cd1['TJAtt']))),
                     type: 'bar',
                     marker: {
                         color: d3.map(highlightGameContestantIds, color),
@@ -1054,7 +1053,7 @@
                     },
                     yaxis: {
                         title: {
-                            text: "Buzzes -> Attempts",
+                            text: "BuzC -> Buz -> Att",
                             standoff: 20
                         },
                     }
@@ -1083,7 +1082,7 @@
                 var attemptValuesTraceJBuzValue = {
                     x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
                     y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => cd1['JBuzValue'] - cd1['JBuz$']))),
-                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => cd1['JBuzValue'] - cd1['JBuz$']))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => cd1['JBuzValue']))),
                     type: 'bar',
                     marker: {
                         color: d3.map(highlightGameContestantIds, color),
@@ -1099,7 +1098,7 @@
                 var attemptValuesTraceJAttValue = {
                     x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
                     y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => cd1['JAttValue'] - cd1['JBuzValue']))),
-                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => formatNumber(cd1['JAttValue'] - cd1['JBuzValue'], 0)))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => formatNumber(cd1['JAttValue'], 0)))),
                     type: 'bar',
                     marker: {
                         color: d3.map(highlightGameContestantIds, color),
@@ -1130,7 +1129,7 @@
                 var attemptValuesTraceDJBuzValue = {
                     x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
                     y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => cd1['DJBuzValue'] - cd1['DJBuz$']))),
-                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => cd1['DJBuzValue'] - cd1['DJBuz$']))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => cd1['DJBuzValue']))),
                     type: 'bar',
                     marker: {
                         color: d3.map(highlightGameContestantIds, color),
@@ -1146,7 +1145,7 @@
                 var attemptValuesTraceDJAttValue = {
                     x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
                     y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => cd1['DJAttValue'] - cd1['DJBuzValue']))),
-                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => formatNumber(cd1['DJAttValue'] - cd1['DJBuzValue'], 0)))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => formatNumber(cd1['DJAttValue'], 0)))),
                     type: 'bar',
                     marker: {
                         color: d3.map(highlightGameContestantIds, color),
@@ -1177,7 +1176,7 @@
                 var attemptValuesTraceTJBuzValue = {
                     x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
                     y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => cd1['TJBuzValue'] - cd1['TJBuz$']))),
-                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => cd1['TJBuzValue'] - cd1['TJBuz$']))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame']), cd1 => cd1['TJBuzValue']))),
                     type: 'bar',
                     marker: {
                         color: d3.map(highlightGameContestantIds, color),
@@ -1193,7 +1192,7 @@
                 var attemptValuesTraceTJAttValue = {
                     x: d3.map(highlightGameContestantIds, cid => getContestantNameFromData(data, cid)),
                     y: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => cd1['TJAttValue'] - cd1['TJBuzValue']))),
-                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => formatNumber(cd1['TJAttValue'] - cd1['TJBuzValue'], 0)))),
+                    text: d3.map(highlightGameContestantIds, c => d3.mean(d3.map(d3.filter(data, cd => cd['Jometry Contestant Id'] === c && cd['highlightGame'] && cd['Att'] !== ''), cd1 => formatNumber(cd1['TJAttValue'], 0)))),
                     type: 'bar',
                     marker: {
                         color: d3.map(highlightGameContestantIds, color),

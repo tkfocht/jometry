@@ -88,13 +88,14 @@
         <div class="section">
             <h1>Attempt Distribution</h1>
             <div class="graph-description">
-                Buzz attempts, by game. Correct responses are at the bottom, incorrect responses are lighter and
-                in the middle, and attempts where the contestant was locked out are lightest and at the top (if known).
+                Buzz attempts, by game. Correct buzzes are at the bottom, total responses are lighter and
+                in the middle, and attempts are lightest and at the top (if known).
             </div>
             <div id="bar-attempts" class="graph-display-container"></div>
+            <h1>Attempt Value Distribution</h1>
             <div class="graph-description">
-                Average score on buzzes, by game. Score is shown full color. Score lost on incorrect buzz responses is shown lighter on top.
-                Score on correct buzz responses is the sum of the two.
+                Average score on buzzes, by game. Score is shown full color. Total buzz value is shown lighter on top.
+                Attempt value is lightest and at the top (if known).
             </div>
             <div id="bar-buz$" class="graph-display-container"></div>
         </div>
@@ -123,7 +124,6 @@
                 .data([getNameForTocPeriod(tocPeriodId)])
                 .text(d => d);
             d3.csv(csvUrlForTocPeriod(tocPeriodId), csvDataAccessor).then(function(data) {
-                console.log(data);
                 d3.select("#contestant-name")
                     .data([getContestantNameFromData(data, contestantId)])
                     .text(d => d);
@@ -158,7 +158,6 @@
 
                 //Summary table
                 var summaryData = d3.filter(data, d => d['highlightContestant']);
-                console.log(summaryData);
 
                 var contestantAverageLabel = "Average";
                 var createAverageData = function(dataToAverage, gameId) {
@@ -166,13 +165,13 @@
                     var h = {};
                     h['Jometry Game Id'] = gameId;
                     ['Att', 'Buz%', 'Timing', 'Solo', 'JAtt', 'DJAtt', 'JBuz%', 'DJBuz%',
-                            'JTiming', 'DJTiming', 'JSolo', 'DJSolo'].forEach(function(k) {
+                            'JTiming', 'DJTiming', 'JSolo', 'DJSolo', 'AttValue'].forEach(function(k) {
                         h[k] = d3.mean(dataToAverageWithBox, d => d[k]);
                     });
                     ['Buz','BuzC','BuzInc','Buz$','Buz$/Buz','DDF','DD+','DD$','DJFinal$','FJ$','FJFinal$',
                             'JBuz','JBuzC','JBuzInc','JBuz$','JBuz$/Buz','JDDF','JDD+','JDD$',
                             'DJBuz','DJBuzC','DJBuzInc','DJBuz$','DJBuz$/Buz','DJDDF','DJDD+','DJDD$',
-                            'BuzC$', 'BuzI$'].forEach(function(k) {
+                            'BuzC$', 'BuzI$', 'BuzValue'].forEach(function(k) {
                         h[k] = d3.mean(dataToAverage, d => d[k]);
                     });
                     return h;
@@ -287,9 +286,9 @@
                     y: d3.map(contestantData, cd1 => cd1['BuzInc']).concat([
                         contestantAverageSummary['BuzInc'],
                         tocPeriodAverageSummary['BuzInc']]),
-                    text: d3.map(contestantData, cd1 => cd1['BuzInc']).concat([
-                        contestantAverageSummary['BuzInc'].toFixed(1),
-                        tocPeriodAverageSummary['BuzInc'].toFixed(1)]),
+                    text: d3.map(contestantData, cd1 => cd1['Buz']).concat([
+                        contestantAverageSummary['Buz'].toFixed(1),
+                        tocPeriodAverageSummary['Buz'].toFixed(1)]),
                     type: 'bar',
                     marker: {
                         color: d3.map(contestantData, d => highlightColor).concat([secondaryHighlightColor, 'black']),
@@ -305,9 +304,9 @@
                     y: d3.map(contestantData, cd1 => cd1['Att'] === undefined ? 0 : cd1['Att'] - cd1['BuzC'] - cd1['BuzInc']).concat([
                         contestantAverageSummary['Att'] === undefined ? 0 : contestantAverageSummary['Att'] - contestantAverageSummary['BuzC'] - contestantAverageSummary['BuzInc'],
                         tocPeriodAverageSummary['Att'] === undefined ? 0 : tocPeriodAverageSummary['Att'] - tocPeriodAverageSummary['BuzC'] - tocPeriodAverageSummary['BuzInc']]),
-                    text: d3.map(contestantData, cd1 => cd1['Att'] === undefined ? '' : cd1['Att'] - cd1['BuzC'] - cd1['BuzInc']).concat([
-                        contestantAverageSummary['Att'] === undefined ? '' : (contestantAverageSummary['Att'] - contestantAverageSummary['BuzC'] - contestantAverageSummary['BuzInc']).toFixed(1),
-                        tocPeriodAverageSummary['Att'] === undefined ? '' : (tocPeriodAverageSummary['Att'] - tocPeriodAverageSummary['BuzC'] - tocPeriodAverageSummary['BuzInc']).toFixed(1)]),
+                    text: d3.map(contestantData, cd1 => cd1['Att'] === undefined ? '' : cd1['Att']).concat([
+                        contestantAverageSummary['Att'] === undefined ? '' : (contestantAverageSummary['Att']).toFixed(1),
+                        tocPeriodAverageSummary['Att'] === undefined ? '' : (tocPeriodAverageSummary['Att']).toFixed(1)]),
                     type: 'bar',
                     marker: {
                         color: d3.map(contestantData, d => highlightColor).concat([secondaryHighlightColor, 'black']),
@@ -352,14 +351,14 @@
                         opacity: 1
                     }
                 };
-                var buzIScoreTrace = {
+                var buzValueScoreTrace = {
                     x: d3.map(contestantData, labelFunction).concat(['Contestant Avg','Period Avg']),
                     y: d3.map(contestantData, d => d['BuzI$']).concat([
                         contestantAverageSummary['BuzI$'],
                         tocPeriodAverageSummary['BuzI$']]),
-                    text: d3.map(contestantData, d => d['BuzI$']).concat([
-                        (contestantAverageSummary['BuzI$']).toFixed(0),
-                        (tocPeriodAverageSummary['BuzI$']).toFixed(0)]),
+                    text: d3.map(contestantData, d => d['BuzValue']).concat([
+                        (contestantAverageSummary['BuzValue']).toFixed(0),
+                        (tocPeriodAverageSummary['BuzValue']).toFixed(0)]),
                     type: 'bar',
                     marker: {
                         color: d3.map(contestantData, d => highlightColor).concat([secondaryHighlightColor, 'black']),
@@ -370,7 +369,30 @@
                         opacity: 0.3
                     }
                 };
-                var buzScoreData = [buzScoreTrace, buzIScoreTrace];
+                var buzScoreData = [buzScoreTrace, buzValueScoreTrace];
+
+                if (d3.filter(contestantData, cd1 => cd1['Att'] !== undefined).length == contestantData.length) {
+                    var attValueScoreTrace = {
+                        x: d3.map(contestantData, labelFunction).concat(['Contestant Avg','Period Avg']),
+                        y: d3.map(contestantData, d => d['AttValue'] - d['BuzValue']).concat([
+                            contestantAverageSummary['AttValue'] - contestantAverageSummary['BuzValue'],
+                            tocPeriodAverageSummary['AttValue'] - tocPeriodAverageSummary['BuzValue']]),
+                        text: d3.map(contestantData, d => d['AttValue'].toFixed(0)).concat([
+                            (contestantAverageSummary['AttValue']).toFixed(0),
+                            (tocPeriodAverageSummary['AttValue']).toFixed(0)]),
+                        type: 'bar',
+                        marker: {
+                            color: d3.map(contestantData, d => highlightColor).concat([secondaryHighlightColor, 'black']),
+                            line: {
+                                color: 'black',
+                                width: 1
+                            },
+                            opacity: 0.3
+                        }
+                    };
+                    var buzScoreData = [buzScoreTrace, buzValueScoreTrace, attValueScoreTrace];
+                }
+
                 var buzScoreLayout = {
                     barmode: 'stack',
                     showlegend: false,
