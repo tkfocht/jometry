@@ -206,6 +206,11 @@
                 <div id="scatterhist-j-timing-solo" class="full-round-trio-j"></div>
                 <div id="scatterhist-dj-timing-solo" class="full-round-trio-dj"></div>
             </div>
+            <div class="graph-display-container full-round-trio-container" id="timing-solo-value-container">
+                <div id="scatterhist-timing-solo-value" class="full-round-trio-full"></div>
+                <div id="scatterhist-j-timing-solo-value" class="full-round-trio-j"></div>
+                <div id="scatterhist-dj-timing-solo-value" class="full-round-trio-dj"></div>
+            </div>
             <div id="hist-att" class="graph-display-container"></div>
             <div id="hist-att-value" class="graph-display-container"></div>
             <div id="hist-buz" class="graph-display-container"></div>
@@ -596,6 +601,54 @@
                         roundGraphMargin
                     );
 
+                    renderHighlightScatterHistogram(
+                        data,
+                        'scatterhist-timing-solo-value',
+                        'Timing and Solo Value',
+                        d => d['TimingValue'] !== '' && d['SoloValue'] !== '',
+                        d => d['highlightGame'],
+                        'TimingValue',
+                        d => d['TimingValue'],
+                        { start: -15000, end: 15000, size: 500 },
+                        'SoloValue',
+                        d => d['SoloValue'],
+                        { start: 0, end: 25000, size: 500 },
+                        highlightGameColorFunction,
+                        highlightGameLabelFunction
+                    );
+                    renderHighlightScatterHistogram(
+                        data,
+                        'scatterhist-j-timing-solo-value',
+                        null,
+                        d => d['JTimingValue'] !== '' && d['JSoloValue'] !== '',
+                        d => d['highlightGame'],
+                        'J! TimingValue',
+                        d => d['JTimingValue'],
+                        { start: -6000, end: 6000, size: 500 },
+                        'J! SoloValue',
+                        d => d['JSoloValue'],
+                        { start: 0, end: 7500, size: 500 },
+                        highlightGameColorFunction,
+                        highlightGameLabelFunction,
+                        roundGraphMargin
+                    );
+                    renderHighlightScatterHistogram(
+                        data,
+                        'scatterhist-dj-timing-solo-value',
+                        null,
+                        d => d['DJTimingValue'] !== '' && d['DJSoloValue'] !== '',
+                        d => d['highlightGame'],
+                        'DJ! TimingValue',
+                        d => d['DJTimingValue'],
+                        { start: -7500, end: 7500, size: 500 },
+                        'DJ! SoloValue',
+                        d => d['DJSoloValue'],
+                        { start: 0, end: 15000, size: 500 },
+                        highlightGameColorFunction,
+                        highlightGameLabelFunction,
+                        roundGraphMargin
+                    );
+
                     //Att/Buz%
                     renderHighlightScatterHistogram(
                         data,
@@ -721,7 +774,8 @@
                     );
 
                 } else {
-                    ids = ['contention', 'att-buz%-container', 'timing-solo-container', 'hist-att', 'hist-att-value', 'att-buz$-per-att-container'];
+                    ids = ['contention', 'att-buz%-container', 'timing-solo-container', 'timing-solo-value-container',
+                        'hist-att', 'hist-att-value', 'att-buz$-per-att-container'];
                     ids.forEach(id => {
                         document.getElementById(id).style.display = 'none';
                     });
